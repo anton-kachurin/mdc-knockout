@@ -5,6 +5,15 @@ var randomStr = function (prefix) {
   return prefix + '-' + Math.floor(Math.random() * 1000000)
 }
 
+ko.bindingHandlers['mdc-instance'] = {
+  init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    var root = bindingContext.$component.root;
+    var instance = bindingContext.$component.constructor.attachTo(root);
+    valueAccessor()(instance);
+    bindingContext.$component.initialize()
+  }
+}
+
 ko.bindingHandlers['mdc-css'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       console.log(bindingContext)
@@ -18,34 +27,34 @@ ko.bindingHandlers['mdc-css'] = {
     }
 };
 
-function TextfieldViewModel (params, instance) {
+function TextfieldViewModel (params, root) {
   var self = this;
   self.foundation = foundation;
-  self.instance = instance;
+  self.constructor = MDCTextfield;
+  self.root = root;
+  self.instance = ko.observable({});
+
   self.ariaControls = randomStr('textfield-helptext');
 
   self.value = params.value;
   self.label = params.label;
   self.help = params.help;
   self.persistant = params.persistant;
-  var persistant = ko.unwrap(self.persistant);
-
-
   self.disabled = params.disabled;
-  self.instance.disabled = ko.unwrap(self.disabled);
+}
+
+TextfieldViewModel.prototype.initialize = function () {
+  var self = this;
+  self.instance().disabled = ko.unwrap(self.disabled);
   if (ko.isSubscribable(self.disabled)) {
     self.disabled.subscribe( function (value) {
-      self.instance.disabled = value;
+      self.instance().disabled = value;
     });
   }
 }
 
-TextfieldViewModel.prototype.fn = function () {
-  console.log('fn called')
-}
-
 var template = `
-<label class="mdc-textfield" data-bind="mdc-css: { UPGRADED: value }">
+<label class="mdc-textfield">
   <input type="text" class="mdc-textfield__input" data-bind="
     value: value,
     attr: { 'aria-controls': ko.unwrap(help) && ariaControls}
@@ -73,14 +82,14 @@ var template = `
     </p>
   <!-- /ko -->
 <!-- /ko -->
+<span data-bind="mdc-instance: $component.instance"></span>
 `;
 
 ko.components.register('mdc-textfield', {
     viewModel: {
       createViewModel: function(params, componentInfo) {
         var root = componentInfo.element.children[0];
-        var instance = MDCTextfield.attachTo(root);
-        return new TextfieldViewModel(params, instance);
+        return new TextfieldViewModel(params, root);
       }
     },
     template: template
