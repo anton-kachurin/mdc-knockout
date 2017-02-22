@@ -12,24 +12,24 @@ ko.bindingHandlers['mdc-instance'] = {
     valueAccessor()(instance);
     bindingContext.$component.initialize()
   }
-}
+};
 
 ko.bindingHandlers['mdc-css'] = {
   init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-    function toggleClass(classname, value) {
-      ko.utils.toggleDomNodeCssClass(element, classname, value);
+    function toggleClass(className, value) {
+      ko.utils.toggleDomNodeCssClass(element, className, value);
     }
 
     var classList = ko.unwrap(valueAccessor());
 
     ko.utils.objectForEach(classList, function (key, value) {
-      var classname = bindingContext.$component.foundation.cssClasses[key];
+      var className = bindingContext.$component.foundation.cssClasses[key];
       if (ko.unwrap(value)) {
-        toggleClass(classname, true);
+        toggleClass(className, true);
       }
       if (ko.isSubscribable(value)) {
         value.subscribe( function (value) {
-          toggleClass(classname, value)
+          toggleClass(className, value)
         });
       }
     });
@@ -61,7 +61,7 @@ function TextfieldViewModel (params, root) {
   self.value = params.value;
   self.label = params.label;
   self.help = params.help;
-  self.persistant = params.persistant;
+  self.persistent = params.persistent;
   self.disabled = params.disabled;
 }
 
@@ -73,7 +73,7 @@ TextfieldViewModel.prototype.initialize = function () {
       self.instance().disabled = value;
     });
   }
-}
+};
 
 var template = `
 <label class="mdc-textfield">
@@ -91,8 +91,8 @@ var template = `
      data-bind="
       text: help,
       attr: { id: ariaControls },
-      mdc-css: { HELPTEXT_PERSISTENT: persistant },
-      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persistant) }
+      mdc-css: { HELPTEXT_PERSISTENT: persistent },
+      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persistent) }
      ">
   </p>
 <!-- /ko -->

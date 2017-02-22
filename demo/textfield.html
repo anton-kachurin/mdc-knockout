@@ -10,7 +10,7 @@
   label: 'placeholer text',
   disabled: inputDisabled,
   help: 'That will be displayed on your public profile',
-  persistant: inputHelpPersistant
+  persistent: inputHelpPersistent
 "></mdc-textfield>
 <div>
 Your input is:
@@ -22,14 +22,14 @@ Your input is:
 </label>
 <br>
 <label>
-  help is persistant:
-  <input type="checkbox" data-bind="checked: inputHelpPersistant">
+  help is persistent:
+  <input type="checkbox" data-bind="checked: inputHelpPersistent">
 </label>
 
 <script>
   ko.applyBindings({
     inputValue: ko.observable('asdf'),
     inputDisabled: ko.observable(true),
-    inputHelpPersistant: ko.observable(false)
+    inputHelpPersistent: ko.observable(false)
   });
 </script>
