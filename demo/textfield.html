@@ -7,13 +7,21 @@
 
 <mdc-textfield params="
   value: inputValue,
-  label: 'placeholer text'"
-></mdc-textfield>
+  label: 'placeholer text',
+  disabled: inputDisabled
+"></mdc-textfield>
 <div>
 Your input is:
 <span data-bind="text: inputValue"></span>
 </div>
+<label>
+  disable input: 
+  <input type="checkbox" data-bind="checked: inputDisabled">
+</label>
 
 <script>
-  ko.applyBindings({inputValue: ko.observable('asdf')});
+  ko.applyBindings({
+    inputValue: ko.observable('asdf'),
+    inputDisabled: ko.observable(true)
+  });
 </script>

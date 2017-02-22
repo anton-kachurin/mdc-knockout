@@ -14,10 +14,21 @@ ko.bindingHandlers['mdc-css'] = {
     }
 };
 
-function TextfieldViewModel (params) {
-  this.foundation = foundation;
-  this.value = params.value;
-  this.label = params.label;
+function TextfieldViewModel (params, instance) {
+  var self = this;
+  self.foundation = foundation;
+  self.instance = instance;
+
+  self.value = params.value;
+  self.label = params.label;
+
+  self.disabled = params.disabled;
+  self.instance.disabled = ko.unwrap(self.disabled);
+  if (ko.isSubscribable(self.disabled)) {
+    self.disabled.subscribe( function (value) {
+      self.instance.disabled = value;
+    });
+  }
 }
 
 TextfieldViewModel.prototype.fn = function () {
@@ -38,8 +49,8 @@ ko.components.register('mdc-textfield', {
     viewModel: {
       createViewModel: function(params, componentInfo) {
         var root = componentInfo.element.children[0];
-        MDCTextfield.attachTo(root);
-        return new TextfieldViewModel(params);
+        var instance = MDCTextfield.attachTo(root);
+        return new TextfieldViewModel(params, instance);
       }
     },
     template: template
