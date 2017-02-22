@@ -15,16 +15,25 @@ ko.bindingHandlers['mdc-instance'] = {
 }
 
 ko.bindingHandlers['mdc-css'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      console.log(bindingContext)
-      var value = ko.unwrap(valueAccessor());
-      ko.utils.objectForEach(value, function (key, value) {
-        if (ko.unwrap(value)) {
-          var classname = bindingContext.$component.foundation.cssClasses[key];
-          ko.utils.toggleDomNodeCssClass(element, classname, true);
-        }
-      });
+  init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    function toggleClass(classname, value) {
+      ko.utils.toggleDomNodeCssClass(element, classname, value);
     }
+
+    var classList = ko.unwrap(valueAccessor());
+
+    ko.utils.objectForEach(classList, function (key, value) {
+      var classname = bindingContext.$component.foundation.cssClasses[key];
+      if (ko.unwrap(value)) {
+        toggleClass(classname, true);
+      }
+      if (ko.isSubscribable(value)) {
+        value.subscribe( function (value) {
+          toggleClass(classname, value)
+        });
+      }
+    });
+  }
 };
 
 function TextfieldViewModel (params, root) {
@@ -65,22 +74,13 @@ var template = `
   ></span>
 </label>
 <!-- ko if: help -->
-  <!-- ko ifnot: persistant -->
-    <p class="mdc-textfield-helptext"
-       data-bind="
-        text: help,
-        attr: { id: ariaControls }
-       ">
-    </p>
-  <!-- /ko -->
-  <!-- ko if: persistant -->
-    <p class="mdc-textfield-helptext mdc-textfield-helptext--persistent"
-       data-bind="
-        text: help,
-        attr: { id: ariaControls }
-       ">
-    </p>
-  <!-- /ko -->
+  <p class="mdc-textfield-helptext"
+     data-bind="
+      text: help,
+      attr: { id: ariaControls },
+      mdc-css: { HELPTEXT_PERSISTENT: persistant }
+     ">
+  </p>
 <!-- /ko -->
 <span data-bind="mdc-instance: $component.instance"></span>
 `;
