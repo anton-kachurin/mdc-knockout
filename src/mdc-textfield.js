@@ -1,19 +1,23 @@
 var MDCTextfield = mdc.textfield.MDCTextfield;
+var foundation = mdc.textfield.MDCTextfieldFoundation;
 
 ko.bindingHandlers['mdc-css'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      console.log(bindingContext)
       var value = ko.unwrap(valueAccessor());
       ko.utils.objectForEach(value, function (key, value) {
         if (ko.unwrap(value)) {
-          ko.utils.toggleDomNodeCssClass(element, key, true);
+          var classname = bindingContext.$component.foundation.cssClasses[key];
+          ko.utils.toggleDomNodeCssClass(element, classname, true);
         }
       });
     }
 };
 
 function TextfieldViewModel (params) {
+  this.foundation = foundation;
   this.value = params.value;
-  this.hint = params.hint;
+  this.label = params.label;
 }
 
 TextfieldViewModel.prototype.fn = function () {
@@ -21,15 +25,11 @@ TextfieldViewModel.prototype.fn = function () {
 }
 
 var template = `
-<label class="mdc-textfield" data-bind="mdc-css: {
-  'mdc-textfield--upgraded': value
-}">
+<label class="mdc-textfield" data-bind="mdc-css: { UPGRADED: value }">
   <input type="text" class="mdc-textfield__input" data-bind="value: value">
   <span class="mdc-textfield__label" data-bind="
-    text: hint,
-    mdc-css: {
-      'mdc-textfield__label--float-above': value
-    }"
+    text: label,
+    mdc-css: { LABEL_FLOAT_ABOVE: value }"
   ></span>
 </label>
 `;
