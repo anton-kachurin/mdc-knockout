@@ -36,6 +36,19 @@ ko.bindingHandlers['mdc-css'] = {
   }
 };
 
+ko.bindingHandlers['mdc-attr'] = {
+  init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    var attrList = ko.unwrap(valueAccessor());
+
+    ko.utils.objectForEach(attrList, function (key, value) {
+      var attrName = bindingContext.$component.foundation.strings[key];
+      if (ko.unwrap(value)) {
+        element.setAttribute(attrName, true);
+      }
+    });
+  }
+};
+
 function TextfieldViewModel (params, root) {
   var self = this;
   self.foundation = foundation;
@@ -78,7 +91,8 @@ var template = `
      data-bind="
       text: help,
       attr: { id: ariaControls },
-      mdc-css: { HELPTEXT_PERSISTENT: persistant }
+      mdc-css: { HELPTEXT_PERSISTENT: persistant },
+      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persistant) }
      ">
   </p>
 <!-- /ko -->
