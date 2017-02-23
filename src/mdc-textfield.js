@@ -91,7 +91,8 @@ TextfieldViewModel.prototype.defaultParams = function () {
     persist: false,
     disable: false,
     validate: false,
-    float: false
+    float: false,
+    multiline: false
   }
 };
 
@@ -106,17 +107,28 @@ TextfieldViewModel.prototype.initialize = function () {
 };
 
 var template = `
-<label class="mdc-textfield">
-  <input class="mdc-textfield__input" data-bind="
-    mdc-bindings: bindings,
-    attr: attrs
-  ">
+<label class="mdc-textfield" data-bind="
+  css: { 'mdc-textfield--multiline': ko.unwrap(multiline)}
+">
+  <!-- ko ifnot: ko.unwrap(multiline) -->
+    <input class="mdc-textfield__input" data-bind="
+      mdc-bindings: bindings,
+      attr: attrs
+    ">
+  <!-- /ko -->
+  <!-- ko if: ko.unwrap(multiline) -->
+    <textarea class="mdc-textfield__input" data-bind="
+      mdc-bindings: bindings,
+      attr: attrs
+    "></textarea>
+  <!-- /ko -->
   <span class="mdc-textfield__label" data-bind="
     text: label,
     mdc-css: { LABEL_FLOAT_ABOVE: float }
   "></span>
 </label>
 <!-- ko if: help -->
+<!-- ko ifnot: ko.unwrap(multiline) -->
   <p class="mdc-textfield-helptext"
      data-bind="
       text: help,
@@ -128,6 +140,7 @@ var template = `
       mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persist) }
      ">
   </p>
+<!-- /ko -->
 <!-- /ko -->
 <span data-bind="mdc-instance: $component.instance"></span>
 `;
