@@ -73,6 +73,10 @@ function ComponentViewModel (root, params, attrs, MDCFoundation, MDCComponent) {
     }
   });
 
+  ko.utils.arrayForEach(this.unwrapParams(), function (name) {
+    self[name] = ko.toJS(self[name]);
+  });
+
   delete params.$raw;
 
   if (params.hasOwnProperty('')) {
@@ -86,6 +90,10 @@ function ComponentViewModel (root, params, attrs, MDCFoundation, MDCComponent) {
 
 ComponentViewModel.prototype.defaultParams = function () {
   return {}
+};
+
+ComponentViewModel.prototype.unwrapParams = function () {
+  return []
 };
 
 ComponentViewModel.prototype.initialize = function () {};
@@ -115,6 +123,10 @@ TextfieldViewModel.prototype.defaultParams = function () {
   }
 };
 
+TextfieldViewModel.prototype.unwrapParams = function () {
+  return ['multiline', 'fullwidth', 'float']
+}
+
 TextfieldViewModel.prototype.initialize = function () {
   var self = this;
   self.instance().disabled = ko.unwrap(self.disable);
@@ -128,23 +140,23 @@ TextfieldViewModel.prototype.initialize = function () {
 var template = `
 <label class="mdc-textfield" data-bind="
   css: {
-    'mdc-textfield--multiline': ko.unwrap(multiline),
-    'mdc-textfield--fullwidth': ko.unwrap(fullwidth)
+    'mdc-textfield--multiline': multiline,
+    'mdc-textfield--fullwidth': fullwidth
   }
 ">
-  <!-- ko ifnot: ko.unwrap(multiline) -->
+  <!-- ko ifnot: multiline -->
     <input class="mdc-textfield__input" data-bind="
       mdc-bindings: bindings,
       attr: attrs
     ">
   <!-- /ko -->
-  <!-- ko if: ko.unwrap(multiline) -->
+  <!-- ko if: multiline -->
     <textarea class="mdc-textfield__input" data-bind="
       mdc-bindings: bindings,
       attr: attrs
     "></textarea>
   <!-- /ko -->
-  <!-- ko ifnot: ko.unwrap(fullwidth) -->
+  <!-- ko ifnot: fullwidth -->
     <span class="mdc-textfield__label" data-bind="
       text: label,
       mdc-css: { LABEL_FLOAT_ABOVE: float }
@@ -152,8 +164,8 @@ var template = `
   <!-- /ko -->
 </label>
 <!-- ko if: help -->
-<!-- ko ifnot: ko.unwrap(multiline) -->
-<!-- ko ifnot: ko.unwrap(fullwidth) -->
+<!-- ko ifnot: multiline -->
+<!-- ko ifnot: fullwidth -->
   <p class="mdc-textfield-helptext"
      data-bind="
       text: help,
@@ -162,7 +174,7 @@ var template = `
         HELPTEXT_PERSISTENT: persist,
         HELPTEXT_VALIDATION_MSG: validate
       },
-      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persist) }
+      mdc-attr: { ARIA_HIDDEN: persist }
      ">
   </p>
 <!-- /ko -->
