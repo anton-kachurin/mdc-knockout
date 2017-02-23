@@ -8,7 +8,7 @@ var randomStr = function (prefix) {
 ko.bindingHandlers['mdc-instance'] = {
   init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
     var root = bindingContext.$component.root;
-    var instance = bindingContext.$component.constructor.attachTo(root);
+    var instance = bindingContext.$component.attachTo(root);
     valueAccessor()(instance);
     bindingContext.$component.initialize()
   }
@@ -55,8 +55,13 @@ ko.bindingHandlers['mdc-attr'] = {
   }
 };
 
-function TextfieldViewModel (params, root, attrs) {
+function ComponentViewModel (root, params, attrs, MDCFoundation, MDCComponent) {
   var self = this;
+
+  self.root = root;
+  self.foundation = MDCFoundation;
+  self.attachTo = MDCComponent.attachTo;
+  self.instance = ko.observable({});
 
   ko.utils.objectForEach(this.defaultParams(), function (name, defaultValue) {
     if (params.hasOwnProperty(name)) {
@@ -68,16 +73,29 @@ function TextfieldViewModel (params, root, attrs) {
     }
   });
 
+  delete params.$raw;
+
+  if (params.hasOwnProperty('')) {
+    delete params[''];
+  }
+
   self.bindings = params;
 
-  self.foundation = foundation;
-  self.constructor = MDCTextfield;
-  self.root = root;
-  self.instance = ko.observable({});
+  self.attrs = attrs;
+}
+
+ComponentViewModel.prototype.defaultParams = function () {
+  return {}
+};
+
+ComponentViewModel.prototype.initialize = function () {};
+
+function TextfieldViewModel (root, params, attrs) {
+  ComponentViewModel.call(this, root, params, attrs, foundation, MDCTextfield)
+  var self = this;
 
   self.ariaControls = randomStr('textfield-helptext');
-  attrs['aria-controls']= ko.unwrap(self.help) && self.ariaControls;
-  self.attrs = attrs
+  self.attrs['aria-controls']= ko.unwrap(self.help) && self.ariaControls;
 
   if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
     self.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
@@ -156,7 +174,6 @@ var template = `
 ko.components.register('mdc-textfield', {
     viewModel: {
       createViewModel: function(params, componentInfo) {
-        delete params.$raw;
         var element = componentInfo.element;
         var root = element.children[0];
         var attributes = element.attributes;
@@ -174,7 +191,7 @@ ko.components.register('mdc-textfield', {
         ko.utils.arrayForEach(names, function (name) {
           element.removeAttribute(name);
         });
-        return new TextfieldViewModel(params, root, attrs);
+        return new TextfieldViewModel(root, params, attrs);
       }
     },
     template: template
