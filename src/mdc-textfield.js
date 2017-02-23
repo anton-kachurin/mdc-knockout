@@ -79,11 +79,9 @@ function TextfieldViewModel (params, root, attrs) {
   attrs['aria-controls']= ko.unwrap(self.help) && self.ariaControls;
   self.attrs = attrs
 
-  var float = false;
   if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
-    float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+    self.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
   }
-  self.float = float;
 }
 
 TextfieldViewModel.prototype.defaultParams = function () {
@@ -92,7 +90,8 @@ TextfieldViewModel.prototype.defaultParams = function () {
     help: '',
     persist: false,
     disable: false,
-    validate: false
+    validate: false,
+    float: false
   }
 };
 
