@@ -26,11 +26,16 @@ Your input is:
   help is persistent:
   <input type="checkbox" data-bind="checked: inputHelpPersistent">
 </label>
+<br>
+<label>
+  use validation:
+  <input type="checkbox" data-bind="checked: inputHelpValidate">
+</label>
 
 <script>
   ko.applyBindings({
     inputValue: ko.observable('asdf'),
-    inputDisabled: ko.observable(true),
+    inputDisabled: ko.observable(false),
     inputHelpPersistent: ko.observable(false),
     inputHelpValidate: ko.observable(true)
   });

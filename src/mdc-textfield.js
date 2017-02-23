@@ -50,7 +50,6 @@ ko.bindingHandlers['mdc-attr'] = {
 };
 
 function TextfieldViewModel (params, root, attrs) {
-  console.log(attrs)
   var self = this;
   self.foundation = foundation;
   self.constructor = MDCTextfield;
@@ -81,10 +80,7 @@ TextfieldViewModel.prototype.initialize = function () {
 
 var template = `
 <label class="mdc-textfield">
-  <input class="mdc-textfield__input" data-bind="
-    value: value,
-    attr: attrs
-    ">
+  <input class="mdc-textfield__input" data-bind="value: value, attr: attrs">
   <span class="mdc-textfield__label" data-bind="
     text: label,
     mdc-css: { LABEL_FLOAT_ABOVE: value }"
@@ -115,8 +111,10 @@ ko.components.register('mdc-textfield', {
         var attrs = {}
         var names = [];
         ko.utils.arrayForEach(attributes, function (attr) {
-          if (attr.name.toLowerCase() != 'params'
-           && attr.name.toLowerCase() != 'class') {
+          var attrName = attr.name.toLowerCase();
+          if (attrName != 'params'
+           && attrName != 'class'
+           && attrName != 'data-bind') {
             attrs[attr.name] = attr.value;
             names.push(attr.name);
           }
