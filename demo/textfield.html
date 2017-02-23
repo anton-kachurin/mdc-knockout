@@ -10,7 +10,8 @@
   label: 'placeholer text',
   disabled: inputDisabled,
   help: 'That will be displayed on your public profile',
-  persistent: inputHelpPersistent
+  persistent: inputHelpPersistent,
+  validate: inputHelpValidate
 "></mdc-textfield>
 <div>
 Your input is:
@@ -30,6 +31,7 @@ Your input is:
   ko.applyBindings({
     inputValue: ko.observable('asdf'),
     inputDisabled: ko.observable(true),
-    inputHelpPersistent: ko.observable(false)
+    inputHelpPersistent: ko.observable(false),
+    inputHelpValidate: ko.observable(true)
   });
 </script>

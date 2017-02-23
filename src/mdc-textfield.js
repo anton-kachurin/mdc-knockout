@@ -66,6 +66,7 @@ function TextfieldViewModel (params, root, attrs) {
   self.help = params.help;
   self.persistent = params.persistent;
   self.disabled = params.disabled;
+  self.validate = params.validate;
 }
 
 TextfieldViewModel.prototype.initialize = function () {
@@ -94,7 +95,10 @@ var template = `
      data-bind="
       text: help,
       attr: { id: ariaControls },
-      mdc-css: { HELPTEXT_PERSISTENT: persistent },
+      mdc-css: {
+        HELPTEXT_PERSISTENT: persistent,
+        HELPTEXT_VALIDATION_MSG: validate
+      },
       mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persistent) }
      ">
   </p>
