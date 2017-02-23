@@ -63,16 +63,16 @@ function TextfieldViewModel (params, root, attrs) {
   self.value = params.value;
   self.label = params.label;
   self.help = params.help;
-  self.persistent = params.persistent;
-  self.disabled = params.disabled;
+  self.persist = params.persist;
+  self.disable = params.disable;
   self.validate = params.validate;
 }
 
 TextfieldViewModel.prototype.initialize = function () {
   var self = this;
-  self.instance().disabled = ko.unwrap(self.disabled);
-  if (ko.isSubscribable(self.disabled)) {
-    self.disabled.subscribe( function (value) {
+  self.instance().disabled = ko.unwrap(self.disable);
+  if (ko.isSubscribable(self.disable)) {
+    self.disable.subscribe( function (value) {
       self.instance().disabled = value;
     });
   }
@@ -92,10 +92,10 @@ var template = `
       text: help,
       attr: { id: ariaControls },
       mdc-css: {
-        HELPTEXT_PERSISTENT: persistent,
+        HELPTEXT_PERSISTENT: persist,
         HELPTEXT_VALIDATION_MSG: validate
       },
-      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persistent) }
+      mdc-attr: { ARIA_HIDDEN: !ko.unwrap(persist) }
      ">
   </p>
 <!-- /ko -->
