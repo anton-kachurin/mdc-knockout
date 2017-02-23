@@ -14,6 +14,12 @@ ko.bindingHandlers['mdc-instance'] = {
   }
 };
 
+ko.bindingHandlers['mdc-bindings'] = {
+  init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
+  }
+}
+
 ko.bindingHandlers['mdc-css'] = {
   init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
     function toggleClass(className, value) {
@@ -51,22 +57,44 @@ ko.bindingHandlers['mdc-attr'] = {
 
 function TextfieldViewModel (params, root, attrs) {
   var self = this;
+
+  ko.utils.objectForEach(this.defaultParams(), function (name, defaultValue) {
+    if (params.hasOwnProperty(name)) {
+      self[name] = params[name];
+      delete params[name];
+    }
+    else {
+      self[name] = defaultValue;
+    }
+  });
+
+  self.bindings = params;
+
   self.foundation = foundation;
   self.constructor = MDCTextfield;
   self.root = root;
   self.instance = ko.observable({});
 
   self.ariaControls = randomStr('textfield-helptext');
-  attrs['aria-controls']= ko.unwrap(params.help) && self.ariaControls;
+  attrs['aria-controls']= ko.unwrap(self.help) && self.ariaControls;
   self.attrs = attrs
 
-  self.value = params.value;
-  self.label = params.label;
-  self.help = params.help;
-  self.persist = params.persist;
-  self.disable = params.disable;
-  self.validate = params.validate;
+  var float = false;
+  if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
+    float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+  }
+  self.float = float;
 }
+
+TextfieldViewModel.prototype.defaultParams = function () {
+  return {
+    label: '',
+    help: '',
+    persist: false,
+    disable: false,
+    validate: false
+  }
+};
 
 TextfieldViewModel.prototype.initialize = function () {
   var self = this;
@@ -80,11 +108,14 @@ TextfieldViewModel.prototype.initialize = function () {
 
 var template = `
 <label class="mdc-textfield">
-  <input class="mdc-textfield__input" data-bind="value: value, attr: attrs">
+  <input class="mdc-textfield__input" data-bind="
+    mdc-bindings: bindings,
+    attr: attrs
+  ">
   <span class="mdc-textfield__label" data-bind="
     text: label,
-    mdc-css: { LABEL_FLOAT_ABOVE: value }"
-  ></span>
+    mdc-css: { LABEL_FLOAT_ABOVE: float }
+  "></span>
 </label>
 <!-- ko if: help -->
   <p class="mdc-textfield-helptext"
@@ -105,6 +136,7 @@ var template = `
 ko.components.register('mdc-textfield', {
     viewModel: {
       createViewModel: function(params, componentInfo) {
+        delete params.$raw;
         var element = componentInfo.element;
         var root = element.children[0];
         var attributes = element.attributes;
