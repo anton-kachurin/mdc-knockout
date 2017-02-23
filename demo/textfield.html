@@ -43,6 +43,17 @@ Your input is:
   <input type="checkbox" data-bind="checked: inputHelpValidate">
 </label>
 
+<br>
+
+<mdc-textfield placeholder="Full-Width Textfield" params="
+  fullwidth: true
+"></mdc-textfield>
+
+<mdc-textfield placeholder="Full-Width Multiline Textfield" params="
+  fullwidth: true,
+  multiline: true
+"></mdc-textfield>
+
 <script>
   ko.applyBindings({
     inputValue: ko.observable('asdf'),
