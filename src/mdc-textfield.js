@@ -49,7 +49,8 @@ ko.bindingHandlers['mdc-attr'] = {
   }
 };
 
-function TextfieldViewModel (params, root) {
+function TextfieldViewModel (params, root, attrs) {
+  console.log(attrs)
   var self = this;
   self.foundation = foundation;
   self.constructor = MDCTextfield;
@@ -57,6 +58,8 @@ function TextfieldViewModel (params, root) {
   self.instance = ko.observable({});
 
   self.ariaControls = randomStr('textfield-helptext');
+  attrs['aria-controls']= ko.unwrap(params.help) && self.ariaControls;
+  self.attrs = attrs
 
   self.value = params.value;
   self.label = params.label;
@@ -77,9 +80,9 @@ TextfieldViewModel.prototype.initialize = function () {
 
 var template = `
 <label class="mdc-textfield">
-  <input type="text" class="mdc-textfield__input" data-bind="
+  <input class="mdc-textfield__input" data-bind="
     value: value,
-    attr: { 'aria-controls': ko.unwrap(help) && ariaControls}
+    attr: attrs
     ">
   <span class="mdc-textfield__label" data-bind="
     text: label,
@@ -102,8 +105,22 @@ var template = `
 ko.components.register('mdc-textfield', {
     viewModel: {
       createViewModel: function(params, componentInfo) {
-        var root = componentInfo.element.children[0];
-        return new TextfieldViewModel(params, root);
+        var element = componentInfo.element;
+        var root = element.children[0];
+        var attributes = element.attributes;
+        var attrs = {}
+        var names = [];
+        ko.utils.arrayForEach(attributes, function (attr) {
+          if (attr.name.toLowerCase() != 'params'
+           && attr.name.toLowerCase() != 'class') {
+            attrs[attr.name] = attr.value;
+            names.push(attr.name);
+          }
+        });
+        ko.utils.arrayForEach(names, function (name) {
+          element.removeAttribute(name);
+        });
+        return new TextfieldViewModel(params, root, attrs);
       }
     },
     template: template
