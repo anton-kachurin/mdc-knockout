@@ -14,7 +14,7 @@ CheckboxViewModel.prototype.defaultParams = function () {
   };
 }
 
-CheckboxViewModel.prototype.initialize = function () {
+CheckboxViewModel.prototype.initialize = function (parent) {
   var self = this;
   var checked = self.bindings.checked;
   var instance = self.instance();
@@ -33,6 +33,9 @@ CheckboxViewModel.prototype.initialize = function () {
         }
       });
     }
+  }
+  if (parent) {
+    parent.instance().input = instance;
   }
 }
 
