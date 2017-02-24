@@ -183,28 +183,4 @@ var template = `
 <span data-bind="mdc-instance: $component.instance"></span>
 `;
 
-ko.components.register('mdc-textfield', {
-    viewModel: {
-      createViewModel: function(params, componentInfo) {
-        var element = componentInfo.element;
-        var root = element.children[0];
-        var attributes = element.attributes;
-        var attrs = {}
-        var names = [];
-        ko.utils.arrayForEach(attributes, function (attr) {
-          var attrName = attr.name.toLowerCase();
-          if (attrName != 'params'
-           && attrName != 'class'
-           && attrName != 'data-bind') {
-            attrs[attr.name] = attr.value;
-            names.push(attr.name);
-          }
-        });
-        ko.utils.arrayForEach(names, function (name) {
-          element.removeAttribute(name);
-        });
-        return new TextfieldViewModel(root, params, attrs);
-      }
-    },
-    template: template
-});
+register('mdc-textfield', TextfieldViewModel, template);
