@@ -4,9 +4,27 @@ if (!ko.getBindingHandler('mdc-instance')) {
       var root = bindingContext.$component.root;
       var instance = bindingContext.$component.attachTo(root);
       valueAccessor()(instance);
-      bindingContext.$component.initialize()
+      bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
   };
+}
+
+if (!ko.getBindingHandler('mdc-child')) {
+  ko.bindingHandlers['mdc-child'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+
+      var child = valueAccessor()[1];
+      var newBindingContext = bindingContext.$parentContext.extend(function () {
+        return {'mdc-parent': bindingContext.$component}
+      });
+
+      ko.virtualElements.prepend(element, child)
+      ko.applyBindingsToDescendants(newBindingContext, element);
+
+      return { controlsDescendantBindings: true }
+    }
+  }
+  ko.virtualElements.allowedBindings['mdc-child'] = true;
 }
 
 if (!ko.getBindingHandler('mdc-bindings')) {

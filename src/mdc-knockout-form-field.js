@@ -18,7 +18,7 @@ var template = `
 <div class="mdc-form-field" data-bind="
   css: { 'mdc-form-field--align-end': alignEnd }
 ">
-  <!-- ko template: { nodes: $componentTemplateNodes, data: $parent } --><!-- /ko -->
+  <!-- ko mdc-child: $componentTemplateNodes --><!-- /ko -->
   <label data-bind="mdc-bindings: bindings, attr: attrs">Input Label</label>
 </div>
 <span data-bind="mdc-instance: $component.instance"></span>

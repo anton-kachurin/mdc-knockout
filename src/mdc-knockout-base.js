@@ -39,4 +39,4 @@ ComponentViewModel.prototype.unwrapParams = function () {
   return []
 };
 
-ComponentViewModel.prototype.initialize = function () {};
+ComponentViewModel.prototype.initialize = function (parent) {};
