@@ -6,12 +6,18 @@
 <script src="../src/mdc-knockout-init.js"></script>
 <script src="../src/mdc-knockout-base.js"></script>
 <script src="../src/mdc-knockout-checkbox.js"></script>
+<script src="../src/mdc-knockout-form-field.js"></script>
 
-<mdc-checkbox params="
-  checked: isChecked,
-  disable: isDisabled,
-  indeterminate: indeterminate
-"></mdc-checkbox>
+<mdc-form-field for="checkbox" params="alignEnd: alignEnd">
+  <mdc-checkbox id="checkbox" params="
+    checked: isChecked,
+    disable: isDisabled,
+    indeterminate: indeterminate
+  "></mdc-checkbox>
+</mdc-form-field>
+
+<br>
+
 <input type="button" value="set indeterminate" data-bind="click:function(){indeterminate(true)}">
 <br>
 <span data-bind="text: ('indeterminate: ' + (indeterminate()?'true':'false'))"></span>
@@ -25,12 +31,18 @@
   disable:
   <input type="checkbox" data-bind="checked: isDisabled">
 </label>
+<br>
+<label>
+  align-end:
+  <input type="checkbox" data-bind="checked: alignEnd">
+</label>
 
 
 <script>
   ko.applyBindings({
     isChecked: ko.observable(),
     isDisabled: ko.observable(false),
-    indeterminate: ko.observable(true)
+    indeterminate: ko.observable(true),
+    alignEnd: ko.observable(false)
   });
 </script>
