@@ -87,7 +87,7 @@ var template = `
 <!-- /ko -->
 <!-- /ko -->
 <!-- /ko -->
-<span data-bind="mdc-instance: $component.instance"></span>
+<!-- ko mdc-instance: true --><!-- /ko -->
 `;
 
 register('mdc-textfield', TextfieldViewModel, template);

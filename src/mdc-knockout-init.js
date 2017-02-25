@@ -3,7 +3,7 @@ if (!ko.getBindingHandler('mdc-instance')) {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       var root = bindingContext.$component.root;
       var instance = bindingContext.$component.attachTo(root);
-      valueAccessor()(instance);
+      bindingContext.$component.instance(instance);
       bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
   };

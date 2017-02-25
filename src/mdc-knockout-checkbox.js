@@ -58,7 +58,7 @@ var template = `
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
 </div>
-<span data-bind="mdc-instance: $component.instance"></span>
+<!-- ko mdc-instance: true --><!-- /ko -->
 `;
 
 register('mdc-checkbox', CheckboxViewModel, template);
