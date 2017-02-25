@@ -14,12 +14,15 @@ if (!ko.getBindingHandler('mdc-child')) {
   ko.bindingHandlers['mdc-child'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
-      var child = valueAccessor()[1];
       var newBindingContext = bindingContext.$parentContext.extend(function () {
-        return {'mdc-parent': bindingContext.$component}
+        return { 'mdc-parent': bindingContext.$component };
       });
 
-      ko.virtualElements.prepend(element, child)
+      var children = bindingContext.$componentTemplateNodes;
+      ko.utils.arrayForEach(children, function (child) {
+        ko.virtualElements.prepend(element, child)
+      });
+
       ko.applyBindingsToDescendants(newBindingContext, element);
 
       return { controlsDescendantBindings: true }
