@@ -7,6 +7,7 @@ if (!ko.getBindingHandler('mdc-instance')) {
       bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
   };
+  ko.virtualElements.allowedBindings['mdc-instance'] = true;
 }
 
 if (!ko.getBindingHandler('mdc-child')) {
