@@ -19,7 +19,7 @@ var template = `
   css: { 'mdc-form-field--align-end': alignEnd }
 ">
   <!-- ko mdc-child: $componentTemplateNodes --><!-- /ko -->
-  <label data-bind="mdc-bindings: bindings, attr: attrs">Input Label</label>
+  <label data-bind="mdc-bindings: bindings, attr: attrs"></label>
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
