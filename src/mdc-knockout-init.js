@@ -19,7 +19,7 @@ if (!ko.getBindingHandler('mdc-child')) {
       });
 
       var children = bindingContext.$componentTemplateNodes;
-      ko.utils.arrayForEach(children, function (child) {
+      ko.utils.arrayForEach(children.reverse(), function (child) {
         ko.virtualElements.prepend(element, child)
       });
 
