@@ -1,0 +1,40 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+
+<script src="../src/mdc-knockout-init.js"></script>
+<script src="../src/mdc-knockout-base.js"></script>
+<script src="../src/mdc-knockout-radio.js"></script>
+<script src="../src/mdc-knockout-form-field.js"></script>
+
+<mdc-form-field for="radio-1" params="text: 'yes!'">
+  <mdc-radio id="radio-1" name="radios" value="yes" params="
+    checked: radio,
+    isChecked: yesIsChecked
+  "></mdc-radio>
+</mdc-form-field>
+
+<mdc-form-field for="radio-2" params="text: 'no!'">
+  <mdc-radio id="radio-2" name="radios" value="no" params="
+    checked: radio,
+    isChecked: noIsChecked
+  "></mdc-radio>
+</mdc-form-field>
+
+<mdc-form-field for="radio-3" params="text: 'maybe!'">
+  <mdc-radio id="radio-3" name="radios" value="maybe" params="
+    disable: maybeIsDisabled,
+    checked: radio,
+  "></mdc-radio>
+</mdc-form-field>
+
+<script>
+  var obj = {
+    radio: ko.observable(),
+    noIsChecked: ko.observable(true),
+    yesIsChecked: ko.observable(false),
+    maybeIsDisabled: ko.observable(true)
+  };
+  ko.applyBindings(obj);
+</script>
