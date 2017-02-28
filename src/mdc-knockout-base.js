@@ -1,45 +1,45 @@
-function ComponentViewModel (root, params, attrs, MDCFoundation, MDCComponent) {
-  var self = this;
+class ComponentViewModel {
+  constructor (root, params, attrs, MDCFoundation, MDCComponent) {
+    this.root = root;
+    this.foundation = MDCFoundation;
+    this.attachTo = MDCComponent.attachTo;
+    this.instance = ko.observable({});
 
-  self.root = root;
-  self.foundation = MDCFoundation;
-  self.attachTo = MDCComponent.attachTo;
-  self.instance = ko.observable({});
+    ko.utils.objectForEach(this.defaultParams(), (name, defaultValue) => {
+      if (params.hasOwnProperty(name)) {
+        this[name] = params[name];
+        delete params[name];
+      }
+      else {
+        this[name] = defaultValue;
+      }
+    });
 
-  ko.utils.objectForEach(this.defaultParams(), function (name, defaultValue) {
-    if (params.hasOwnProperty(name)) {
-      self[name] = params[name];
-      delete params[name];
+    ko.utils.arrayForEach(this.unwrapParams(),
+                          name => this[name] = ko.toJS(this[name]));
+
+    delete params.$raw;
+
+    if (params.hasOwnProperty('')) {
+      delete params[''];
     }
-    else {
-      self[name] = defaultValue;
-    }
-  });
 
-  ko.utils.arrayForEach(this.unwrapParams(), function (name) {
-    self[name] = ko.toJS(self[name]);
-  });
+    this.bindings = params;
 
-  delete params.$raw;
-
-  if (params.hasOwnProperty('')) {
-    delete params[''];
+    this.attrs = attrs;
   }
 
-  self.bindings = params;
+  defaultParams () {
+    return {}
+  }
 
-  self.attrs = attrs;
+  unwrapParams () {
+    return []
+  }
+
+  initialize (parent) {
+
+  }
 }
-
-ComponentViewModel.prototype.defaultParams = function () {
-  return {}
-};
-
-ComponentViewModel.prototype.unwrapParams = function () {
-  return []
-};
-
-ComponentViewModel.prototype.initialize = function (parent) {};
-
 
 export default ComponentViewModel;
