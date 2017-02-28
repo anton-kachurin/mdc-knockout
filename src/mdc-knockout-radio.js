@@ -1,67 +1,65 @@
 import ComponentViewModel from './mdc-knockout-base';
 import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 
-RadioViewModel.prototype = Object.create(ComponentViewModel.prototype);
-RadioViewModel.prototype.constructor = RadioViewModel;
-
-function RadioViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs,
-                          MDCRadioFoundation, MDCRadio);
-}
-
-RadioViewModel.prototype.defaultParams = function () {
-  return {
-    isChecked: false,
-    disable: false
+export default class RadioViewModel extends ComponentViewModel {
+  constructor (root, params, attrs) {
+    super(root, params, attrs, MDCRadioFoundation, MDCRadio);
   }
-}
 
-RadioViewModel.prototype.initialize = function (parent) {
-  var self = this;
-  function setChecked () {
-    // check radio input knockout-way
-    if (self.bindings.hasOwnProperty('checked')
-    && ko.isObservable(self.bindings.checked)) {
-      self.bindings.checked(self.attrs.value);
+  initialize (parent) {
+    var isChecked = this.isChecked;
+
+    if (ko.unwrap(isChecked)) {
+      this.setChecked();
     }
-  }
 
-  var isChecked = self.isChecked;
-
-  if (ko.unwrap(isChecked)) {
-    setChecked();
-  }
-
-  if (ko.isSubscribable(isChecked)) {
-    isChecked.subscribe(function (value) {
-      if (value) {
-        setChecked();
-      }
-      else if (self.attrs.value == ko.unwrap(self.bindings.checked)) {
-        self.bindings.checked(undefined);
-      }
-    });
-
-    if (self.bindings.hasOwnProperty('checked')
-    && ko.isSubscribable(self.bindings.checked)) {
-      self.bindings.checked.subscribe(function (value) {
-        if (value == self.attrs.value) {
-          isChecked(true);
+    if (ko.isSubscribable(isChecked)) {
+      isChecked.subscribe(value => {
+        if (value) {
+          this.setChecked();
         }
-        else {
-          isChecked(false);
+        else if (this.attrs.value == ko.unwrap(this.bindings.checked)) {
+          this.bindings.checked(undefined);
         }
       });
+
+      if (ko.isSubscribable(this.bindings.checked)) {
+        this.bindings.checked.subscribe(value => {
+          if (value == this.attrs.value) {
+            isChecked(true);
+          }
+          else {
+            isChecked(false);
+          }
+        });
+      }
+    }
+
+    if (parent) {
+      parent.instance().input = this.instance();
     }
   }
 
-  if (parent) {
-    parent.instance().input = self.instance();
+  setChecked () {
+    // check radio input knockout-way
+    if (ko.isObservable(this.bindings.checked)) {
+      this.bindings.checked(this.attrs.value);
+    }
+  }
+
+  defaultParams () {
+    return {
+      isChecked: false,
+      disable: false
+    }
+  }
+
+  static template () {
+    return template;
   }
 }
 
-RadioViewModel.template = function () {
-  return `
+const template = `
 <div class="mdc-radio" data-bind="mdc-css: { DISABLED: disable }">
   <input class="mdc-radio__native-control"
          type="radio"
@@ -73,6 +71,3 @@ RadioViewModel.template = function () {
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
-};
-
-export default RadioViewModel;

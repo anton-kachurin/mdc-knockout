@@ -1,47 +1,45 @@
 import ComponentViewModel from './mdc-knockout-base';
 import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 
-CheckboxViewModel.prototype = Object.create(ComponentViewModel.prototype);
-CheckboxViewModel.prototype.constructor = CheckboxViewModel;
+export default class CheckboxViewModel extends ComponentViewModel {
+  constructor (root, params, attrs) {
+    super(root, params, attrs, MDCCheckboxFoundation, MDCCheckbox);
+  }
 
-function CheckboxViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs,
-                          MDCCheckboxFoundation, MDCCheckbox);
-}
-
-CheckboxViewModel.prototype.defaultParams = function () {
-  return {
-    indeterminate: true
-  };
-}
-
-CheckboxViewModel.prototype.initialize = function (parent) {
-  var self = this;
-  var checked = self.bindings.checked;
-  var instance = self.instance();
-  instance.indeterminate = ko.unwrap(self.indeterminate);
-  if (ko.isSubscribable(self.indeterminate)) {
-    self.indeterminate.subscribe(function (value) {
-      if (value) {
-        instance.indeterminate = true;
+  initialize (parent) {
+    var checked = this.bindings.checked;
+    var instance = this.instance();
+    instance.indeterminate = ko.unwrap(this.indeterminate);
+    if (ko.isSubscribable(this.indeterminate)) {
+      this.indeterminate.subscribe(
+        value => { if (value) instance.indeterminate = true }
+      );
+      if (ko.isSubscribable(checked)) {
+        checked.subscribe(value => {
+          this.indeterminate(false);
+          if (instance.indeterminate) {
+             instance.indeterminate = false;
+          }
+        });
       }
-    });
-    if (ko.isSubscribable(checked)) {
-      checked.subscribe(function (value) {
-        self.indeterminate(false);
-        if (instance.indeterminate) {
-           instance.indeterminate = false;
-        }
-      });
+    }
+    if (parent) {
+      parent.instance().input = instance;
     }
   }
-  if (parent) {
-    parent.instance().input = instance;
+
+  defaultParams () {
+    return {
+      indeterminate: true
+    };
+  }
+
+  static template () {
+    return template
   }
 }
 
-CheckboxViewModel.template = function () {
-  return `
+const template = `
 <div class="mdc-checkbox">
   <input type="checkbox"
          class="mdc-checkbox__native-control"
@@ -62,6 +60,3 @@ CheckboxViewModel.template = function () {
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
-};
-
-export default CheckboxViewModel;

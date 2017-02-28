@@ -1,55 +1,54 @@
 import ComponentViewModel from './mdc-knockout-base';
 import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
 
-var randomStr = function (prefix) {
-  return prefix + '-' + Math.floor(Math.random() * 1000000)
-}
+export default class TextfieldViewModel extends ComponentViewModel {
+  constructor (root, params, attrs) {
+    super(root, params, attrs, MDCTextfieldFoundation, MDCTextfield);
 
-TextfieldViewModel.prototype = Object.create(ComponentViewModel.prototype);
-TextfieldViewModel.prototype.constructor = TextfieldViewModel;
+    this.ariaControls = this.randomStr('textfield-helptext');
+    this.attrs['aria-controls']= ko.unwrap(this.help) && this.ariaControls;
 
-function TextfieldViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs,
-                          MDCTextfieldFoundation, MDCTextfield)
-  var self = this;
+    if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
+      this.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+    }
+  }
 
-  self.ariaControls = randomStr('textfield-helptext');
-  self.attrs['aria-controls']= ko.unwrap(self.help) && self.ariaControls;
+  initialize () {
+    this.instance().disabled = ko.unwrap(this.disable);
+    if (ko.isSubscribable(this.disable)) {
+      this.disable.subscribe( value => {
+        this.instance().disabled = value;
+      });
+    }
+  }
 
-  if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
-    self.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+  randomStr (prefix) {
+    return prefix + '-' + Math.floor(Math.random() * 1000000)
+  }
+
+  defaultParams () {
+    return {
+      label: '',
+      help: '',
+      persist: false,
+      disable: false,
+      validate: false,
+      float: false,
+      multiline: false,
+      fullwidth: false
+    }
+  }
+
+  unwrapParams () {
+    return ['multiline', 'fullwidth', 'float']
+  }
+
+  static template () {
+    return template;
   }
 }
 
-TextfieldViewModel.prototype.defaultParams = function () {
-  return {
-    label: '',
-    help: '',
-    persist: false,
-    disable: false,
-    validate: false,
-    float: false,
-    multiline: false,
-    fullwidth: false
-  }
-};
-
-TextfieldViewModel.prototype.unwrapParams = function () {
-  return ['multiline', 'fullwidth', 'float']
-}
-
-TextfieldViewModel.prototype.initialize = function () {
-  var self = this;
-  self.instance().disabled = ko.unwrap(self.disable);
-  if (ko.isSubscribable(self.disable)) {
-    self.disable.subscribe( function (value) {
-      self.instance().disabled = value;
-    });
-  }
-};
-
-TextfieldViewModel.template = function () {
-  return  `
+const template = `
 <label class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
@@ -94,6 +93,3 @@ TextfieldViewModel.template = function () {
 <!-- /ko -->
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
-};
-
-export default TextfieldViewModel;
