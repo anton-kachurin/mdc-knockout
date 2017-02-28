@@ -1,12 +1,16 @@
-var MDCTextfield = mdc.textfield.MDCTextfield;
-var foundation = mdc.textfield.MDCTextfieldFoundation;
+import ComponentViewModel from './mdc-knockout-base';
+import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
 
 var randomStr = function (prefix) {
   return prefix + '-' + Math.floor(Math.random() * 1000000)
 }
 
+TextfieldViewModel.prototype = Object.create(ComponentViewModel.prototype);
+TextfieldViewModel.prototype.constructor = TextfieldViewModel;
+
 function TextfieldViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs, foundation, MDCTextfield)
+  ComponentViewModel.call(this, root, params, attrs,
+                          MDCTextfieldFoundation, MDCTextfield)
   var self = this;
 
   self.ariaControls = randomStr('textfield-helptext');
@@ -44,7 +48,8 @@ TextfieldViewModel.prototype.initialize = function () {
   }
 };
 
-var template = `
+TextfieldViewModel.template = function () {
+  return  `
 <label class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
@@ -89,5 +94,6 @@ var template = `
 <!-- /ko -->
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
+};
 
-register('mdc-textfield', TextfieldViewModel, template);
+export default TextfieldViewModel;

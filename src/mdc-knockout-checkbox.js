@@ -1,11 +1,12 @@
-var MDCCheckbox = mdc.checkbox.MDCCheckbox;
-var foundation = mdc.checkbox.MDCCheckboxFoundation;
+import ComponentViewModel from './mdc-knockout-base';
+import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 
 CheckboxViewModel.prototype = Object.create(ComponentViewModel.prototype);
 CheckboxViewModel.prototype.constructor = CheckboxViewModel;
 
 function CheckboxViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs, foundation, MDCCheckbox);
+  ComponentViewModel.call(this, root, params, attrs,
+                          MDCCheckboxFoundation, MDCCheckbox);
 }
 
 CheckboxViewModel.prototype.defaultParams = function () {
@@ -39,7 +40,8 @@ CheckboxViewModel.prototype.initialize = function (parent) {
   }
 }
 
-var template = `
+CheckboxViewModel.template = function () {
+  return `
 <div class="mdc-checkbox">
   <input type="checkbox"
          class="mdc-checkbox__native-control"
@@ -60,5 +62,6 @@ var template = `
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
+};
 
-register('mdc-checkbox', CheckboxViewModel, template);
+export default CheckboxViewModel;

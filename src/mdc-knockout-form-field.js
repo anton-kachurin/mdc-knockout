@@ -1,11 +1,12 @@
-var MDCFormField = mdc.formField.MDCFormField;
-var foundation = mdc.formField.MDCFormFieldFoundation;
+import ComponentViewModel from './mdc-knockout-base'
+import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
 
 FormFieldViewModel.prototype = Object.create(ComponentViewModel.prototype);
 FormFieldViewModel.prototype.constructor = FormFieldViewModel;
 
 function FormFieldViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs, foundation, MDCFormField);
+  ComponentViewModel.call(this, root, params, attrs,
+                          MDCFormFieldFoundation, MDCFormField);
 }
 
 FormFieldViewModel.prototype.defaultParams = function () {
@@ -14,7 +15,8 @@ FormFieldViewModel.prototype.defaultParams = function () {
   }
 };
 
-var template = `
+FormFieldViewModel.template = function () {
+  return `
 <div class="mdc-form-field" data-bind="
   css: { 'mdc-form-field--align-end': alignEnd }
 ">
@@ -23,5 +25,6 @@ var template = `
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
+};
 
-register('mdc-form-field', FormFieldViewModel, template);
+export default FormFieldViewModel;

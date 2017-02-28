@@ -40,3 +40,6 @@ ComponentViewModel.prototype.unwrapParams = function () {
 };
 
 ComponentViewModel.prototype.initialize = function (parent) {};
+
+
+export default ComponentViewModel;

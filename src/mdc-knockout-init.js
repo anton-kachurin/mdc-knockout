@@ -78,7 +78,8 @@ if (!ko.getBindingHandler('mdc-attr')) {
   };
 }
 
-window.register = window.register || function (name, viewModelConstructor, template) {
+export default function (name, viewModelConstructor) {
+  var template = viewModelConstructor.template();
   ko.components.register(name, {
       viewModel: {
         createViewModel: function(params, componentInfo) {

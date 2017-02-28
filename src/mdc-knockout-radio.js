@@ -1,13 +1,12 @@
-var MDCCheckbox = mdc.radio.MDCRadio;
-var foundation = mdc.radio.MDCRadioFoundation;
-
-(function(MDCCheckbox, foundation){
+import ComponentViewModel from './mdc-knockout-base';
+import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 
 RadioViewModel.prototype = Object.create(ComponentViewModel.prototype);
 RadioViewModel.prototype.constructor = RadioViewModel;
 
 function RadioViewModel (root, params, attrs) {
-  ComponentViewModel.call(this, root, params, attrs, foundation, MDCCheckbox);
+  ComponentViewModel.call(this, root, params, attrs,
+                          MDCRadioFoundation, MDCRadio);
 }
 
 RadioViewModel.prototype.defaultParams = function () {
@@ -61,7 +60,8 @@ RadioViewModel.prototype.initialize = function (parent) {
   }
 }
 
-template = `
+RadioViewModel.template = function () {
+  return `
 <div class="mdc-radio" data-bind="mdc-css: { DISABLED: disable }">
   <input class="mdc-radio__native-control"
          type="radio"
@@ -73,7 +73,6 @@ template = `
 </div>
 <!-- ko mdc-instance: true --><!-- /ko -->
 `;
+};
 
-register('mdc-radio', RadioViewModel, template);
-
-}(MDCCheckbox, foundation))
+export default RadioViewModel;
