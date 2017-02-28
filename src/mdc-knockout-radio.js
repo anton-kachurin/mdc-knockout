@@ -2,7 +2,7 @@ import ComponentViewModel from './mdc-knockout-base';
 
 export default class RadioViewModel extends ComponentViewModel {
   initialize (parent) {
-    var isChecked = this.isChecked;
+    const isChecked = this.isChecked;
 
     if (ko.unwrap(isChecked)) {
       this.setChecked();

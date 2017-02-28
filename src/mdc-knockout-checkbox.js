@@ -2,8 +2,8 @@ import ComponentViewModel from './mdc-knockout-base';
 
 export default class CheckboxViewModel extends ComponentViewModel {
   initialize (parent) {
-    var checked = this.bindings.checked;
-    var instance = this.instance();
+    const checked = this.bindings.checked;
+    const instance = this.instance();
     instance.indeterminate = ko.unwrap(this.indeterminate);
     if (ko.isSubscribable(this.indeterminate)) {
       this.indeterminate.subscribe(
@@ -18,6 +18,7 @@ export default class CheckboxViewModel extends ComponentViewModel {
         });
       }
     }
+
     if (parent) {
       parent.instance().input = instance;
     }
@@ -26,11 +27,11 @@ export default class CheckboxViewModel extends ComponentViewModel {
   defaultParams () {
     return {
       indeterminate: true
-    };
+    }
   }
 
   static template () {
-    return template
+    return template;
   }
 }
 

@@ -81,6 +81,7 @@ if (!ko.getBindingHandler('mdc-attr')) {
 export default function (name, viewModelConstructor,
                          MDCComponent, MDCFoundation) {
   var template = viewModelConstructor.template();
+  
   ko.components.register(name, {
       viewModel: {
         createViewModel: function(params, componentInfo) {
