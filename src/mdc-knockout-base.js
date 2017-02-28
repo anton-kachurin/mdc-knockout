@@ -40,6 +40,10 @@ class ComponentViewModel {
   initialize (parent) {
 
   }
+
+  static template () {
+    return '';
+  }
 }
 
 export default ComponentViewModel;
