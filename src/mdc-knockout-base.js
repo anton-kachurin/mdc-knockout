@@ -1,5 +1,5 @@
 class ComponentViewModel {
-  constructor (root, params, attrs, MDCFoundation, MDCComponent) {
+  constructor (root, params, attrs, MDCComponent, MDCFoundation) {
     this.root = root;
     this.foundation = MDCFoundation;
     this.attachTo = MDCComponent.attachTo;
@@ -27,6 +27,16 @@ class ComponentViewModel {
     this.bindings = params;
 
     this.attrs = attrs;
+
+    this.extend();
+  }
+
+  extend () {
+
+  }
+
+  initialize (parent) {
+
   }
 
   defaultParams () {
@@ -35,10 +45,6 @@ class ComponentViewModel {
 
   unwrapParams () {
     return []
-  }
-
-  initialize (parent) {
-
   }
 
   static template () {

@@ -1,11 +1,6 @@
 import ComponentViewModel from './mdc-knockout-base';
-import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 
 export default class CheckboxViewModel extends ComponentViewModel {
-  constructor (root, params, attrs) {
-    super(root, params, attrs, MDCCheckboxFoundation, MDCCheckbox);
-  }
-
   initialize (parent) {
     var checked = this.bindings.checked;
     var instance = this.instance();

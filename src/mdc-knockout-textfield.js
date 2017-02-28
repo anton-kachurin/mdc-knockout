@@ -1,12 +1,11 @@
 import ComponentViewModel from './mdc-knockout-base';
-import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
 
 export default class TextfieldViewModel extends ComponentViewModel {
-  constructor (root, params, attrs) {
-    super(root, params, attrs, MDCTextfieldFoundation, MDCTextfield);
-
+  extend () {
     this.ariaControls = this.randomStr('textfield-helptext');
     this.attrs['aria-controls']= ko.unwrap(this.help) && this.ariaControls;
+
+    const params = this.bindings;
 
     if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
       this.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);

@@ -78,7 +78,8 @@ if (!ko.getBindingHandler('mdc-attr')) {
   };
 }
 
-export default function (name, viewModelConstructor) {
+export default function (name, viewModelConstructor,
+                         MDCComponent, MDCFoundation) {
   var template = viewModelConstructor.template();
   ko.components.register(name, {
       viewModel: {
@@ -100,7 +101,8 @@ export default function (name, viewModelConstructor) {
           ko.utils.arrayForEach(names, function (name) {
             element.removeAttribute(name);
           });
-          return new viewModelConstructor(root, params, attrs);
+          return new viewModelConstructor(root, params, attrs,
+                                          MDCComponent, MDCFoundation);
         }
       },
       template: template

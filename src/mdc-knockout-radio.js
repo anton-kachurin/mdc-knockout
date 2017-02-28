@@ -1,11 +1,6 @@
 import ComponentViewModel from './mdc-knockout-base';
-import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 
 export default class RadioViewModel extends ComponentViewModel {
-  constructor (root, params, attrs) {
-    super(root, params, attrs, MDCRadioFoundation, MDCRadio);
-  }
-
   initialize (parent) {
     var isChecked = this.isChecked;
 
