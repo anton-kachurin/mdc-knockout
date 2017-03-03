@@ -3,10 +3,10 @@ import ComponentViewModel from './mdc-knockout-base';
 export default class TextfieldViewModel extends ComponentViewModel {
   extend () {
     if (!this.attrs['id']) {
-      this.attrs['id'] = this.randomStr('textfield-auto-id');
+      this.attrs['id'] = this.randomPrefixed('textfield-auto-id');
     }
 
-    this.ariaControls = this.randomStr('textfield-helptext');
+    this.ariaControls = this.randomPrefixed('textfield-helptext');
     this.attrs['aria-controls'] = ko.unwrap(this.help) && this.ariaControls;
 
     const params = this.bindings;
@@ -26,10 +26,6 @@ export default class TextfieldViewModel extends ComponentViewModel {
         this.instance().disabled = value;
       });
     }
-  }
-
-  randomStr (prefix) {
-    return prefix + '-' + Math.floor(Math.random() * 1000000)
   }
 
   defaultParams () {

@@ -1,4 +1,8 @@
 class ComponentViewModel {
+  randomPrefixed (prefix) {
+    return prefix + '-' + Math.floor(Math.random() * 1000000)
+  }
+
   constructor (root, params, attrs, MDCComponent, MDCFoundation) {
     this.root = root;
     this.foundation = MDCFoundation;
