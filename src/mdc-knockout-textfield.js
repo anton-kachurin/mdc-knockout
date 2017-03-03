@@ -2,13 +2,20 @@ import ComponentViewModel from './mdc-knockout-base';
 
 export default class TextfieldViewModel extends ComponentViewModel {
   extend () {
+    if (!this.attrs['id']) {
+      this.attrs['id'] = this.randomStr('textfield-auto-id');
+    }
+
     this.ariaControls = this.randomStr('textfield-helptext');
-    this.attrs['aria-controls']= ko.unwrap(this.help) && this.ariaControls;
+    this.attrs['aria-controls'] = ko.unwrap(this.help) && this.ariaControls;
 
     const params = this.bindings;
-
     if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
       this.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+    }
+
+    if (this.fullwidth) {
+      this.attrs['aria-label'] = this.label;
     }
   }
 
@@ -48,7 +55,7 @@ export default class TextfieldViewModel extends ComponentViewModel {
 }
 
 const template = `
-<label class="mdc-textfield" data-bind="
+<div class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
     'mdc-textfield--fullwidth': fullwidth
@@ -67,12 +74,15 @@ const template = `
     "></textarea>
   <!-- /ko -->
   <!-- ko ifnot: fullwidth -->
-    <span class="mdc-textfield__label" data-bind="
+    <label class="mdc-textfield__label" data-bind="
       text: label,
-      mdc-css: { LABEL_FLOAT_ABOVE: float }
-    "></span>
+      mdc-css: { LABEL_FLOAT_ABOVE: float },
+      attr: {
+        for: attrs.id
+      }
+    "></label>
   <!-- /ko -->
-</label>
+</div>
 <!-- ko if: help -->
 <!-- ko ifnot: multiline -->
 <!-- ko ifnot: fullwidth -->
