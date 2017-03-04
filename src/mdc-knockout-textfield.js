@@ -36,13 +36,14 @@ export default class TextfieldViewModel extends ComponentViewModel {
       disable: false,
       validate: false,
       float: false,
+      invalid: false,
       multiline: false,
       fullwidth: false
     }
   }
 
   unwrapParams () {
-    return ['multiline', 'fullwidth', 'float']
+    return ['multiline', 'fullwidth', 'float', 'invalid']
   }
 
   static template () {
@@ -55,6 +56,9 @@ const template = `
   css: {
     'mdc-textfield--multiline': multiline,
     'mdc-textfield--fullwidth': fullwidth
+  },
+  mdc-css: {
+    INVALID: invalid
   }
 ">
   <!-- ko ifnot: multiline -->
