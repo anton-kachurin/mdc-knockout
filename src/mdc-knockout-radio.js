@@ -1,7 +1,7 @@
-import ComponentViewModel from './mdc-knockout-base';
+import {CheckableComponentViewModel} from './mdc-knockout-base';
 
-export default class RadioViewModel extends ComponentViewModel {
-  initialize (parent) {
+export default class RadioViewModel extends CheckableComponentViewModel {
+  initialize () {
     const isChecked = this.isChecked;
 
     if (ko.unwrap(isChecked)) {
@@ -28,10 +28,6 @@ export default class RadioViewModel extends ComponentViewModel {
           }
         });
       }
-    }
-
-    if (parent) {
-      parent.instance().input = this.instance();
     }
   }
 

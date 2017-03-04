@@ -1,7 +1,7 @@
-import ComponentViewModel from './mdc-knockout-base';
+import {CheckableComponentViewModel} from './mdc-knockout-base';
 
-export default class CheckboxViewModel extends ComponentViewModel {
-  initialize (parent) {
+export default class CheckboxViewModel extends CheckableComponentViewModel {
+  initialize () {
     const checked = this.bindings.checked;
     const instance = this.instance();
     instance.indeterminate = ko.unwrap(this.indeterminate);
@@ -17,10 +17,6 @@ export default class CheckboxViewModel extends ComponentViewModel {
           }
         });
       }
-    }
-
-    if (parent) {
-      parent.instance().input = instance;
     }
   }
 

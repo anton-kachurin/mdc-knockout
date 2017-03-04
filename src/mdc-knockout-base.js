@@ -57,3 +57,26 @@ class ComponentViewModel {
 }
 
 export default ComponentViewModel;
+
+class CheckableComponentViewModel extends ComponentViewModel {
+  constructor (...args) {
+    super(...args);
+    this.verifyId();
+  }
+
+  verifyId () {
+    if (!this.attrs['id']) {
+      this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
+    }
+
+    let init = this.initialize.bind(this);
+    this.initialize = parent => {
+      if (parent) {
+        parent.instance().input = this.instance();
+      }
+      init(parent);
+    }
+  }
+}
+
+export { CheckableComponentViewModel };
