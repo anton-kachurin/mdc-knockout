@@ -73,6 +73,7 @@ class CheckableComponentViewModel extends ComponentViewModel {
     this.initialize = parent => {
       if (parent) {
         parent.instance().input = this.instance();
+        parent.for(this.attrs['id']);
       }
       init(parent);
     }

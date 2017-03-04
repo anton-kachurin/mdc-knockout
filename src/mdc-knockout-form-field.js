@@ -1,6 +1,13 @@
 import ComponentViewModel from './mdc-knockout-base'
 
 export default class FormFieldViewModel extends ComponentViewModel {
+  extend () {
+    this.for = ko.observable('');
+    if (!this.attrs['for']) {
+      this.attrs['for'] = this.for;
+    }
+  }
+
   defaultParams () {
     return {
       alignEnd: false
