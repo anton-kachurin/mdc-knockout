@@ -65,6 +65,9 @@ class ComponentViewModel extends PlainViewModel {
 
   }
 
+  dispose () {
+    this.instance().destroy();
+  }
 }
 
 class CheckableComponentViewModel extends ComponentViewModel {
