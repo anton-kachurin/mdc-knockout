@@ -21,6 +21,10 @@ module.exports = env => {
           options: {
             presets: ['es2015']
           }
+        },
+        {
+          test: /templates.*\.html$/,
+          loader: "babel-loader?presets[]=es2015!es6-template-string-loader"
         }
       ]
     },
