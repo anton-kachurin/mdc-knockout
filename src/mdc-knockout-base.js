@@ -1,13 +1,10 @@
-class ComponentViewModel {
+class PlainViewModel {
   randomPrefixed (prefix) {
     return prefix + '-' + Math.floor(Math.random() * 1000000)
   }
 
-  constructor (root, params, attrs, MDCComponent, MDCFoundation) {
+  constructor (root, params, attrs) {
     this.root = root;
-    this.foundation = MDCFoundation;
-    this.attachTo = MDCComponent.attachTo;
-    this.instance = ko.observable({});
 
     ko.utils.objectForEach(this.defaultParams(), (name, defaultValue) => {
       if (params.hasOwnProperty(name)) {
@@ -19,8 +16,10 @@ class ComponentViewModel {
       }
     });
 
-    ko.utils.arrayForEach(this.unwrapParams(),
-                          name => this[name] = ko.toJS(this[name]));
+    ko.utils.arrayForEach(
+      this.unwrapParams(),
+      name => this[name] = ko.toJS(this[name])
+    );
 
     delete params.$raw;
 
@@ -39,10 +38,6 @@ class ComponentViewModel {
 
   }
 
-  initialize (parent) {
-
-  }
-
   defaultParams () {
     return {}
   }
@@ -54,9 +49,23 @@ class ComponentViewModel {
   static template () {
     return '';
   }
+
 }
 
-export default ComponentViewModel;
+class ComponentViewModel extends PlainViewModel {
+  constructor (root, params, attrs, MDCComponent, MDCFoundation) {
+    super(root, params, attrs);
+
+    this.foundation = MDCFoundation;
+    this.attachTo = MDCComponent.attachTo;
+    this.instance = ko.observable({});
+  }
+
+  initialize (parent) {
+
+  }
+
+}
 
 class CheckableComponentViewModel extends ComponentViewModel {
   constructor (...args) {
@@ -80,4 +89,5 @@ class CheckableComponentViewModel extends ComponentViewModel {
   }
 }
 
-export { CheckableComponentViewModel };
+export default ComponentViewModel;
+export { PlainViewModel, ComponentViewModel, CheckableComponentViewModel };
