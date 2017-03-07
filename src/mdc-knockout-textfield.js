@@ -1,4 +1,5 @@
 import ComponentViewModel from './mdc-knockout-base';
+import template from './templates/textfield.html';
 
 export default class TextfieldViewModel extends ComponentViewModel {
   extend () {
@@ -47,57 +48,6 @@ export default class TextfieldViewModel extends ComponentViewModel {
   }
 
   static get TEMPLATE () {
-    return template;
+    return template();
   }
 }
-
-const template = `
-<div class="mdc-textfield" data-bind="
-  css: {
-    'mdc-textfield--multiline': multiline,
-    'mdc-textfield--fullwidth': fullwidth
-  },
-  mdc-css: {
-    INVALID: invalid
-  }
-">
-  <!-- ko ifnot: multiline -->
-    <input class="mdc-textfield__input" data-bind="
-      mdc-bindings: bindings,
-      attr: attrs
-    ">
-  <!-- /ko -->
-  <!-- ko if: multiline -->
-    <textarea class="mdc-textfield__input" data-bind="
-      mdc-bindings: bindings,
-      attr: attrs
-    "></textarea>
-  <!-- /ko -->
-  <!-- ko ifnot: fullwidth -->
-    <label class="mdc-textfield__label" data-bind="
-      text: label,
-      mdc-css: { LABEL_FLOAT_ABOVE: float },
-      attr: {
-        for: attrs.id
-      }
-    "></label>
-  <!-- /ko -->
-</div>
-<!-- ko if: help -->
-<!-- ko ifnot: multiline -->
-<!-- ko ifnot: fullwidth -->
-  <p class="mdc-textfield-helptext"
-     data-bind="
-      text: help,
-      attr: { id: ariaControls },
-      mdc-css: {
-        HELPTEXT_PERSISTENT: persist,
-        HELPTEXT_VALIDATION_MSG: validate
-      },
-      mdc-attr: { ARIA_HIDDEN: persist }
-     ">
-  </p>
-<!-- /ko -->
-<!-- /ko -->
-<!-- /ko -->
-`;

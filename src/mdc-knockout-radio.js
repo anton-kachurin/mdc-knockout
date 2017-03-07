@@ -1,4 +1,5 @@
 import {CheckableComponentViewModel} from './mdc-knockout-base';
+import template from './templates/radio.html';
 
 export default class RadioViewModel extends CheckableComponentViewModel {
   initialize () {
@@ -46,18 +47,6 @@ export default class RadioViewModel extends CheckableComponentViewModel {
   }
 
   static get TEMPLATE () {
-    return template;
+    return template();
   }
 }
-
-const template = `
-<div class="mdc-radio" data-bind="mdc-css: { DISABLED: disable }">
-  <input class="mdc-radio__native-control"
-         type="radio"
-         data-bind="attr: attrs, mdc-bindings: bindings, disable: disable">
-  <div class="mdc-radio__background">
-    <div class="mdc-radio__outer-circle"></div>
-    <div class="mdc-radio__inner-circle"></div>
-  </div>
-</div>
-`;

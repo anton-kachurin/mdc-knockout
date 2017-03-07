@@ -1,4 +1,5 @@
-import ComponentViewModel from './mdc-knockout-base'
+import ComponentViewModel from './mdc-knockout-base';
+import template from './templates/form-field.html';
 
 export default class FormFieldViewModel extends ComponentViewModel {
   extend () {
@@ -15,15 +16,6 @@ export default class FormFieldViewModel extends ComponentViewModel {
   }
 
   static get TEMPLATE () {
-    return template;
+    return template();
   }
 }
-
-const template = `
-<div class="mdc-form-field" data-bind="
-  css: { 'mdc-form-field--align-end': alignEnd }
-">
-  <!-- ko mdc-child: true --><!-- /ko -->
-  <label data-bind="mdc-bindings: bindings, attr: attrs"></label>
-</div>
-`;
