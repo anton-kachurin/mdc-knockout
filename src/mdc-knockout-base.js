@@ -83,7 +83,7 @@ class CheckableComponentViewModel extends ComponentViewModel {
 
     let init = this.initialize.bind(this);
     this.initialize = parent => {
-      if (parent) {
+      if (parent && ko.isSubscribable(parent.for)) {
         parent.instance().input = this.instance();
         parent.for(this.attrs['id']);
       }
