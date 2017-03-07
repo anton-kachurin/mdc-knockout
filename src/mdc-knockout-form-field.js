@@ -14,7 +14,7 @@ export default class FormFieldViewModel extends ComponentViewModel {
     }
   }
 
-  static template () {
+  static get TEMPLATE () {
     return template;
   }
 }
@@ -26,5 +26,4 @@ const template = `
   <!-- ko mdc-child: true --><!-- /ko -->
   <label data-bind="mdc-bindings: bindings, attr: attrs"></label>
 </div>
-<!-- ko mdc-instance: true --><!-- /ko -->
 `;

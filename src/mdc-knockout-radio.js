@@ -45,7 +45,7 @@ export default class RadioViewModel extends CheckableComponentViewModel {
     }
   }
 
-  static template () {
+  static get TEMPLATE () {
     return template;
   }
 }
@@ -60,5 +60,4 @@ const template = `
     <div class="mdc-radio__inner-circle"></div>
   </div>
 </div>
-<!-- ko mdc-instance: true --><!-- /ko -->
 `;

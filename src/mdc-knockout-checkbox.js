@@ -26,7 +26,7 @@ export default class CheckboxViewModel extends CheckableComponentViewModel {
     }
   }
 
-  static template () {
+  static get TEMPLATE () {
     return template;
   }
 }
@@ -50,5 +50,4 @@ const template = `
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
 </div>
-<!-- ko mdc-instance: true --><!-- /ko -->
 `;

@@ -47,7 +47,7 @@ class PlainViewModel {
   }
 
   static template () {
-    return '';
+    return this.TEMPLATE;
   }
 
 }
@@ -63,6 +63,10 @@ class ComponentViewModel extends PlainViewModel {
 
   initialize (parent) {
 
+  }
+
+  static template () {
+    return this.TEMPLATE + '<!-- ko mdc-instance: true --><!-- /ko -->';
   }
 
   dispose () {

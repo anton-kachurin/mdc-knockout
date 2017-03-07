@@ -46,7 +46,7 @@ export default class TextfieldViewModel extends ComponentViewModel {
     return ['multiline', 'fullwidth', 'float', 'invalid']
   }
 
-  static template () {
+  static get TEMPLATE () {
     return template;
   }
 }
@@ -100,5 +100,4 @@ const template = `
 <!-- /ko -->
 <!-- /ko -->
 <!-- /ko -->
-<!-- ko mdc-instance: true --><!-- /ko -->
 `;
