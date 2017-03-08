@@ -1,16 +1,10 @@
-if (!ko.getBindingHandler('mdc-instance')) {
-  ko.bindingHandlers['mdc-instance'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var root = bindingContext.$component.root;
-      var instance = bindingContext.$component.attachTo(root);
-      bindingContext.$component.instance(instance);
-      bindingContext.$component.initialize(bindingContext['mdc-parent'])
-    }
-  };
-  ko.virtualElements.allowedBindings['mdc-instance'] = true;
-}
+const WAS_BIND = 'mdc-bindings-already-added';
 
-if (!ko.getBindingHandler('mdc-child')) {
+function registerBindings () {
+  if (ko[WAS_BIND]) {
+    return undefined;
+  }
+
   ko.bindingHandlers['mdc-child'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
@@ -29,17 +23,13 @@ if (!ko.getBindingHandler('mdc-child')) {
     }
   }
   ko.virtualElements.allowedBindings['mdc-child'] = true;
-}
 
-if (!ko.getBindingHandler('mdc-bindings')) {
   ko.bindingHandlers['mdc-bindings'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
     }
   };
-}
 
-if (!ko.getBindingHandler('mdc-css')) {
   ko.bindingHandlers['mdc-css'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       function toggleClass(className, value) {
@@ -61,9 +51,7 @@ if (!ko.getBindingHandler('mdc-css')) {
       });
     }
   };
-}
 
-if (!ko.getBindingHandler('mdc-attr')) {
   ko.bindingHandlers['mdc-attr'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       var attrList = ko.unwrap(valueAccessor());
@@ -76,12 +64,23 @@ if (!ko.getBindingHandler('mdc-attr')) {
       });
     }
   };
+
+  ko.bindingHandlers['mdc-instance'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var root = bindingContext.$component.root;
+      var instance = bindingContext.$component.attachTo(root);
+      bindingContext.$component.instance(instance);
+      bindingContext.$component.initialize(bindingContext['mdc-parent'])
+    }
+  };
+  ko.virtualElements.allowedBindings['mdc-instance'] = true;
+
+  ko[WAS_BIND] = true;
 }
 
-export default function (name, viewModelConstructor,
-                         MDCComponent, MDCFoundation) {
+function registerComponent (name, viewModelConstructor, MDCComponent, MDCFoundation) {
   var template = viewModelConstructor.template();
-  
+
   ko.components.register(name, {
       viewModel: {
         createViewModel: function(params, componentInfo) {
@@ -90,6 +89,7 @@ export default function (name, viewModelConstructor,
           var attributes = element.attributes;
           var attrs = {}
           var names = [];
+
           ko.utils.arrayForEach(attributes, function (attr) {
             var attrName = attr.name.toLowerCase();
             if (attrName != 'params'
@@ -102,10 +102,14 @@ export default function (name, viewModelConstructor,
           ko.utils.arrayForEach(names, function (name) {
             element.removeAttribute(name);
           });
-          return new viewModelConstructor(root, params, attrs,
-                                          MDCComponent, MDCFoundation);
+
+          return new viewModelConstructor(
+            root, params, attrs, MDCComponent, MDCFoundation
+          );
         }
       },
       template: template
   });
 };
+
+export default {registerBindings, registerComponent};
