@@ -1,0 +1,92 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+
+<script src="../dist/mdc-knockout.js"></script>
+
+<style media="screen">
+  body {
+    margin: 20px;
+  }
+  .container {
+    margin-bottom: 10px;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <mdc-button params="
+      text: 'button!',
+      href: href,
+
+      dense: dense,
+      raised: raised,
+      compact: compact,
+      primary: primary,
+      accent: accent,
+      disable: isDisabled
+    "></mdc-button>
+  </div>
+
+  <br>
+
+  <label>
+    disable:
+    <input type="checkbox" data-bind="checked: isDisabled">
+  </label>
+
+  <br>
+
+  <label>
+    raised:
+    <input type="checkbox" data-bind="checked: raised">
+  </label>
+
+  <br>
+
+  <label>
+    dense:
+    <input type="checkbox" data-bind="checked: dense">
+  </label>
+
+  <br>
+
+  <label>
+    compact:
+    <input type="checkbox" data-bind="checked: compact">
+  </label>
+
+  <br>
+
+  <label>
+    primary:
+    <input type="checkbox" data-bind="checked: primary">
+  </label>
+
+  <br>
+
+  <label>
+    accent:
+    <input type="checkbox" data-bind="checked: accent">
+  </label>
+
+  <br>
+
+  <label>
+    use &lt;a href="
+    <input type="text" data-bind="value: href">
+    "&gt;:
+  </label>
+
+  <script>
+    var obj = {
+      raised: ko.observable(true),
+      dense: ko.observable(false),
+      compact: ko.observable(false),
+      primary: ko.observable(false),
+      accent: ko.observable(false),
+      isDisabled: ko.observable(false),
+      href: ko.observable('')
+    };
+    ko.applyBindings(obj);
+  </script>
+</body>

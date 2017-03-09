@@ -1,0 +1,28 @@
+<!-- ko ifnot: attrs.href -->
+  <button class="mdc-button" data-bind="
+    mdc-bindings: bindings,
+    attr: attrs,
+    mdc-ripple: true,
+    css: {
+      'mdc-button--dense': dense,
+      'mdc-button--raised': raised,
+      'mdc-button--compact': compact,
+      'mdc-button--primary': primary,
+      'mdc-button--accent': accent,
+    }
+  "></button>
+<!-- /ko -->
+<!-- ko if: attrs.href -->
+  <a class="mdc-button" data-bind="
+    mdc-bindings: bindings,
+    attr: attrs,
+    mdc-ripple: true,
+    css: {
+      'mdc-button--dense': dense,
+      'mdc-button--raised': raised,
+      'mdc-button--compact': compact,
+      'mdc-button--primary': primary,
+      'mdc-button--accent': accent,
+    }
+  "></a>
+<!-- /ko -->
