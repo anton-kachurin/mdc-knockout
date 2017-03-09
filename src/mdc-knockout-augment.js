@@ -1,3 +1,5 @@
+import {MDCRipple} from '@material/ripple';
+
 const WAS_BIND = 'mdc-bindings-already-added';
 
 function registerBindings () {
@@ -27,6 +29,12 @@ function registerBindings () {
   ko.bindingHandlers['mdc-bindings'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
+    }
+  };
+
+  ko.bindingHandlers['mdc-ripple'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      MDCRipple.attachTo(element);
     }
   };
 
