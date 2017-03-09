@@ -7,6 +7,19 @@ function registerBindings () {
     return undefined;
   }
 
+  ko.bindingHandlers['mdc-bindings'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
+    }
+  };
+
+  ko.bindingHandlers['mdc-parent'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      ko.applyBindingsToNode(element.parentNode, valueAccessor(), bindingContext);
+    }
+  }
+  ko.virtualElements.allowedBindings['mdc-parent'] = true;
+
   ko.bindingHandlers['mdc-child'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
@@ -25,12 +38,6 @@ function registerBindings () {
     }
   }
   ko.virtualElements.allowedBindings['mdc-child'] = true;
-
-  ko.bindingHandlers['mdc-bindings'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
-    }
-  };
 
   ko.bindingHandlers['mdc-ripple'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
