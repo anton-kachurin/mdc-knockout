@@ -7,6 +7,7 @@ import RadioViewModel from './mdc-knockout-radio';
 
 import SwitchViewModel from './mdc-knockout-switch';
 import ButtonViewModel from './mdc-knockout-button';
+import ElevationViewModel from './mdc-knockout-elevation';
 
 import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
 import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
@@ -22,3 +23,4 @@ augment.registerComponent('mdc-radio', RadioViewModel, MDCRadio, MDCRadioFoundat
 
 augment.registerComponent('mdc-switch', SwitchViewModel);
 augment.registerComponent('mdc-button', ButtonViewModel);
+augment.registerComponent('mdc-elevation', ElevationViewModel);
