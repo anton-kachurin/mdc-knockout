@@ -1,9 +1,36 @@
-class PlainViewModel {
+class DisposableViewModel {
+  constructor () {
+    this.subscriptions_ = [];
+  }
+
+  /***
+  Keep track of the external dependencies.
+  Use for every ko.computed or subscription created inside a ViewModel:
+
+  Usage:
+    this.track = someObservable.subscribe( () => void );
+
+  or:
+    this.track = ko.computed( () => someObservable1() + someObservable2() )
+
+  Note: ko.pureComputed do not require any tracking
+  */
+  set track (subscription) {
+    this.subscriptions_.push(subscription);
+  }
+
+  dispose () {
+    this.subscriptions_.forEach(item => item.dispose());
+  }
+}
+
+class PlainViewModel extends DisposableViewModel {
   randomPrefixed (prefix) {
     return prefix + '-' + Math.floor(Math.random() * 1000000)
   }
 
   constructor (root, params, attrs) {
+    super();
     this.root = root;
 
     ko.utils.objectForEach(this.defaultParams(), (name, defaultValue) => {
@@ -70,6 +97,7 @@ class ComponentViewModel extends PlainViewModel {
   }
 
   dispose () {
+    super.dispose();
     this.instance().destroy();
   }
 }
