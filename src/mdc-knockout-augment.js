@@ -41,7 +41,11 @@ function registerBindings () {
 
   ko.bindingHandlers['mdc-ripple'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      MDCRipple.attachTo(element);
+      var ripple = MDCRipple.attachTo(element);
+
+      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+        ripple.destroy();
+      });
     }
   };
 
@@ -51,6 +55,7 @@ function registerBindings () {
         ko.utils.toggleDomNodeCssClass(element, className, value);
       }
 
+      var subscriptions_ = [];
       var classList = ko.unwrap(valueAccessor());
 
       ko.utils.objectForEach(classList, function (key, value) {
@@ -59,10 +64,18 @@ function registerBindings () {
           toggleClass(className, true);
         }
         if (ko.isSubscribable(value)) {
-          value.subscribe( function (value) {
-            toggleClass(className, value)
-          });
+          subscriptions_.push(
+            value.subscribe( function (value) {
+              toggleClass(className, value)
+            })
+          );
         }
+      });
+
+      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+        ko.utils.arrayForEach(subscriptions_, function (subscription) {
+          subscription.dispose()
+        });
       });
     }
   };
