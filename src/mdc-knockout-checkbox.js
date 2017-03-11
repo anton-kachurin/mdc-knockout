@@ -7,11 +7,11 @@ export default class CheckboxViewModel extends CheckableComponentViewModel {
     const instance = this.instance();
     instance.indeterminate = ko.unwrap(this.indeterminate);
     if (ko.isSubscribable(this.indeterminate)) {
-      this.indeterminate.subscribe(
+      this.track = this.indeterminate.subscribe(
         value => { if (value) instance.indeterminate = true }
       );
       if (ko.isSubscribable(checked)) {
-        checked.subscribe(value => {
+        this.track = checked.subscribe(value => {
           this.indeterminate(false);
           if (instance.indeterminate) {
              instance.indeterminate = false;

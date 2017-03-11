@@ -13,7 +13,7 @@ export default class ElevationViewModel extends PlainViewModel {
       }
 
       let prev = ko.unwrap(this.z);
-      this.z.subscribe((value) => {
+      this.track = this.z.subscribe((value) => {
         css[Z_PREFIX + prev](false);
         css[Z_PREFIX + value](true);
         prev = value;

@@ -10,7 +10,7 @@ export default class RadioViewModel extends CheckableComponentViewModel {
     }
 
     if (ko.isSubscribable(isChecked)) {
-      isChecked.subscribe(value => {
+      this.track = isChecked.subscribe(value => {
         if (value) {
           this.setChecked();
         }
@@ -20,7 +20,7 @@ export default class RadioViewModel extends CheckableComponentViewModel {
       });
 
       if (ko.isSubscribable(this.bindings.checked)) {
-        this.bindings.checked.subscribe(value => {
+        this.track = this.bindings.checked.subscribe(value => {
           if (value == this.attrs.value) {
             isChecked(true);
           }

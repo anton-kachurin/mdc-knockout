@@ -23,7 +23,7 @@ export default class TextfieldViewModel extends ComponentViewModel {
   initialize () {
     this.instance().disabled = ko.unwrap(this.disable);
     if (ko.isSubscribable(this.disable)) {
-      this.disable.subscribe( value => {
+      this.track = this.disable.subscribe( value => {
         this.instance().disabled = value;
       });
     }
