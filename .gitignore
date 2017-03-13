@@ -1,4 +1,3 @@
 .vagrant
 Vagrantfile
 node_modules
-dist
