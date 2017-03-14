@@ -1,7 +1,7 @@
 <!-- ko ifnot: attrs.href -->
   <button class="mdc-button" data-bind="
-    mdc-bindings: bindings,
     attr: attrs,
+    mdc-bindings,
     mdc-ripple,
     css: {
       'mdc-button--dense': dense,
@@ -14,8 +14,8 @@
 <!-- /ko -->
 <!-- ko if: attrs.href -->
   <a class="mdc-button" data-bind="
-    mdc-bindings: bindings,
     attr: attrs,
+    mdc-bindings,
     mdc-ripple,
     css: {
       'mdc-button--dense': dense,

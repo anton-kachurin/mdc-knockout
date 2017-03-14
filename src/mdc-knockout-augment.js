@@ -10,12 +10,18 @@ function registerBindings () {
   ko.bindingHandlers['mdc-bindings'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
+    },
+    preprocess: function (value, name, addBindingCallback) {
+      return value || 'bindings';
     }
   };
 
   ko.bindingHandlers['mdc-parent'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element.parentNode, valueAccessor(), bindingContext);
+    },
+    preprocess: function (value, name, addBindingCallback) {
+      return value || 'bindings';
     }
   }
   ko.virtualElements.allowedBindings['mdc-parent'] = true;
