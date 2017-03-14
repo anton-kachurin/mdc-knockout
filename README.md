@@ -19,7 +19,7 @@ plug these components in any existing Knockout project.
 
 ## Quick start
 
-Component library doesn't come bundled with `Knockout` itself, so make sure to
+MDC-Knockout doesn't come bundled with `Knockout` itself, so make sure to
 include `v3.0+` in your pages.
 
 Also,
@@ -39,7 +39,8 @@ at the closing `<script>` tag.
     <meta charset="utf-8">
     <title>Knockout Material Components Demo</title>
   </head>
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+  <link rel="stylesheet"
+        href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
   <script src="/static/js/mdc-knockout.min.js"></script>
   <body>
@@ -55,13 +56,14 @@ at the closing `<script>` tag.
 </html>
 ```
 
-Please refer to [documentation](./docs/components.md) for comprehensive list of
-components and their usage examples.
+Please refer to [documentation](./docs/components.md) for a comprehensive list
+of the components and usage examples.
 
 ## Building from source
 
-`dist` usually contains the latest version of the components. In case you need
-to make some adjustments to the code, take the following steps:
+`dist` folder usually contains the latest version of the components. In case
+you need to make some adjustments to the code, take the following steps:
+
 1. Setup this repo:
 
   ```shell
@@ -77,14 +79,19 @@ to make some adjustments to the code, take the following steps:
 
   Open http://localhost:8080/demo/ in a browser to see a list of demos.
 
-3. Build and update files in `dist` folder:
+  The dev server will automatically reload component's demo page whenever
+  files in the `src` folder have been edited, but it will not take any action
+  if only `demo/*.html` was changed.
+
+3. Build and update files in the `dist` folder:
 
   ```shell
   npm run dist
   ```
 
-Note: demo pages refer to `<script src="../dist/mdc-knockout.js"></script>`.
-If you're running the dev server, `mdc-knockout.js` is stored in the memory
+Note: Demo pages refer to `<script src="../dist/mdc-knockout.js"></script>`.
+If you're running the dev server, this script is stored in the memory
 and updated on the fly every time when any file from `src` folder is edited.
-You also can open `demo/*.html` from file system, in this case the actual
-`dist/mdc-knockout.js` will be used.
+You also can open `demo/*.html` from the file system, without running a
+dev server, in this case the actual `dist/mdc-knockout.js` will be used, and
+no on the fly updates will be available.
