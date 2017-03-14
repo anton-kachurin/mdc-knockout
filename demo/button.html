@@ -16,7 +16,6 @@
   <div class="container">
     <mdc-button params="
       text: 'button!',
-      href: href,
 
       dense: dense,
       raised: raised,
@@ -69,12 +68,23 @@
     <input type="checkbox" data-bind="checked: accent">
   </label>
 
+  <br><br><br>
+
+  <div class="container">
+    <mdc-button href="#" params="
+      text: 'Link styled as button',
+      href: href,
+
+      raised: true,
+      primary: true,
+    "></mdc-button>
+  </div>
+
   <br>
 
   <label>
-    use &lt;a href="
+    href:
     <input type="text" data-bind="value: href">
-    "&gt;:
   </label>
 
   <script>
