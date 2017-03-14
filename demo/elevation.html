@@ -20,8 +20,11 @@
   }
 </style>
 
-<mdc-elevation class="demo-surface" params="z: z">
-  Some text
+<mdc-elevation class="demo-surface"
+  params="z: z"
+  onmouseover="obj.z(8)"
+  onmouseout="obj.z(2)">
+  Hover or tap
 </mdc-elevation>
 
 <script>
