@@ -70,6 +70,7 @@ function registerBindings () {
   ko.bindingHandlers['mdc-ripple'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       var ripple = MDCRipple.attachTo(element);
+      element['MDCRipple'] = ripple;
 
       ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
         ripple.destroy();
@@ -87,7 +88,7 @@ function registerBindings () {
       var classList = ko.unwrap(valueAccessor());
 
       ko.utils.objectForEach(classList, function (key, value) {
-        var className = bindingContext.$component.foundation.cssClasses[key];
+        var className = bindingContext.$component.MDCFoundation.cssClasses[key];
         if (ko.unwrap(value)) {
           toggleClass(className, true);
         }
@@ -113,7 +114,7 @@ function registerBindings () {
       var attrList = ko.unwrap(valueAccessor());
 
       ko.utils.objectForEach(attrList, function (key, value) {
-        var attrName = bindingContext.$component.foundation.strings[key];
+        var attrName = bindingContext.$component.MDCFoundation.strings[key];
         if (ko.unwrap(value)) {
           element.setAttribute(attrName, true);
         }
@@ -124,7 +125,9 @@ function registerBindings () {
   ko.bindingHandlers['mdc-instance'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       var root = bindingContext.$component.root;
-      var instance = bindingContext.$component.attachTo(root);
+      var MDCComponent = bindingContext.$component.MDCComponent;
+      var instance = MDCComponent.attachTo(root.children[0]);
+      root[MDCComponent.name] = instance;
       bindingContext.$component.instance(instance);
       bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
@@ -141,7 +144,7 @@ function registerComponent (name, viewModelConstructor, MDCComponent, MDCFoundat
       viewModel: {
         createViewModel: function(params, componentInfo) {
           var element = componentInfo.element;
-          var root = element.children[0];
+          var root = element;
           var attributes = element.attributes;
           var attrs = {}
           var names = [];

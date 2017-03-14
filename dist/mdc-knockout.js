@@ -228,8 +228,8 @@ var ComponentViewModel = function (_PlainViewModel) {
 
     var _this2 = _possibleConstructorReturn(this, (ComponentViewModel.__proto__ || Object.getPrototypeOf(ComponentViewModel)).call(this, root, params, attrs));
 
-    _this2.foundation = MDCFoundation;
-    _this2.attachTo = MDCComponent.attachTo;
+    _this2.MDCFoundation = MDCFoundation;
+    _this2.MDCComponent = MDCComponent;
     _this2.instance = ko.observable({});
     return _this2;
   }
@@ -246,7 +246,7 @@ var ComponentViewModel = function (_PlainViewModel) {
   }], [{
     key: 'template',
     value: function template() {
-      return this.TEMPLATE + '<!-- ko mdc-instance: true --><!-- /ko -->';
+      return this.TEMPLATE + '<!-- ko mdc-instance --><!-- /ko -->';
     }
   }]);
 
@@ -1438,15 +1438,43 @@ function registerBindings() {
   ko.bindingHandlers['mdc-bindings'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
+    },
+    preprocess: function preprocess(value, name, addBindingCallback) {
+      return value || 'bindings';
     }
   };
 
-  ko.bindingHandlers['mdc-parent'] = {
-    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
-      ko.applyBindingsToNode(element.parentNode, valueAccessor(), bindingContext);
+  ko.bindingHandlers['mdc-attrs'] = {
+    preprocess: function preprocess(value, name, addBindingCallback) {
+      value = value || 'attrs';
+      addBindingCallback('attr', value);
+      return value;
     }
   };
-  ko.virtualElements.allowedBindings['mdc-parent'] = true;
+
+  ko.bindingHandlers['mdc-parent-bindings'] = {
+    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      ko.applyBindingsToNode(element.parentNode, valueAccessor(), bindingContext);
+    },
+    preprocess: function preprocess(value, name, addBindingCallback) {
+      return value || 'bindings';
+    }
+  };
+  ko.virtualElements.allowedBindings['mdc-parent-bindings'] = true;
+
+  ko.bindingHandlers['mdc-parent-attrs'] = {
+    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var attrList = ko.unwrap(valueAccessor());
+
+      ko.utils.objectForEach(attrList, function (key, value) {
+        element.parentNode.setAttribute(key, value);
+      });
+    },
+    preprocess: function preprocess(value, name, addBindingCallback) {
+      return value || 'attrs';
+    }
+  };
+  ko.virtualElements.allowedBindings['mdc-parent-attrs'] = true;
 
   ko.bindingHandlers['mdc-child'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -1470,6 +1498,7 @@ function registerBindings() {
   ko.bindingHandlers['mdc-ripple'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var ripple = _ripple.MDCRipple.attachTo(element);
+      element['MDCRipple'] = ripple;
 
       ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
         ripple.destroy();
@@ -1487,7 +1516,7 @@ function registerBindings() {
       var classList = ko.unwrap(valueAccessor());
 
       ko.utils.objectForEach(classList, function (key, value) {
-        var className = bindingContext.$component.foundation.cssClasses[key];
+        var className = bindingContext.$component.MDCFoundation.cssClasses[key];
         if (ko.unwrap(value)) {
           toggleClass(className, true);
         }
@@ -1511,7 +1540,7 @@ function registerBindings() {
       var attrList = ko.unwrap(valueAccessor());
 
       ko.utils.objectForEach(attrList, function (key, value) {
-        var attrName = bindingContext.$component.foundation.strings[key];
+        var attrName = bindingContext.$component.MDCFoundation.strings[key];
         if (ko.unwrap(value)) {
           element.setAttribute(attrName, true);
         }
@@ -1522,7 +1551,9 @@ function registerBindings() {
   ko.bindingHandlers['mdc-instance'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var root = bindingContext.$component.root;
-      var instance = bindingContext.$component.attachTo(root);
+      var MDCComponent = bindingContext.$component.MDCComponent;
+      var instance = MDCComponent.attachTo(root.children[0]);
+      root[MDCComponent.name] = instance;
       bindingContext.$component.instance(instance);
       bindingContext.$component.initialize(bindingContext['mdc-parent']);
     }
@@ -1539,7 +1570,7 @@ function registerComponent(name, viewModelConstructor, MDCComponent, MDCFoundati
     viewModel: {
       createViewModel: function createViewModel(params, componentInfo) {
         var element = componentInfo.element;
-        var root = element.children[0];
+        var root = element;
         var attributes = element.attributes;
         var attrs = {};
         var names = [];
@@ -3687,7 +3718,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-bindings: bindings,\n    attr: attrs,\n    mdc-ripple: true,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-bindings: bindings,\n    attr: attrs,\n    mdc-ripple: true,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></a>\n<!-- /ko -->\n";
+  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></a>\n<!-- /ko -->\n";
 };
 
 /***/ }),
@@ -3706,7 +3737,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-checkbox\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-bindings: bindings, attr: attrs\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
+  return "<div class=\"mdc-checkbox\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-bindings, mdc-attrs\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -3725,7 +3756,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-parent: bindings --><!-- /ko -->\n<!-- ko mdc-child: true --><!-- /ko -->\n";
+  return "<!-- ko mdc-parent-bindings --><!-- /ko -->\n<!-- ko mdc-parent-attrs --><!-- /ko -->\n<!-- ko mdc-child --><!-- /ko -->\n";
 };
 
 /***/ }),
@@ -3744,7 +3775,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: true --><!-- /ko -->\n  <label data-bind=\"mdc-bindings: bindings, attr: attrs\"></label>\n</div>\n";
+  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
 };
 
 /***/ }),
@@ -3763,7 +3794,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-radio\" data-bind=\"mdc-css: { DISABLED: disable }\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"attr: attrs, mdc-bindings: bindings, disable: disable\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
+  return "<div class=\"mdc-radio\" data-bind=\"mdc-css: { DISABLED: disable }\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings, disable: disable\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -3782,7 +3813,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings: bindings,\n    attr: attrs,\n    disable: disable\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+  return "<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs,\n    disable: disable\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
 };
 
 /***/ }),
@@ -3801,7 +3832,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"\n      mdc-bindings: bindings,\n      attr: attrs\n    \">\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\" data-bind=\"\n      mdc-bindings: bindings,\n      attr: attrs\n    \"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      mdc-css: { LABEL_FLOAT_ABOVE: float },\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persist,\n        HELPTEXT_VALIDATION_MSG: validate\n      },\n      mdc-attr: { ARIA_HIDDEN: persist }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+  return "<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\">\n    </textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      mdc-css: { LABEL_FLOAT_ABOVE: float },\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persist,\n        HELPTEXT_VALIDATION_MSG: validate\n      },\n      mdc-attr: { ARIA_HIDDEN: persist }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
 };
 
 /***/ }),

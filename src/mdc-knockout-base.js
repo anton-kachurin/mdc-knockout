@@ -83,8 +83,8 @@ class ComponentViewModel extends PlainViewModel {
   constructor (root, params, attrs, MDCComponent, MDCFoundation) {
     super(root, params, attrs);
 
-    this.foundation = MDCFoundation;
-    this.attachTo = MDCComponent.attachTo;
+    this.MDCFoundation = MDCFoundation;
+    this.MDCComponent = MDCComponent;
     this.instance = ko.observable({});
   }
 
