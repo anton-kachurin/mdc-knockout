@@ -16,6 +16,17 @@ function registerBindings () {
     }
   };
 
+  ko.bindingHandlers['mdc-attrs'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      console.log('mdc-attrs inited', valueAccessor())
+    },
+    preprocess: function (value, name, addBindingCallback) {
+      value = value || 'attrs';
+      addBindingCallback('attr', value);
+      return value;
+    }
+  };
+
   ko.bindingHandlers['mdc-parent'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       ko.applyBindingsToNode(element.parentNode, valueAccessor(), bindingContext);
