@@ -57,3 +57,34 @@ at the closing `<script>` tag.
 
 Please refer to [documentation](./docs/components.md) for comprehensive list of
 components and their usage examples.
+
+## Building from source
+
+`dist` usually contains the latest version of the components. In case you need
+to make some adjustments to the code, take the following steps:
+1. Setup this repo:
+
+  ```shell
+  git clone https://github.com/anton-kachurin/mdc-knockout.git && cd mdc-knockout
+  npm i
+  ```
+
+2. Run the dev server with demos:
+
+  ```shell
+  npm run dev
+  ```
+
+  Open http://localhost:8080/demo/ in a browser to see a list of demos.
+
+3. Build and update files in `dist` folder:
+
+  ```shell
+  npm run dist
+  ```
+
+Note: demo pages refer to `<script src="../dist/mdc-knockout.js"></script>`.
+If you're running the dev server, `mdc-knockout.js` is stored in the memory
+and updated on the fly every time when any file from `src` folder is edited.
+You also can open `demo/*.html` from file system, in this case the actual
+`dist/mdc-knockout.js` will be used.
