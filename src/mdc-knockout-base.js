@@ -93,7 +93,7 @@ class ComponentViewModel extends PlainViewModel {
   }
 
   static template () {
-    return this.TEMPLATE + '<!-- ko mdc-instance: true --><!-- /ko -->';
+    return this.TEMPLATE + '<!-- ko mdc-instance --><!-- /ko -->';
   }
 
   dispose () {
