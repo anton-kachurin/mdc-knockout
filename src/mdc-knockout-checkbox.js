@@ -23,7 +23,7 @@ export default class CheckboxViewModel extends CheckableComponentViewModel {
 
   defaultParams () {
     return {
-      indeterminate: true
+      indeterminate: false
     }
   }
 
