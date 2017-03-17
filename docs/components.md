@@ -1,6 +1,8 @@
 # MDC-Knockout Components
 
 - [mdc-button](#button)
+- [mdc-checkbox](#checkbox)
+
 
 ## Button
 The MDC Button component is a spec-aligned button component adhering to the
@@ -82,6 +84,7 @@ do:
 </script>
 ```
 
+
 ### Fully featured
 
 All parameters accept observable values, and it may be used to make the
@@ -128,3 +131,100 @@ This parameter will be ignored if the component didn't have a non-empty
   Will do nothing
 </mdc-button>
 ```
+
+
+## Checkbox
+The MDC Checkbox component is a spec-aligned checkbox component adhering to the
+[Material Design checkbox requirements](https://material.google.com/components/selection-controls.html#selection-controls-checkbox).
+
+The component fully resembles the native checkbox element. You can add standard
+attributes to it, such as `name` or `required`, to use in HTML forms.
+
+The mdc-checkbox can by used in conjunction with [mdc-form-field](#form-field)
+to easily position checkboxes and their labels.
+
+#### Parameters
+
+| Name          | Type     | Description                                  |
+| --------------|--------- | -------------------------------------------- |
+| checked       | ko, bool | Whether or not the input is checked.         |
+| indeterminate | ko, bool | Whether or not the input is indeterminate.   |
+| disable       | ko, bool | Wheter or not the input is disabled.         |
+
+
+### HTML-only
+
+Checked:
+```HTML
+<mdc-checkbox checked></mdc-checkbox>
+<mdc-checkbox params="checked: true"></mdc-checkbox>
+```
+
+Disabled:
+```HTML
+<mdc-checkbox disabled></mdc-checkbox>
+<mdc-checkbox params="disable: true"></mdc-checkbox>
+```
+
+Indeterminate:
+```HTML
+<mdc-checkbox params="indeterminate: true"></mdc-checkbox>
+```
+
+Although using `checked` and `disabled` attributes looks prettier, there are
+reasons why sometimes it's better to stick to the `params=""` syntax,
+[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page) for example.
+
+#### MDCComponent API
+
+There is a `MDCCheckbox` instance attached to the `<mdc-checkbox>` element.
+You can use it to change the native input's properties programmatically,
+for example:
+```HTML
+<mdc-checkbox class="some-unique-class-name"></mdc-checkbox>
+<button onclick="toggleDisabled()">Toggle disabled</button>
+<button onclick="toggleIndeterminate()">Toggle indeterminate</button>
+
+<script>
+  function toggleDisabled () {
+    var MDCCheckbox = document.getElementsByClassName('some-unique-class-name')[0].MDCCheckbox;
+    MDCCheckbox.disabled = !MDCCheckbox.disabled;
+  }
+  function toggleIndeterminate() {
+    var MDCCheckbox = document.getElementsByClassName('some-unique-class-name')[0].MDCCheckbox;
+    MDCCheckbox.indeterminate = !MDCCheckbox.indeterminate;
+  }
+</script>
+```
+
+Keep in mind that if you add `id` attribute to the `<mdc-checkbox>` element, it
+will be passed to the native element along with all other attributes during
+the initialization, so the only reliable way to access `<mdc-checkbox>` element
+itself is to add some unique class name to it.
+
+For full API please refer to the [original component's documentation](https://github.com/material-components/material-components-web/blob/master/packages/mdc-checkbox/README.md#mdccheckbox-api).
+
+
+### Fully featured
+
+The component uses the standard Knockout binding for `checked` and accepts an  
+observable for `indeterminate`, and `indeterminate` will automatically be set
+to `false` when `checked` is updated. Thus, if you use an observable for the
+`indeterminate` parameter, you have to use an observable for the `checked` too,
+not a plain value or an attribute:
+```HTML
+<mdc-checkbox params="
+  checked: checkboxIsChecked,
+  indeterminate: checkboxIsIndeterminate">
+</mdc-checkbox>
+<span data-bind="if: checkboxIsIndeterminate">
+  Please make choice by clicking the checkbox
+</span>
+<span data-bind="if: !checkboxIsIndeterminate() && checkboxIsChecked()">
+  You agreed to receive our emails
+</span>
+```
+
+Also, keep in mind that the state of the `indeterminate` does not affect the
+state of the `checked`, so such thing is possible:
+`( checkboxIsIndeterminate() && checkboxIsChecked() ) == true`.
