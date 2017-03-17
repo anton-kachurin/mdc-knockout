@@ -20,7 +20,7 @@ plug these components in any existing Knockout project.
 ## Quick start
 
 MDC-Knockout doesn't come bundled with `Knockout` itself, so make sure to
-include `v3.0+` in your pages.
+include `v3.2+` in your pages.
 
 Also,
 [MDC-Web CSS](https://github.com/material-components/material-components-web#css)
