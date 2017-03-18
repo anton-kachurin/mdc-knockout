@@ -1734,7 +1734,7 @@ var CheckboxViewModel = function (_CheckableComponentVi) {
     key: 'defaultParams',
     value: function defaultParams() {
       return {
-        indeterminate: true
+        indeterminate: false
       };
     }
   }], [{
@@ -3718,7 +3718,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"></a>\n<!-- /ko -->\n";
+  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></a>\n<!-- /ko -->\n";
 };
 
 /***/ }),
