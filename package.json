@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "material-components-web": "^0.6.0"
+    "material-components-web": "^0.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",

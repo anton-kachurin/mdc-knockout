@@ -1483,9 +1483,13 @@ function registerBindings() {
         return { 'mdc-parent': bindingContext.$component };
       });
 
+      var filterFunction = valueAccessor();
+
       var children = bindingContext.$componentTemplateNodes;
       ko.utils.arrayForEach(children.reverse(), function (child) {
-        ko.virtualElements.prepend(element, child);
+        if (filterFunction && filterFunction(child)) {
+          ko.virtualElements.prepend(element, child);
+        }
       });
 
       ko.applyBindingsToDescendants(newBindingContext, element);
@@ -1871,10 +1875,23 @@ var FormFieldViewModel = function (_ComponentViewModel) {
   _createClass(FormFieldViewModel, [{
     key: 'extend',
     value: function extend() {
+      var _this2 = this;
+
       this.for = ko.observable('');
       if (!this.attrs['for']) {
         this.attrs['for'] = this.for;
       }
+
+      this.nodeFilter = function (child) {
+        if (!('text' in _this2.bindings) && child.nodeType == 3) {
+          var text = child.textContent;
+          if (text.match(/[^\s]/)) {
+            _this2.bindings.text = text;
+          }
+          return false;
+        }
+        return true;
+      };
     }
   }, {
     key: 'defaultParams',
@@ -3775,7 +3792,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
+  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
 };
 
 /***/ }),
