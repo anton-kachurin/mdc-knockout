@@ -55,9 +55,13 @@ function registerBindings () {
         return { 'mdc-parent': bindingContext.$component };
       });
 
+      var filterFunction = valueAccessor();
+
       var children = bindingContext.$componentTemplateNodes;
       ko.utils.arrayForEach(children.reverse(), function (child) {
-        ko.virtualElements.prepend(element, child)
+        if (filterFunction && filterFunction(child)) {
+          ko.virtualElements.prepend(element, child);
+        }
       });
 
       ko.applyBindingsToDescendants(newBindingContext, element);
