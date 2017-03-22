@@ -7,6 +7,17 @@ export default class FormFieldViewModel extends ComponentViewModel {
     if (!this.attrs['for']) {
       this.attrs['for'] = this.for;
     }
+
+    this.nodeFilter = (child) => {
+      if (!('text' in this.bindings) && child.nodeType == 3) {
+        let text = child.textContent;
+        if (text.match(/[^\s]/)) {
+          this.bindings.text = text;
+        }
+        return false;
+      }
+      return true;
+    }
   }
 
   defaultParams () {
