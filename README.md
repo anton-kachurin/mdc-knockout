@@ -45,8 +45,9 @@ at the closing `<script>` tag.
   <script src="/static/js/mdc-knockout.min.js"></script>
   <body>
 
-    <mdc-form-field params="text: 'This is awesome'">
-      <mdc-checkbox id="checkbox"></mdc-checkbox>
+    <mdc-form-field>
+      <mdc-checkbox id="checkbox" checked></mdc-checkbox>
+      This is awesome
     </mdc-form-field>
 
     <script type="text/javascript">
