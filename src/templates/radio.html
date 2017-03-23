@@ -1,7 +1,9 @@
-<div class="mdc-radio" data-bind="mdc-css: { DISABLED: disable }">
+<div class="mdc-radio" data-bind="css: {
+  'mdc-radio--disabled': bindings.disable 
+}">
   <input class="mdc-radio__native-control"
          type="radio"
-         data-bind="mdc-attrs, mdc-bindings, disable: disable">
+         data-bind="mdc-attrs, mdc-bindings">
   <div class="mdc-radio__background">
     <div class="mdc-radio__outer-circle"></div>
     <div class="mdc-radio__inner-circle"></div>

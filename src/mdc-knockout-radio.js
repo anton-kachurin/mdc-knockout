@@ -3,6 +3,11 @@ import template from './templates/radio.html';
 
 export default class RadioViewModel extends CheckableComponentViewModel {
   initialize () {
+    // make sure that --disabled class is set if necessary
+    if (!('disable' in this.bindings)) {
+      this.instance().disabled = this.instance().disabled;
+    }
+
     const isChecked = this.isChecked;
 
     if (ko.unwrap(isChecked)) {
@@ -33,16 +38,19 @@ export default class RadioViewModel extends CheckableComponentViewModel {
   }
 
   setChecked () {
-    // check radio input knockout-way
     if (ko.isObservable(this.bindings.checked)) {
+      // check radio input knockout-way
       this.bindings.checked(this.attrs.value);
+    }
+    else {
+      // check radio via MDCComponent
+      this.instance().checked = true;
     }
   }
 
   defaultParams () {
     return {
-      isChecked: false,
-      disable: false
+      isChecked: false
     }
   }
 
