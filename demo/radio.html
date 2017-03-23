@@ -4,25 +4,28 @@
 <script src="../dist/mdc-knockout.js"></script>
 
 
-<mdc-form-field params="text: 'yes!'">
+<mdc-form-field>
   <mdc-radio name="radios" value="yes" params="
     checked: radio,
     isChecked: yesIsChecked
   "></mdc-radio>
+  yes
 </mdc-form-field>
 
-<mdc-form-field params="text: 'no!'">
+<mdc-form-field>
   <mdc-radio id="radio-2" name="radios" value="no" params="
     checked: radio,
     isChecked: noIsChecked
   "></mdc-radio>
+  no
 </mdc-form-field>
 
-<mdc-form-field for="radio-3" params="text: 'maybe!'">
+<mdc-form-field for="radio-3">
   <mdc-radio id="radio-3" name="radios" value="maybe" params="
     disable: maybeIsDisabled,
     checked: radio,
   "></mdc-radio>
+  maybe
 </mdc-form-field>
 
 <script>
