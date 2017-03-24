@@ -23,6 +23,7 @@ ALL COMPONENTS SHOULD BE LISTED IN THE ALPHABETICAL ORDER
 #### MDCComponent API
 
 > A couple of examples how it could be used
+
 > A link to the original component's docs (if applicable)
 
 
