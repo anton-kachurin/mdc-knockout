@@ -1953,6 +1953,11 @@ var RadioViewModel = function (_CheckableComponentVi) {
     value: function initialize() {
       var _this2 = this;
 
+      // make sure that --disabled class is set if necessary
+      if (!('disable' in this.bindings)) {
+        this.instance().disabled = this.instance().disabled;
+      }
+
       var isChecked = this.isChecked;
 
       if (ko.unwrap(isChecked)) {
@@ -1982,17 +1987,19 @@ var RadioViewModel = function (_CheckableComponentVi) {
   }, {
     key: 'setChecked',
     value: function setChecked() {
-      // check radio input knockout-way
       if (ko.isObservable(this.bindings.checked)) {
+        // check radio input knockout-way
         this.bindings.checked(this.attrs.value);
+      } else {
+        // check radio via MDCComponent
+        this.instance().checked = true;
       }
     }
   }, {
     key: 'defaultParams',
     value: function defaultParams() {
       return {
-        isChecked: false,
-        disable: false
+        isChecked: false
       };
     }
   }], [{
@@ -2046,16 +2053,34 @@ var SwitchViewModel = function (_PlainViewModel) {
   _createClass(SwitchViewModel, [{
     key: 'extend',
     value: function extend() {
+      var _this2 = this;
+
+      // make sure that --disabled class is set if necessary
+      if (!('disable' in this.bindings)) {
+        if ('disabled' in this.attrs) {
+          this.bindings.disable = true;
+        }
+      }
+
       if (!this.attrs['id']) {
         this.attrs['id'] = this.randomPrefixed('switch-auto-id');
       }
+
+      this.nodeFilter = function (child) {
+        if (!_this2.label && child.nodeType == 3) {
+          var text = child.textContent;
+          if (text.match(/[^\s]/)) {
+            _this2.label = text;
+          }
+        }
+        return false;
+      };
     }
   }, {
     key: 'defaultParams',
     value: function defaultParams() {
       return {
-        label: '',
-        disable: false
+        label: ''
       };
     }
   }], [{
@@ -3811,7 +3836,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-radio\" data-bind=\"mdc-css: { DISABLED: disable }\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings, disable: disable\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
+  return "<div class=\"mdc-radio\" data-bind=\"css: {\n  'mdc-radio--disabled': bindings.disable \n}\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -3830,7 +3855,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs,\n    disable: disable\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': bindings.disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
 };
 
 /***/ }),
