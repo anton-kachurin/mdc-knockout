@@ -5,6 +5,7 @@
 - [mdc-elevation](#elevation)
 - [mdc-form-field](#form-field)
 - [mdc-radio](#radio)
+- [mdc-switch](#switch)
 
 
 ## Button
@@ -458,4 +459,74 @@ both are present.
            params="checked: radio2, isChecked: checkedNo"></mdc-radio> no
 <div data-bind="if: checkedYes">Thank you</div>
 <div data-bind="if: checkedNo">We promise not to spam</div>
+```
+
+
+## Switch
+The MDC Switch component is a spec-aligned switch component adhering to the
+[Material Design Switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
+
+The component resembles the native checkbox element. You can add standard
+attributes to it, such as `name` or `required`, to use in HTML forms.
+
+#### Parameters
+
+| Name    | Type     | Description                           |
+| --------|--------- | --------------------------------------|
+| checked | ko, bool | Whether or not the switch is on.      |
+| disable | ko, bool | Wheter or not the switch is disabled. |
+| label   | ko, str  | The text of the corresponding label.  |
+
+
+### HTML-only
+
+Checked:
+```HTML
+<mdc-switch checked>on/off</mdc-switch>
+<mdc-switch params="checked: true">on/off</mdc-switch>
+```
+
+Disabled:
+```HTML
+<mdc-switch disabled>on/off</mdc-switch>
+<mdc-switch params="disable: true">on/off</mdc-switch>
+```
+
+Although using `checked` and `disabled` attributes looks prettier, there are
+reasons why sometimes it's better to stick to the `params="..."` syntax,
+[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page)
+for example.
+
+#### MDCComponent API
+
+The original MDC-Web component is CSS-only, so there's no MDCComponent instance
+attached to the `<mdc-switch>` element. If you need to access the native element
+directly (e.g to set/unset disabled state), do:
+
+```HTML
+<mdc-switch id="switch" disabled>on/off</mdc-switch>
+<button onclick="enableSwitch()">Enable switch</button>
+
+<script>
+  function enableSwitch () {
+    var switchElem = document.getElementById('switch');
+    switchElem.disabled = false;
+    switchElem.parentNode.classList.remove('mdc-switch--disabled');
+  }
+</script>
+```
+
+Please refer to the
+[original component's documentation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch)
+for full details.
+
+
+### Fully featured
+
+Use `label` parameter if you want to set label's text dynamically:
+```HTML
+<mdc-switch params="
+  checked: switchIsOn,
+  label: 'Switch is now ' + (switchIsOn() ? 'on' : 'off')"
+></mdc-switch>
 ```
