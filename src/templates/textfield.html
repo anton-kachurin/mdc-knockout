@@ -1,3 +1,4 @@
+<!-- ko mdc-child: nodeFilter --><!-- /ko -->
 <div class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
@@ -17,7 +18,6 @@
   <!-- ko ifnot: fullwidth -->
     <label class="mdc-textfield__label" data-bind="
       text: label,
-      mdc-css: { LABEL_FLOAT_ABOVE: float },
       attr: {
         for: attrs.id
       }
@@ -32,10 +32,10 @@
       text: help,
       attr: { id: ariaControls },
       mdc-css: {
-        HELPTEXT_PERSISTENT: persist,
-        HELPTEXT_VALIDATION_MSG: validate
+        HELPTEXT_PERSISTENT: persistent,
+        HELPTEXT_VALIDATION_MSG: validation
       },
-      mdc-attr: { ARIA_HIDDEN: persist }
+      mdc-attr: { ARIA_HIDDEN: persistent }
      ">
   </p>
 <!-- /ko -->

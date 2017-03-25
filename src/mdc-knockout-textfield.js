@@ -10,17 +10,60 @@ export default class TextfieldViewModel extends ComponentViewModel {
     this.ariaControls = this.randomPrefixed('textfield-helptext');
     this.attrs['aria-controls'] = ko.unwrap(this.help) && this.ariaControls;
 
-    const params = this.bindings;
-    if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
-      this.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+    this.updateLabel(this.label);
+
+    this.nodeFilter = (child) => {
+      function textNotEmpty (text) {
+        return text.match(/[^\s]/);
+      }
+
+      if (!this.label && child.nodeType == 3) {
+        let text = child.textContent;
+        if (textNotEmpty(text)) {
+          this.updateLabel(text);
+        }
+      }
+      if (!this.help && child.nodeType == 1 && child.tagName == 'P') {
+        let text = child.textContent;
+        if (textNotEmpty(text)) {
+          this.help = text;
+          for (let attr of child.attributes) {
+            if (attr.name == 'persistent') {
+              this.persistent = true;
+            }
+
+            if (attr.name == 'validation') {
+              this.validation = true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  updateLabel (label) {
+    label = ko.unwrap(label);
+    if (this.fullwidth) {
+      if (!this.attrs['aria-label']) {
+        this.attrs['aria-label'] = ko.observable();
+      }
+      this.attrs['aria-label'](label);
     }
 
-    if (this.fullwidth) {
-      this.attrs['aria-label'] = this.label;
+    if (ko.isSubscribable(this.label)) {
+      this.label(label);
+    }
+    else {
+      this.label = label;
     }
   }
 
   initialize () {
+    if ('disabled' in this.attrs) {
+      this.disable = true;
+    }
+
     this.instance().disabled = ko.unwrap(this.disable);
     if (ko.isSubscribable(this.disable)) {
       this.track = this.disable.subscribe( value => {
@@ -33,18 +76,17 @@ export default class TextfieldViewModel extends ComponentViewModel {
     return {
       label: '',
       help: '',
-      persist: false,
-      disable: false,
-      validate: false,
-      float: false,
+      persistent: false,
+      validation: false,
       invalid: false,
       multiline: false,
       fullwidth: false
+      disable: false,
     }
   }
 
   unwrapParams () {
-    return ['multiline', 'fullwidth', 'float', 'invalid']
+    return ['multiline', 'fullwidth', 'invalid']
   }
 
   static get TEMPLATE () {
