@@ -80,8 +80,8 @@ export default class TextfieldViewModel extends ComponentViewModel {
       validation: false,
       invalid: false,
       multiline: false,
-      fullwidth: false
-      disable: false,
+      fullwidth: false,
+      disable: false
     }
   }
 
