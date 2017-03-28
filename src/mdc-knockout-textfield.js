@@ -44,11 +44,17 @@ export default class TextfieldViewModel extends ComponentViewModel {
 
   updateLabel (label) {
     label = ko.unwrap(label);
+    label = String(label).trim();
     if (this.fullwidth) {
       if (!this.attrs['aria-label']) {
         this.attrs['aria-label'] = ko.observable();
       }
       this.attrs['aria-label'](label);
+
+      if (!this.attrs['placeholder']) {
+        this.attrs['placeholder'] = ko.observable();
+      }
+      this.attrs['placeholder'](label);
     }
 
     if (ko.isSubscribable(this.label)) {
