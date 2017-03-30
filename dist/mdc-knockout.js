@@ -2136,6 +2136,8 @@ var TextfieldViewModel = function (_ComponentViewModel) {
   _createClass(TextfieldViewModel, [{
     key: 'extend',
     value: function extend() {
+      var _this2 = this;
+
       if (!this.attrs['id']) {
         this.attrs['id'] = this.randomPrefixed('textfield-auto-id');
       }
@@ -2143,24 +2145,94 @@ var TextfieldViewModel = function (_ComponentViewModel) {
       this.ariaControls = this.randomPrefixed('textfield-helptext');
       this.attrs['aria-controls'] = ko.unwrap(this.help) && this.ariaControls;
 
-      var params = this.bindings;
-      if (params.hasOwnProperty('value') || params.hasOwnProperty('textInput')) {
-        this.float = ko.unwrap(params.value) || ko.unwrap(params.textInput);
+      this.updateLabel(this.label);
+
+      this.nodeFilter = function (child) {
+        function textNotEmpty(text) {
+          return text.match(/[^\s]/);
+        }
+
+        if (!_this2.label && child.nodeType == 3) {
+          var text = child.textContent;
+          if (textNotEmpty(text)) {
+            _this2.updateLabel(text);
+          }
+        }
+        if (!_this2.help && child.nodeType == 1 && child.tagName == 'P') {
+          var _text = child.textContent;
+          if (textNotEmpty(_text)) {
+            _this2.help = _text;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = child.attributes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var attr = _step.value;
+
+                if (attr.name == 'persistent') {
+                  _this2.persistent = true;
+                }
+
+                if (attr.name == 'validation') {
+                  _this2.validation = true;
+                }
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+          }
+        }
+        return false;
+      };
+    }
+  }, {
+    key: 'updateLabel',
+    value: function updateLabel(label) {
+      label = ko.unwrap(label);
+      label = String(label).trim();
+      if (this.fullwidth) {
+        if (!this.attrs['aria-label']) {
+          this.attrs['aria-label'] = ko.observable();
+        }
+        this.attrs['aria-label'](label);
+
+        if (!this.attrs['placeholder']) {
+          this.attrs['placeholder'] = ko.observable();
+        }
+        this.attrs['placeholder'](label);
       }
 
-      if (this.fullwidth) {
-        this.attrs['aria-label'] = this.label;
+      if (ko.isWritableObservable(this.label)) {
+        this.label(label);
+      } else {
+        this.label = label;
       }
     }
   }, {
     key: 'initialize',
     value: function initialize() {
-      var _this2 = this;
+      var _this3 = this;
+
+      if ('disabled' in this.attrs) {
+        this.disable = true;
+      }
 
       this.instance().disabled = ko.unwrap(this.disable);
       if (ko.isSubscribable(this.disable)) {
         this.track = this.disable.subscribe(function (value) {
-          _this2.instance().disabled = value;
+          _this3.instance().disabled = value;
         });
       }
     }
@@ -2170,19 +2242,18 @@ var TextfieldViewModel = function (_ComponentViewModel) {
       return {
         label: '',
         help: '',
-        persist: false,
-        disable: false,
-        validate: false,
-        float: false,
+        persistent: false,
+        validation: false,
         invalid: false,
         multiline: false,
-        fullwidth: false
+        fullwidth: false,
+        disable: false
       };
     }
   }, {
     key: 'unwrapParams',
     value: function unwrapParams() {
-      return ['multiline', 'fullwidth', 'float', 'invalid'];
+      return ['multiline', 'fullwidth', 'invalid'];
     }
   }], [{
     key: 'TEMPLATE',
@@ -3874,7 +3945,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\">\n    </textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      mdc-css: { LABEL_FLOAT_ABOVE: float },\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persist,\n        HELPTEXT_VALIDATION_MSG: validate\n      },\n      mdc-attr: { ARIA_HIDDEN: persist }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persistent,\n        HELPTEXT_VALIDATION_MSG: validation\n      },\n      mdc-attr: { ARIA_HIDDEN: persistent }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
 };
 
 /***/ }),
