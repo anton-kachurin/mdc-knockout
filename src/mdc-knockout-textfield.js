@@ -57,7 +57,7 @@ export default class TextfieldViewModel extends ComponentViewModel {
       this.attrs['placeholder'](label);
     }
 
-    if (ko.isSubscribable(this.label)) {
+    if (ko.isWritableObservable(this.label)) {
       this.label(label);
     }
     else {
