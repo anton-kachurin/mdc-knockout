@@ -6,6 +6,7 @@
 - [mdc-form-field](#form-field)
 - [mdc-radio](#radio)
 - [mdc-switch](#switch)
+- [mdc-textfield](#textfield)
 
 
 ## Button
@@ -529,4 +530,177 @@ Use `label` parameter if you want to set label's text dynamically:
   checked: switchIsOn,
   label: 'Switch is now ' + (switchIsOn() ? 'on' : 'off')"
 ></mdc-switch>
+```
+
+
+## Textfield
+The MDC Textfield component provides a textual input field adhering to the
+[Material Design Specification](https://material.google.com/components/text-fields.html).
+
+By default, the textfield is rendered via `<input>` element, but a multiline
+version is available too, which is rendered via the `<textarea>`.
+You can add standard attributes to it, such as `type`, `name`, `required`,
+`pattern`, `minlength`, `autofocus`, to use in HTML forms.
+
+HTML5 validation is supported by using the `:invalid` and `:required` CSS
+attributes, and input's validity is checked via checkValidity() on blur.
+
+#### Parameters
+
+| Name       | Type     | Description                                                   |
+| -----------|--------- | --------------------------------------------------------------|
+| label      | ko, str  | The text of the floating label.                               |
+| help       | ko, str  | The help text on the bottom.                                  |
+| persistent | ko, bool | Whether to keep the help text on the screen all time.         |
+| validation | ko, bool | Whether to use help text area to show validation errors.      |
+| invalid    | bool     | Applies on initialization only, will render the textfield as if it didn't pass validation. |
+| multiline  | bool     | If it needs to be multiline, checked once on initialization.  |
+| fullwidth  | bool     | If it needs to be full-width, checked once on initialization. |
+| disable    | ko, bool | Whether or not the textfield must be disabled.                |
+
+
+### HTML-only
+
+Basic single-line text field with a label:
+```HTML
+<mdc-textfield>
+  Label text (placeholder)
+</mdc-textfield>
+```
+
+Disabled:
+```HTML
+<mdc-textfield disabled>
+  Label text (placeholder)
+</mdc-textfield>
+<mdc-textfield params="disable: true">
+  Label text (placeholder)
+</mdc-textfield>
+```
+
+Although using `disabled` attributes looks prettier, there are
+reasons why sometimes it's better to stick to the `params="..."` syntax,
+[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page)
+for example.
+
+With help text:
+```HTML
+<mdc-textfield>
+  Label text (placeholder)
+  <p>Hint text, shows up on input focus</p>
+</mdc-textfield>
+```
+
+Persistent help:
+```HTML
+<mdc-textfield>
+  Label text (placeholder)
+  <p persistent>Hint text, will always be here</p>
+</mdc-textfield>
+```
+
+Validated password input:
+```HTML
+<mdc-textfield type="password" required pattern=".{8,}">
+  Focus-unfocus me
+  <p validation>Must be at least 8 characters long</p>
+</mdc-textfield>
+```
+
+Validation is triggered on input's blur, so that the user won't be distracted
+by false positive validation fails when the page loads. Nevertheless, there are
+cases when the component needs to be rendered in invalid state, for example
+when the textfield on initialization is known to be invalid (has been already
+validated on the back-end). Use `invalid` property for that:
+```HTML
+<mdc-textfield type="password" required pattern=".{8,}" params="invalid: true">
+  Password
+  <p persistent validation>Must contain letters, digits, and special characters</p>
+</mdc-textfield>
+```
+
+Multiline textfield:
+```HTML
+<mdc-textfield params="multiline: true">
+  Comment
+</mdc-textfield>
+```
+
+Full-width:
+```HTML
+<mdc-textfield params="fullwidth: true">
+  Subject
+</mdc-textfield>
+<mdc-textfield rows="5" params="fullwidth: true, multiline: true">
+  Message
+</mdc-textfield>
+```
+
+#### MDCComponent API
+
+There is a `MDCTextfield` instance attached to the `<mdc-textfield>` element:
+```HTML
+<mdc-textfield class="disabable-textfield" disabled>
+  Label text (placeholder)
+</mdc-textfield>
+<button onclick="enableTextfield()">Enable</button>
+
+<script>
+  function enableTextfield () {
+    var textfield = document.getElementsByClassName('disabable-textfield')[0];
+    textfield.MDCTextfield.disabled = false;
+  }
+</script>
+```
+
+Keep in mind that if you add `id` attribute to the `<mdc-textfield>` element,
+it will be passed to the native element along with all other attributes
+during the initialization, so the only reliable way to access `<mdc-textfield>`
+element itself is to add some unique class name to it.
+
+For full API please refer to the
+[original component's documentation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-textfield#mdctextfield-api).
+
+
+### Fully featured
+
+Only `fullwidth`, `multiline`, and `invalid` parameters are evaluated as plain
+boolean values on initialization, all other ones could be observables:
+```HTML
+<mdc-textfield pattern="[a-zA-Z0-9-]{0,10}" params="
+  value: username,
+  help: helptext,
+  persistent: hasError,
+  validation: hasError,
+  invalid: invalid
+">Username</mdc-textfield>
+
+<script>
+  function NewPasswordViewModel (username) {
+    var self = this;
+
+    self.username = ko.observable(username);
+    self.isTooLong = ko.pureComputed(function () {
+      return self.username().length > 10;
+    });
+    self.hasWrongCharacters = ko.pureComputed(function () {
+      return self.username().match(/[^a-zA-Z0-9-]/);
+    });
+    self.hasError = ko.pureComputed(function () {
+      return self.isTooLong() || self.hasWrongCharacters();
+    });
+    self.helptext = ko.pureComputed(function () {
+      if (self.isTooLong()) {
+        return 'The value is too long';
+      }
+      if (self.hasWrongCharacters()) {
+        return 'Can contain only letters, digits and dashes';
+      }
+      return '';
+    });
+    self.invalid = self.hasError();
+  }
+
+  ko.applyBindings(new NewPasswordViewModel('qwerty_2135'));
+</script>
 ```
