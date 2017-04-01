@@ -2,9 +2,9 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>Knockout Material Components Demo</title>
+    <title>Textfield Demo - Knockout Material Components</title>
     <link rel="stylesheet"
-    href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
     <script src="../dist/mdc-knockout.js"></script>
   </head>
@@ -12,7 +12,6 @@
 
     <mdc-textfield rows=8 cols=40 id="multiline-texfield" params="
       value: inputValue,
-
       multiline: true,
       label: 'multiline label',
     "></mdc-textfield>
@@ -21,12 +20,11 @@
 
     <mdc-textfield type="password" required pattern=".{8,}" params="
       value: inputValue,
-
-      label: 'placeholer text',
+      label: 'placeholder text',
       help: 'That will be displayed on your public profile',
       disable: inputDisabled,
-      persist: inputHelpPersistent,
-      validate: inputHelpValidate,
+      persistent: inputHelpPersistent,
+      validation: inputHelpValidate,
       float: true,
       invalid: true
     "></mdc-textfield>
@@ -57,15 +55,15 @@
 
     <br>
 
-    <mdc-textfield placeholder="Full-Width Textfield" params="
+    <mdc-textfield params="
       fullwidth: true
-    "></mdc-textfield>
+    ">Full-Width Textfield</mdc-textfield>
 
-    <mdc-textfield placeholder="Full-Width Multiline Textfield" params="
+    <mdc-textfield params="
       fullwidth: true,
       multiline: true,
-      label: 'full-width label'
-    "></mdc-textfield>
+      label: 'full-width label becomes a placeholder'
+    ">This text will be ignored</mdc-textfield>
 
     <script>
       ko.applyBindings({
@@ -77,9 +75,3 @@
     </script>
   </body>
 </html>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
-
-<script src="../dist/mdc-knockout.js"></script>
