@@ -1,65 +1,85 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Knockout Material Components Demo</title>
+    <link rel="stylesheet"
+    href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+  </head>
+  <body>
+
+    <mdc-textfield rows=8 cols=40 id="multiline-texfield" params="
+      value: inputValue,
+
+      multiline: true,
+      label: 'multiline label',
+    "></mdc-textfield>
+
+    <br>
+
+    <mdc-textfield type="password" required pattern=".{8,}" params="
+      value: inputValue,
+
+      label: 'placeholer text',
+      help: 'That will be displayed on your public profile',
+      disable: inputDisabled,
+      persist: inputHelpPersistent,
+      validate: inputHelpValidate,
+      float: true,
+      invalid: true
+    "></mdc-textfield>
+
+    <div>
+      Your input is:
+      <span data-bind="text: inputValue"></span>
+    </div>
+
+    <label>
+      disable input:
+      <input type="checkbox" data-bind="checked: inputDisabled">
+    </label>
+
+    <br>
+
+    <label>
+      help is persistent:
+      <input type="checkbox" data-bind="checked: inputHelpPersistent">
+    </label>
+
+    <br>
+
+    <label>
+      use validation:
+      <input type="checkbox" data-bind="checked: inputHelpValidate">
+    </label>
+
+    <br>
+
+    <mdc-textfield placeholder="Full-Width Textfield" params="
+      fullwidth: true
+    "></mdc-textfield>
+
+    <mdc-textfield placeholder="Full-Width Multiline Textfield" params="
+      fullwidth: true,
+      multiline: true,
+      label: 'full-width label'
+    "></mdc-textfield>
+
+    <script>
+      ko.applyBindings({
+        inputValue: ko.observable('asdf'),
+        inputDisabled: ko.observable(false),
+        inputHelpPersistent: ko.observable(false),
+        inputHelpValidate: ko.observable(true)
+      });
+    </script>
+  </body>
+</html>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
 
 <script src="../dist/mdc-knockout.js"></script>
-
-
-<mdc-textfield rows=8 cols=40 id="multiline-texfield" params="
-  value: inputValue,
-
-  multiline: true,
-  label: 'multiline label',
-"></mdc-textfield>
-
-<br>
-
-<mdc-textfield type="password" required pattern=".{8,}" params="
-  value: inputValue,
-
-  label: 'placeholer text',
-  help: 'That will be displayed on your public profile',
-  disable: inputDisabled,
-  persist: inputHelpPersistent,
-  validate: inputHelpValidate,
-  float: true,
-  invalid: true
-"></mdc-textfield>
-<div>
-Your input is:
-<span data-bind="text: inputValue"></span>
-</div>
-<label>
-  disable input:
-  <input type="checkbox" data-bind="checked: inputDisabled">
-</label>
-<br>
-<label>
-  help is persistent:
-  <input type="checkbox" data-bind="checked: inputHelpPersistent">
-</label>
-<br>
-<label>
-  use validation:
-  <input type="checkbox" data-bind="checked: inputHelpValidate">
-</label>
-
-<br>
-
-<mdc-textfield placeholder="Full-Width Textfield" params="
-  fullwidth: true
-"></mdc-textfield>
-
-<mdc-textfield placeholder="Full-Width Multiline Textfield" params="
-  fullwidth: true,
-  multiline: true,
-  label: 'full-width label'
-"></mdc-textfield>
-
-<script>
-  ko.applyBindings({
-    inputValue: ko.observable('asdf'),
-    inputDisabled: ko.observable(false),
-    inputHelpPersistent: ko.observable(false),
-    inputHelpValidate: ko.observable(true)
-  });
-</script>
