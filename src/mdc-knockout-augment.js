@@ -59,7 +59,7 @@ function registerBindings () {
 
       var children = bindingContext.$componentTemplateNodes;
       ko.utils.arrayForEach(children.reverse(), function (child) {
-        if (filterFunction && filterFunction(child)) {
+        if (!filterFunction || (filterFunction && filterFunction(child))) {
           ko.virtualElements.prepend(element, child);
         }
       });
