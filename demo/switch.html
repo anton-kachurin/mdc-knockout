@@ -1,38 +1,43 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Knockout Material Components Demo</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+    <style media="screen">
+      body {
+        margin: 20px;
+      }
+      .container {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
 
-<script src="../dist/mdc-knockout.js"></script>
+    <div class="container">
+      <mdc-switch params="
+        label: 'This switch is ' + (isOn() ? 'on' : 'off'),
+        checked: isOn,
+        disable: isDisabled
+      "></mdc-switch>
+    </div>
 
-<style media="screen">
-  body {
-    margin: 20px;
-  }
-  .container {
-    margin-bottom: 10px;
-  }
-</style>
+    <br>
 
-<body>
-  <div class="container">
-    <mdc-switch params="
-      label: 'off/on',
-      checked: isOn,
-      disable: isDisabled
-    "></mdc-switch>
-  </div>
+    <label>
+      disable it:
+      <input type="checkbox" data-bind="checked: isDisabled">
+    </label>
 
-  <br>
-
-  <label>
-    disable it:
-    <input type="checkbox" data-bind="checked: isDisabled">
-  </label>
-
-  <script>
-    var obj = {
-      isOn: ko.observable(true),
-      isDisabled: ko.observable(false)
-    };
-    ko.applyBindings(obj);
-  </script>
-</body>
+    <script>
+      ko.applyBindings({
+        isOn: ko.observable(true),
+        isDisabled: ko.observable(false)
+      });
+    </script>
+  </body>
+</html>
