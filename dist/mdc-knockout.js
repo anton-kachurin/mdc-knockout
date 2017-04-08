@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -77,7 +77,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _foundation = __webpack_require__(5);
+var _foundation = __webpack_require__(4);
 
 Object.defineProperty(exports, 'MDCFoundation', {
   enumerable: true,
@@ -464,7 +464,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.supportsCssVariables = supportsCssVariables;
 exports.getMatchesProperty = getMatchesProperty;
-exports.animateWithClass = animateWithClass;
 exports.getNormalizedEventCoords = getNormalizedEventCoords;
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
@@ -501,21 +500,6 @@ function getMatchesProperty(HTMLElementPrototype) {
   }).pop();
 }
 
-function animateWithClass(rippleAdapter, cls, endEvent) {
-  var cancelled = false;
-  var cancel = function cancel() {
-    if (cancelled) {
-      return;
-    }
-    cancelled = true;
-    rippleAdapter.removeClass(cls);
-    rippleAdapter.deregisterInteractionHandler(endEvent, cancel);
-  };
-  rippleAdapter.registerInteractionHandler(endEvent, cancel);
-  rippleAdapter.addClass(cls);
-  return cancel;
-}
-
 function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   var x = pageOffset.x,
       y = pageOffset.y;
@@ -526,7 +510,7 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   var normalizedX = void 0;
   var normalizedY = void 0;
   // Determine touch point relative to the ripple container.
-  if (ev.type === 'touchend') {
+  if (ev.type === 'touchstart') {
     normalizedX = ev.changedTouches[0].pageX - documentX;
     normalizedY = ev.changedTouches[0].pageY - documentY;
   } else {
@@ -539,139 +523,6 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getCorrectEventName = getCorrectEventName;
-exports.getCorrectPropertyName = getCorrectPropertyName;
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-var eventTypeMap = {
-  animationstart: {
-    noPrefix: 'animationstart',
-    webkitPrefix: 'webkitAnimationStart'
-  },
-  animationend: {
-    noPrefix: 'animationend',
-    webkitPrefix: 'webkitAnimationEnd'
-  },
-  animationiteration: {
-    noPrefix: 'animationiteration',
-    webkitPrefix: 'webkitAnimationIteration'
-  },
-  transitionend: {
-    noPrefix: 'transitionend',
-    webkitPrefix: 'webkitTransitionEnd'
-  }
-};
-
-var cssPropertyMap = {
-  animation: {
-    noPrefix: 'animation',
-    webkitPrefix: '-webkit-animation'
-  },
-  transform: {
-    noPrefix: 'transform',
-    webkitPrefix: '-webkit-transform'
-  },
-  transition: {
-    noPrefix: 'transition',
-    webkitPrefix: '-webkit-transition'
-  }
-};
-
-function hasProperShape(windowObj) {
-  return windowObj.document !== undefined && typeof windowObj.document.createElement === 'function';
-}
-
-function eventFoundInMaps(eventType) {
-  return eventType in eventTypeMap || eventType in cssPropertyMap;
-}
-
-// If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
-// see the event types on the element, we must rely on the corresponding style properties.
-function getJavaScriptEventName(eventType, map, el) {
-  switch (eventType) {
-    case 'animationstart':
-    case 'animationend':
-    case 'animationiteration':
-      return 'animation' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
-    case 'transitionend':
-      return 'transition' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
-    default:
-      return map[eventType].noPrefix;
-  }
-}
-
-// Helper function to determine browser prefix for CSS3 animation events
-// and property names
-//
-// Parameters:
-// windowObject: Object -- Contains Document with a `createElement()` method
-// eventType: string -- The type of animation
-//
-// returns the value of the event as a string, prefixed if necessary.
-// If proper arguments are not supplied, this function will return
-// the property or event type without webkit prefix.
-//
-function getAnimationName(windowObj, eventType) {
-  if (!hasProperShape(windowObj) || !eventFoundInMaps(eventType)) {
-    return eventType;
-  }
-
-  var map = eventType in eventTypeMap ? eventTypeMap : cssPropertyMap;
-  var el = windowObj.document.createElement('div');
-  var eventName = '';
-
-  if (map === eventTypeMap) {
-    eventName = getJavaScriptEventName(eventType, map, el);
-  } else {
-    eventName = map[eventType].noPrefix in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
-  }
-
-  return eventName;
-}
-
-// Public functions to access getAnimationName() for JavaScript events or CSS
-// property names.
-//
-// Parameters:
-// windowObject: Object -- Contains Document with a `createElement()` method
-// eventType: string -- The type of animation
-//
-// returns the value of the event as a string, prefixed if necessary.
-// If proper arguments are not supplied, this function will return
-// the property or event type without webkit prefix.
-//
-function getCorrectEventName(windowObj, eventType) {
-  return getAnimationName(windowObj, eventType);
-}
-
-function getCorrectPropertyName(windowObj, eventType) {
-  return getAnimationName(windowObj, eventType);
-}
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -759,7 +610,7 @@ var MDCFoundation = function () {
 exports.default = MDCFoundation;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -780,7 +631,7 @@ var _ripple = __webpack_require__(2);
 
 var _util = __webpack_require__(3);
 
-var _animation = __webpack_require__(4);
+var _animation = __webpack_require__(17);
 
 var _foundation = __webpack_require__(20);
 
@@ -956,7 +807,7 @@ var MDCCheckbox = exports.MDCCheckbox = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1056,7 +907,7 @@ var MDCFormField = exports.MDCFormField = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1222,7 +1073,7 @@ var MDCRadio = exports.MDCRadio = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1416,7 +1267,7 @@ var MDCTextfield = exports.MDCTextfield = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1600,7 +1451,7 @@ function registerComponent(name, viewModelConstructor, MDCComponent, MDCFoundati
 exports.default = { registerBindings: registerBindings, registerComponent: registerComponent };
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,7 +1465,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _button = __webpack_require__(27);
+var _button = __webpack_require__(28);
 
 var _button2 = _interopRequireDefault(_button);
 
@@ -1677,7 +1528,7 @@ var ButtonViewModel = function (_PlainViewModel) {
 exports.default = ButtonViewModel;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1691,7 +1542,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _checkbox = __webpack_require__(28);
+var _checkbox = __webpack_require__(29);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
@@ -1754,7 +1605,7 @@ var CheckboxViewModel = function (_CheckableComponentVi) {
 exports.default = CheckboxViewModel;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1768,7 +1619,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _elevation = __webpack_require__(29);
+var _elevation = __webpack_require__(30);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
@@ -1835,7 +1686,7 @@ var ElevationViewModel = function (_PlainViewModel) {
 exports.default = ElevationViewModel;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1851,7 +1702,7 @@ var _mdcKnockoutBase = __webpack_require__(1);
 
 var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
 
-var _formField = __webpack_require__(30);
+var _formField = __webpack_require__(31);
 
 var _formField2 = _interopRequireDefault(_formField);
 
@@ -1913,7 +1764,7 @@ var FormFieldViewModel = function (_ComponentViewModel) {
 exports.default = FormFieldViewModel;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1927,7 +1778,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _radio = __webpack_require__(31);
+var _radio = __webpack_require__(32);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -2015,7 +1866,7 @@ var RadioViewModel = function (_CheckableComponentVi) {
 exports.default = RadioViewModel;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2029,7 +1880,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _switch = __webpack_require__(32);
+var _switch = __webpack_require__(33);
 
 var _switch2 = _interopRequireDefault(_switch);
 
@@ -2096,7 +1947,7 @@ var SwitchViewModel = function (_PlainViewModel) {
 exports.default = SwitchViewModel;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2112,7 +1963,7 @@ var _mdcKnockoutBase = __webpack_require__(1);
 
 var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
 
-var _textfield = __webpack_require__(33);
+var _textfield = __webpack_require__(34);
 
 var _textfield2 = _interopRequireDefault(_textfield);
 
@@ -2268,6 +2119,139 @@ var TextfieldViewModel = function (_ComponentViewModel) {
 exports.default = TextfieldViewModel;
 
 /***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCorrectEventName = getCorrectEventName;
+exports.getCorrectPropertyName = getCorrectPropertyName;
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var eventTypeMap = {
+  animationstart: {
+    noPrefix: 'animationstart',
+    webkitPrefix: 'webkitAnimationStart'
+  },
+  animationend: {
+    noPrefix: 'animationend',
+    webkitPrefix: 'webkitAnimationEnd'
+  },
+  animationiteration: {
+    noPrefix: 'animationiteration',
+    webkitPrefix: 'webkitAnimationIteration'
+  },
+  transitionend: {
+    noPrefix: 'transitionend',
+    webkitPrefix: 'webkitTransitionEnd'
+  }
+};
+
+var cssPropertyMap = {
+  animation: {
+    noPrefix: 'animation',
+    webkitPrefix: '-webkit-animation'
+  },
+  transform: {
+    noPrefix: 'transform',
+    webkitPrefix: '-webkit-transform'
+  },
+  transition: {
+    noPrefix: 'transition',
+    webkitPrefix: '-webkit-transition'
+  }
+};
+
+function hasProperShape(windowObj) {
+  return windowObj.document !== undefined && typeof windowObj.document.createElement === 'function';
+}
+
+function eventFoundInMaps(eventType) {
+  return eventType in eventTypeMap || eventType in cssPropertyMap;
+}
+
+// If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
+// see the event types on the element, we must rely on the corresponding style properties.
+function getJavaScriptEventName(eventType, map, el) {
+  switch (eventType) {
+    case 'animationstart':
+    case 'animationend':
+    case 'animationiteration':
+      return 'animation' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+    case 'transitionend':
+      return 'transition' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+    default:
+      return map[eventType].noPrefix;
+  }
+}
+
+// Helper function to determine browser prefix for CSS3 animation events
+// and property names
+//
+// Parameters:
+// windowObject: Object -- Contains Document with a `createElement()` method
+// eventType: string -- The type of animation
+//
+// returns the value of the event as a string, prefixed if necessary.
+// If proper arguments are not supplied, this function will return
+// the property or event type without webkit prefix.
+//
+function getAnimationName(windowObj, eventType) {
+  if (!hasProperShape(windowObj) || !eventFoundInMaps(eventType)) {
+    return eventType;
+  }
+
+  var map = eventType in eventTypeMap ? eventTypeMap : cssPropertyMap;
+  var el = windowObj.document.createElement('div');
+  var eventName = '';
+
+  if (map === eventTypeMap) {
+    eventName = getJavaScriptEventName(eventType, map, el);
+  } else {
+    eventName = map[eventType].noPrefix in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+  }
+
+  return eventName;
+}
+
+// Public functions to access getAnimationName() for JavaScript events or CSS
+// property names.
+//
+// Parameters:
+// windowObject: Object -- Contains Document with a `createElement()` method
+// eventType: string -- The type of animation
+//
+// returns the value of the event as a string, prefixed if necessary.
+// If proper arguments are not supplied, this function will return
+// the property or event type without webkit prefix.
+//
+function getCorrectEventName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
+}
+
+function getCorrectPropertyName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
+}
+
+/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2294,7 +2278,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * limitations under the License.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _foundation = __webpack_require__(5);
+var _foundation = __webpack_require__(4);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -3000,45 +2984,33 @@ Object.defineProperty(exports, "__esModule", {
  * limitations under the License.
  */
 
-var ROOT = exports.ROOT = 'mdc-ripple';
-var UPGRADED = exports.UPGRADED = ROOT + '-upgraded';
-
 var cssClasses = exports.cssClasses = {
   // Ripple is a special case where the "root" component is really a "mixin" of sorts,
   // given that it's an 'upgrade' to an existing component. That being said it is the root
   // CSS class that all other CSS classes derive from.
-  ROOT: UPGRADED,
-  UNBOUNDED: UPGRADED + '--unbounded',
-  BG_ACTIVE: UPGRADED + '--background-active',
-  BG_BOUNDED_ACTIVE_FILL: UPGRADED + '--background-bounded-active-fill',
-  FG_BOUNDED_ACTIVE_FILL: UPGRADED + '--foreground-bounded-active-fill',
-  FG_UNBOUNDED_ACTIVATION: UPGRADED + '--foreground-unbounded-activation',
-  FG_UNBOUNDED_DEACTIVATION: UPGRADED + '--foreground-unbounded-deactivation'
+  ROOT: 'mdc-ripple-upgraded',
+  UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
+  BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
+  BG_ACTIVE_FILL: 'mdc-ripple-upgraded--background-active-fill',
+  FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
+  FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation'
 };
 
 var strings = exports.strings = {
-  VAR_SURFACE_WIDTH: '--' + ROOT + '-surface-width',
-  VAR_SURFACE_HEIGHT: '--' + ROOT + '-surface-height',
-  VAR_FG_SIZE: '--' + ROOT + '-fg-size',
-  VAR_FG_UNBOUNDED_OPACITY_DURATION: '--' + ROOT + '-fg-unbounded-opacity-duration',
-  VAR_FG_UNBOUNDED_TRANSFORM_DURATION: '--' + ROOT + '-fg-unbounded-transform-duration',
-  VAR_LEFT: '--' + ROOT + '-left',
-  VAR_TOP: '--' + ROOT + '-top',
-  VAR_TRANSLATE_END: '--' + ROOT + '-translate-end',
-  VAR_FG_APPROX_XF: '--' + ROOT + '-fg-approx-xf',
-  VAR_FG_SCALE: '--' + ROOT + '-fg-scale',
-  VAR_FG_TRANSLATE_START: '--' + ROOT + '-fg-translate-start',
-  VAR_FG_TRANSLATE_END: '--' + ROOT + '-fg-translate-end'
+  VAR_SURFACE_WIDTH: '--mdc-ripple-surface-width',
+  VAR_SURFACE_HEIGHT: '--mdc-ripple-surface-height',
+  VAR_FG_SIZE: '--mdc-ripple-fg-size',
+  VAR_LEFT: '--mdc-ripple-left',
+  VAR_TOP: '--mdc-ripple-top',
+  VAR_FG_SCALE: '--mdc-ripple-fg-scale',
+  VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
+  VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end'
 };
 
 var numbers = exports.numbers = {
-  FG_TRANSFORM_DELAY_MS: 80,
-  OPACITY_DURATION_DIVISOR: 3,
-  ACTIVE_OPACITY_DURATION_MS: 110,
-  MIN_OPACITY_DURATION_MS: 200,
-  UNBOUNDED_TRANSFORM_DURATION_MS: 200,
   PADDING: 10,
-  INITIAL_ORIGIN_SCALE: 0.6
+  INITIAL_ORIGIN_SCALE: 0.6,
+  DEACTIVATION_TIMEOUT_MS: 300
 };
 
 /***/ }),
@@ -3055,8 +3027,6 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _base = __webpack_require__(0);
-
-var _animation = __webpack_require__(4);
 
 var _constants = __webpack_require__(24);
 
@@ -3160,27 +3130,29 @@ var MDCRippleFoundation = function (_MDCFoundation) {
       },
       focus: function focus() {
         return requestAnimationFrame(function () {
-          return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_ACTIVE);
+          return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
         });
       },
       blur: function blur() {
         return requestAnimationFrame(function () {
-          return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_ACTIVE);
+          return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
         });
       }
     };
-    _this.unboundedOpacityFadeTimer_ = 0;
     _this.resizeHandler_ = function () {
       return _this.layout();
     };
-    _this.cancelBgBounded_ = function () {};
-    _this.cancelFgBounded_ = function () {};
-    _this.cancelFgUnbounded_ = function () {};
     _this.unboundedCoords_ = {
       left: 0,
       top: 0
     };
     _this.fgScale_ = 0;
+    _this.activationTimer_ = 0;
+    _this.activationAnimationHasEnded_ = false;
+    _this.activationTimerCallback_ = function () {
+      _this.activationAnimationHasEnded_ = true;
+      _this.runDeactivationUXLogicIfReady_();
+    };
     return _this;
   }
 
@@ -3189,10 +3161,12 @@ var MDCRippleFoundation = function (_MDCFoundation) {
     value: function defaultActivationState_() {
       return {
         isActivated: false,
+        hasDeactivationUXRun: false,
         wasActivatedByPointer: false,
         wasElementMadeActive: false,
         activationStartTime: 0,
-        activationEvent: null
+        activationEvent: null,
+        isProgrammatic: false
       };
     }
   }, {
@@ -3244,8 +3218,8 @@ var MDCRippleFoundation = function (_MDCFoundation) {
       activationState.isProgrammatic = e === null;
       activationState.activationEvent = e;
       activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown';
-
       activationState.activationStartTime = Date.now();
+
       requestAnimationFrame(function () {
         // This needs to be wrapped in an rAF call b/c web browsers
         // report active states inconsistently when they're called within
@@ -3271,36 +3245,99 @@ var MDCRippleFoundation = function (_MDCFoundation) {
     value: function animateActivation_() {
       var _this5 = this;
 
-      var _MDCRippleFoundation$2 = MDCRippleFoundation.cssClasses,
-          BG_ACTIVE = _MDCRippleFoundation$2.BG_ACTIVE,
-          BG_BOUNDED_ACTIVE_FILL = _MDCRippleFoundation$2.BG_BOUNDED_ACTIVE_FILL,
-          FG_UNBOUNDED_DEACTIVATION = _MDCRippleFoundation$2.FG_UNBOUNDED_DEACTIVATION,
-          FG_BOUNDED_ACTIVE_FILL = _MDCRippleFoundation$2.FG_BOUNDED_ACTIVE_FILL;
+      var _MDCRippleFoundation$2 = MDCRippleFoundation.strings,
+          VAR_FG_TRANSLATE_START = _MDCRippleFoundation$2.VAR_FG_TRANSLATE_START,
+          VAR_FG_TRANSLATE_END = _MDCRippleFoundation$2.VAR_FG_TRANSLATE_END;
+      var _MDCRippleFoundation$3 = MDCRippleFoundation.cssClasses,
+          BG_ACTIVE_FILL = _MDCRippleFoundation$3.BG_ACTIVE_FILL,
+          FG_DEACTIVATION = _MDCRippleFoundation$3.FG_DEACTIVATION,
+          FG_ACTIVATION = _MDCRippleFoundation$3.FG_ACTIVATION;
+      var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
 
-      // If ripple is currently deactivating, cancel those animations.
 
-      [BG_BOUNDED_ACTIVE_FILL, FG_UNBOUNDED_DEACTIVATION, FG_BOUNDED_ACTIVE_FILL].forEach(function (c) {
-        return _this5.adapter_.removeClass(c);
-      });
-      this.cancelBgBounded_();
-      this.cancelFgBounded_();
-      this.cancelFgUnbounded_();
-      if (this.unboundedOpacityFadeTimer_) {
-        clearTimeout(this.unboundedOpacityFadeTimer_);
-        this.unboundedOpacityFadeTimer_ = 0;
+      var translateStart = '';
+      var translateEnd = '';
+
+      if (!this.adapter_.isUnbounded()) {
+        var _getFgTranslationCoor = this.getFgTranslationCoordinates_(),
+            startPoint = _getFgTranslationCoor.startPoint,
+            endPoint = _getFgTranslationCoor.endPoint;
+
+        translateStart = startPoint.x + 'px, ' + startPoint.y + 'px';
+        translateEnd = endPoint.x + 'px, ' + endPoint.y + 'px';
       }
 
-      this.adapter_.addClass(BG_ACTIVE);
-      if (this.adapter_.isUnbounded()) {
-        this.animateUnboundedActivation_();
+      this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
+      this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
+      // Cancel any ongoing activation/deactivation animations
+      clearTimeout(this.activationTimer_);
+      this.rmBoundedActivationClasses_();
+      this.adapter_.removeClass(FG_DEACTIVATION);
+
+      // Force layout in order to re-trigger the animation.
+      this.adapter_.computeBoundingRect();
+      this.adapter_.addClass(BG_ACTIVE_FILL);
+      this.adapter_.addClass(FG_ACTIVATION);
+      this.activationTimer_ = setTimeout(function () {
+        return _this5.activationTimerCallback_();
+      }, DEACTIVATION_TIMEOUT_MS);
+    }
+  }, {
+    key: 'getFgTranslationCoordinates_',
+    value: function getFgTranslationCoordinates_() {
+      var activationState = this.activationState_;
+      var activationEvent = activationState.activationEvent,
+          wasActivatedByPointer = activationState.wasActivatedByPointer;
+
+
+      var startPoint = void 0;
+      if (wasActivatedByPointer) {
+        startPoint = (0, _util.getNormalizedEventCoords)(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
+      } else {
+        startPoint = {
+          x: this.frame_.width / 2,
+          y: this.frame_.height / 2
+        };
+      }
+      // Center the element around the start point.
+      startPoint = {
+        x: startPoint.x - this.initialSize_ / 2,
+        y: startPoint.y - this.initialSize_ / 2
+      };
+
+      var endPoint = {
+        x: this.frame_.width / 2 - this.initialSize_ / 2,
+        y: this.frame_.height / 2 - this.initialSize_ / 2
+      };
+
+      return { startPoint: startPoint, endPoint: endPoint };
+    }
+  }, {
+    key: 'runDeactivationUXLogicIfReady_',
+    value: function runDeactivationUXLogicIfReady_() {
+      var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
+      var _activationState_ = this.activationState_,
+          hasDeactivationUXRun = _activationState_.hasDeactivationUXRun,
+          isActivated = _activationState_.isActivated;
+
+      var activationHasEnded = hasDeactivationUXRun || !isActivated;
+      if (activationHasEnded && this.activationAnimationHasEnded_) {
+        this.rmBoundedActivationClasses_();
+        // Note that we don't need to remove this here since it's removed on re-activation.
+        this.adapter_.addClass(FG_DEACTIVATION);
       }
     }
   }, {
-    key: 'animateUnboundedActivation_',
-    value: function animateUnboundedActivation_() {
-      var FG_UNBOUNDED_ACTIVATION = MDCRippleFoundation.cssClasses.FG_UNBOUNDED_ACTIVATION;
+    key: 'rmBoundedActivationClasses_',
+    value: function rmBoundedActivationClasses_() {
+      var _MDCRippleFoundation$4 = MDCRippleFoundation.cssClasses,
+          BG_ACTIVE_FILL = _MDCRippleFoundation$4.BG_ACTIVE_FILL,
+          FG_ACTIVATION = _MDCRippleFoundation$4.FG_ACTIVATION;
 
-      this.adapter_.addClass(FG_UNBOUNDED_ACTIVATION);
+      this.adapter_.removeClass(BG_ACTIVE_FILL);
+      this.adapter_.removeClass(FG_ACTIVATION);
+      this.activationAnimationHasEnded_ = false;
+      this.adapter_.computeBoundingRect();
     }
   }, {
     key: 'deactivate_',
@@ -3315,12 +3352,14 @@ var MDCRippleFoundation = function (_MDCFoundation) {
       }
       // Programmatic deactivation.
       if (activationState.isProgrammatic) {
+        var evtObject = null;
         requestAnimationFrame(function () {
-          return _this6.animateDeactivation_(null, Object.assign({}, activationState));
+          return _this6.animateDeactivation_(evtObject, Object.assign({}, activationState));
         });
         this.activationState_ = this.defaultActivationState_();
         return;
       }
+
       var actualActivationType = DEACTIVATION_ACTIVATION_PAIRS[e.type];
       var expectedActivationType = activationState.activationEvent.type;
       // NOTE: Pointer events are tricky - https://patrickhlauke.github.io/touch/tests/results/
@@ -3334,14 +3373,16 @@ var MDCRippleFoundation = function (_MDCFoundation) {
       }
 
       var state = Object.assign({}, activationState);
-      if (needsDeactivationUX) {
-        requestAnimationFrame(function () {
-          return _this6.animateDeactivation_(e, state);
-        });
-      }
-      if (needsActualDeactivation) {
-        this.activationState_ = this.defaultActivationState_();
-      }
+      requestAnimationFrame(function () {
+        if (needsDeactivationUX) {
+          _this6.activationState_.hasDeactivationUXRun = true;
+          _this6.animateDeactivation_(e, state);
+        }
+
+        if (needsActualDeactivation) {
+          _this6.activationState_ = _this6.defaultActivationState_();
+        }
+      });
     }
   }, {
     key: 'deactivate',
@@ -3352,135 +3393,43 @@ var MDCRippleFoundation = function (_MDCFoundation) {
     key: 'animateDeactivation_',
     value: function animateDeactivation_(e, _ref) {
       var wasActivatedByPointer = _ref.wasActivatedByPointer,
-          wasElementMadeActive = _ref.wasElementMadeActive,
-          activationStartTime = _ref.activationStartTime,
-          isProgrammatic = _ref.isProgrammatic;
-      var BG_ACTIVE = MDCRippleFoundation.cssClasses.BG_ACTIVE;
+          wasElementMadeActive = _ref.wasElementMadeActive;
+      var BG_FOCUSED = MDCRippleFoundation.cssClasses.BG_FOCUSED;
 
       if (wasActivatedByPointer || wasElementMadeActive) {
-        this.adapter_.removeClass(BG_ACTIVE);
-        var isPointerEvent = isProgrammatic ? false : e.type === 'touchend' || e.type === 'pointerup' || e.type === 'mouseup';
-        if (this.adapter_.isUnbounded()) {
-          this.animateUnboundedDeactivation_(this.getUnboundedDeactivationInfo_(activationStartTime));
-        } else {
-          this.animateBoundedDeactivation_(e, isPointerEvent);
-        }
+        // Remove class left over by element being focused
+        this.adapter_.removeClass(BG_FOCUSED);
+        this.runDeactivationUXLogicIfReady_();
       }
-    }
-  }, {
-    key: 'animateUnboundedDeactivation_',
-    value: function animateUnboundedDeactivation_(_ref2) {
-      var _this7 = this;
-
-      var opacityDuration = _ref2.opacityDuration,
-          transformDuration = _ref2.transformDuration,
-          approxCurScale = _ref2.approxCurScale;
-      var _MDCRippleFoundation$3 = MDCRippleFoundation.cssClasses,
-          FG_UNBOUNDED_ACTIVATION = _MDCRippleFoundation$3.FG_UNBOUNDED_ACTIVATION,
-          FG_UNBOUNDED_DEACTIVATION = _MDCRippleFoundation$3.FG_UNBOUNDED_DEACTIVATION;
-      var _MDCRippleFoundation$4 = MDCRippleFoundation.strings,
-          VAR_FG_UNBOUNDED_OPACITY_DURATION = _MDCRippleFoundation$4.VAR_FG_UNBOUNDED_OPACITY_DURATION,
-          VAR_FG_UNBOUNDED_TRANSFORM_DURATION = _MDCRippleFoundation$4.VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
-          VAR_FG_APPROX_XF = _MDCRippleFoundation$4.VAR_FG_APPROX_XF;
-
-
-      this.adapter_.updateCssVariable(VAR_FG_APPROX_XF, 'scale(' + approxCurScale + ')');
-      this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_OPACITY_DURATION, opacityDuration + 'ms');
-      this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, transformDuration + 'ms');
-      this.adapter_.addClass(FG_UNBOUNDED_DEACTIVATION);
-      this.adapter_.removeClass(FG_UNBOUNDED_ACTIVATION);
-      // We use setTimeout here since we know how long the fade will take.
-      this.unboundedOpacityFadeTimer_ = setTimeout(function () {
-        _this7.adapter_.removeClass(FG_UNBOUNDED_DEACTIVATION);
-      }, opacityDuration);
-    }
-  }, {
-    key: 'getUnboundedDeactivationInfo_',
-    value: function getUnboundedDeactivationInfo_(activationStartTime) {
-      var msElapsed = Date.now() - activationStartTime;
-      var _MDCRippleFoundation$5 = MDCRippleFoundation.numbers,
-          FG_TRANSFORM_DELAY_MS = _MDCRippleFoundation$5.FG_TRANSFORM_DELAY_MS,
-          OPACITY_DURATION_DIVISOR = _MDCRippleFoundation$5.OPACITY_DURATION_DIVISOR,
-          ACTIVE_OPACITY_DURATION_MS = _MDCRippleFoundation$5.ACTIVE_OPACITY_DURATION_MS,
-          UNBOUNDED_TRANSFORM_DURATION_MS = _MDCRippleFoundation$5.UNBOUNDED_TRANSFORM_DURATION_MS,
-          MIN_OPACITY_DURATION_MS = _MDCRippleFoundation$5.MIN_OPACITY_DURATION_MS;
-
-
-      var approxCurScale = 0;
-      if (msElapsed > FG_TRANSFORM_DELAY_MS) {
-        var percentComplete = Math.min((msElapsed - FG_TRANSFORM_DELAY_MS) / this.xfDuration_, 1);
-        approxCurScale = percentComplete * this.fgScale_;
-      }
-
-      var transformDuration = UNBOUNDED_TRANSFORM_DURATION_MS;
-      var approxOpacity = Math.min(msElapsed / ACTIVE_OPACITY_DURATION_MS, 1);
-      var opacityDuration = Math.max(MIN_OPACITY_DURATION_MS, 1000 * approxOpacity / OPACITY_DURATION_DIVISOR);
-
-      return { transformDuration: transformDuration, opacityDuration: opacityDuration, approxCurScale: approxCurScale };
-    }
-  }, {
-    key: 'animateBoundedDeactivation_',
-    value: function animateBoundedDeactivation_(e, isPointerEvent) {
-      var startPoint = void 0;
-      if (isPointerEvent) {
-        startPoint = (0, _util.getNormalizedEventCoords)(e, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-      } else {
-        startPoint = {
-          x: this.frame_.width / 2,
-          y: this.frame_.height / 2
-        };
-      }
-
-      startPoint = {
-        x: startPoint.x - this.initialSize_ / 2,
-        y: startPoint.y - this.initialSize_ / 2
-      };
-
-      var endPoint = {
-        x: this.frame_.width / 2 - this.initialSize_ / 2,
-        y: this.frame_.height / 2 - this.initialSize_ / 2
-      };
-
-      var _MDCRippleFoundation$6 = MDCRippleFoundation.strings,
-          VAR_FG_TRANSLATE_START = _MDCRippleFoundation$6.VAR_FG_TRANSLATE_START,
-          VAR_FG_TRANSLATE_END = _MDCRippleFoundation$6.VAR_FG_TRANSLATE_END;
-      var _MDCRippleFoundation$7 = MDCRippleFoundation.cssClasses,
-          BG_BOUNDED_ACTIVE_FILL = _MDCRippleFoundation$7.BG_BOUNDED_ACTIVE_FILL,
-          FG_BOUNDED_ACTIVE_FILL = _MDCRippleFoundation$7.FG_BOUNDED_ACTIVE_FILL;
-
-      this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, startPoint.x + 'px, ' + startPoint.y + 'px');
-      this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, endPoint.x + 'px, ' + endPoint.y + 'px');
-      this.cancelBgBounded_ = (0, _util.animateWithClass)(this.adapter_, BG_BOUNDED_ACTIVE_FILL, (0, _animation.getCorrectEventName)(window, 'transitionend'));
-      this.cancelFgBounded_ = (0, _util.animateWithClass)(this.adapter_, FG_BOUNDED_ACTIVE_FILL, (0, _animation.getCorrectEventName)(window, 'animationend'));
     }
   }, {
     key: 'destroy',
     value: function destroy() {
-      var _this8 = this;
+      var _this7 = this;
 
       if (!this.isSupported_) {
         return;
       }
       this.removeEventListeners_();
 
-      var _MDCRippleFoundation$8 = MDCRippleFoundation.cssClasses,
-          ROOT = _MDCRippleFoundation$8.ROOT,
-          UNBOUNDED = _MDCRippleFoundation$8.UNBOUNDED;
+      var _MDCRippleFoundation$5 = MDCRippleFoundation.cssClasses,
+          ROOT = _MDCRippleFoundation$5.ROOT,
+          UNBOUNDED = _MDCRippleFoundation$5.UNBOUNDED;
 
       requestAnimationFrame(function () {
-        _this8.adapter_.removeClass(ROOT);
-        _this8.adapter_.removeClass(UNBOUNDED);
-        _this8.removeCssVars_();
+        _this7.adapter_.removeClass(ROOT);
+        _this7.adapter_.removeClass(UNBOUNDED);
+        _this7.removeCssVars_();
       });
     }
   }, {
     key: 'removeEventListeners_',
     value: function removeEventListeners_() {
-      var _this9 = this;
+      var _this8 = this;
 
       this.listenerInfos_.forEach(function (info) {
         Object.keys(info).forEach(function (k) {
-          _this9.adapter_.deregisterInteractionHandler(info[k], _this9.listeners_[k]);
+          _this8.adapter_.deregisterInteractionHandler(info[k], _this8.listeners_[k]);
         });
       });
       this.adapter_.deregisterResizeHandler(this.resizeHandler_);
@@ -3488,27 +3437,27 @@ var MDCRippleFoundation = function (_MDCFoundation) {
   }, {
     key: 'removeCssVars_',
     value: function removeCssVars_() {
-      var _this10 = this;
+      var _this9 = this;
 
       var strings = MDCRippleFoundation.strings;
 
       Object.keys(strings).forEach(function (k) {
         if (k.indexOf('VAR_') === 0) {
-          _this10.adapter_.updateCssVariable(strings[k], null);
+          _this9.adapter_.updateCssVariable(strings[k], null);
         }
       });
     }
   }, {
     key: 'layout',
     value: function layout() {
-      var _this11 = this;
+      var _this10 = this;
 
       if (this.layoutFrame_) {
         cancelAnimationFrame(this.layoutFrame_);
       }
       this.layoutFrame_ = requestAnimationFrame(function () {
-        _this11.layoutInternal_();
-        _this11.layoutFrame_ = 0;
+        _this10.layoutInternal_();
+        _this10.layoutFrame_ = 0;
       });
     }
   }, {
@@ -3531,20 +3480,18 @@ var MDCRippleFoundation = function (_MDCFoundation) {
   }, {
     key: 'updateLayoutCssVars_',
     value: function updateLayoutCssVars_() {
-      var _MDCRippleFoundation$9 = MDCRippleFoundation.strings,
-          VAR_SURFACE_WIDTH = _MDCRippleFoundation$9.VAR_SURFACE_WIDTH,
-          VAR_SURFACE_HEIGHT = _MDCRippleFoundation$9.VAR_SURFACE_HEIGHT,
-          VAR_FG_SIZE = _MDCRippleFoundation$9.VAR_FG_SIZE,
-          VAR_FG_UNBOUNDED_TRANSFORM_DURATION = _MDCRippleFoundation$9.VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
-          VAR_LEFT = _MDCRippleFoundation$9.VAR_LEFT,
-          VAR_TOP = _MDCRippleFoundation$9.VAR_TOP,
-          VAR_FG_SCALE = _MDCRippleFoundation$9.VAR_FG_SCALE;
+      var _MDCRippleFoundation$6 = MDCRippleFoundation.strings,
+          VAR_SURFACE_WIDTH = _MDCRippleFoundation$6.VAR_SURFACE_WIDTH,
+          VAR_SURFACE_HEIGHT = _MDCRippleFoundation$6.VAR_SURFACE_HEIGHT,
+          VAR_FG_SIZE = _MDCRippleFoundation$6.VAR_FG_SIZE,
+          VAR_LEFT = _MDCRippleFoundation$6.VAR_LEFT,
+          VAR_TOP = _MDCRippleFoundation$6.VAR_TOP,
+          VAR_FG_SCALE = _MDCRippleFoundation$6.VAR_FG_SCALE;
 
 
       this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, this.frame_.width + 'px');
       this.adapter_.updateCssVariable(VAR_SURFACE_HEIGHT, this.frame_.height + 'px');
       this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + 'px');
-      this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, this.xfDuration_ + 'ms');
       this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
       if (this.adapter_.isUnbounded()) {
@@ -3822,17 +3769,58 @@ exports.default = MDCTextfieldFoundation;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _mdcKnockoutAugment = __webpack_require__(9);
 
-exports.default = function (ctx) {
-  return _template.call(ctx, ctx);
-};
+var _mdcKnockoutAugment2 = _interopRequireDefault(_mdcKnockoutAugment);
 
-function _template() {
-  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></a>\n<!-- /ko -->\n";
-};
+var _mdcKnockoutTextfield = __webpack_require__(16);
+
+var _mdcKnockoutTextfield2 = _interopRequireDefault(_mdcKnockoutTextfield);
+
+var _mdcKnockoutFormField = __webpack_require__(13);
+
+var _mdcKnockoutFormField2 = _interopRequireDefault(_mdcKnockoutFormField);
+
+var _mdcKnockoutCheckbox = __webpack_require__(11);
+
+var _mdcKnockoutCheckbox2 = _interopRequireDefault(_mdcKnockoutCheckbox);
+
+var _mdcKnockoutRadio = __webpack_require__(14);
+
+var _mdcKnockoutRadio2 = _interopRequireDefault(_mdcKnockoutRadio);
+
+var _mdcKnockoutSwitch = __webpack_require__(15);
+
+var _mdcKnockoutSwitch2 = _interopRequireDefault(_mdcKnockoutSwitch);
+
+var _mdcKnockoutButton = __webpack_require__(10);
+
+var _mdcKnockoutButton2 = _interopRequireDefault(_mdcKnockoutButton);
+
+var _mdcKnockoutElevation = __webpack_require__(12);
+
+var _mdcKnockoutElevation2 = _interopRequireDefault(_mdcKnockoutElevation);
+
+var _textfield = __webpack_require__(8);
+
+var _formField = __webpack_require__(6);
+
+var _checkbox = __webpack_require__(5);
+
+var _radio = __webpack_require__(7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_mdcKnockoutAugment2.default.registerBindings();
+
+_mdcKnockoutAugment2.default.registerComponent('mdc-textfield', _mdcKnockoutTextfield2.default, _textfield.MDCTextfield, _textfield.MDCTextfieldFoundation);
+_mdcKnockoutAugment2.default.registerComponent('mdc-form-field', _mdcKnockoutFormField2.default, _formField.MDCFormField, _formField.MDCFormFieldFoundation);
+_mdcKnockoutAugment2.default.registerComponent('mdc-checkbox', _mdcKnockoutCheckbox2.default, _checkbox.MDCCheckbox, _checkbox.MDCCheckboxFoundation);
+_mdcKnockoutAugment2.default.registerComponent('mdc-radio', _mdcKnockoutRadio2.default, _radio.MDCRadio, _radio.MDCRadioFoundation);
+
+_mdcKnockoutAugment2.default.registerComponent('mdc-switch', _mdcKnockoutSwitch2.default);
+_mdcKnockoutAugment2.default.registerComponent('mdc-button', _mdcKnockoutButton2.default);
+_mdcKnockoutAugment2.default.registerComponent('mdc-elevation', _mdcKnockoutElevation2.default);
 
 /***/ }),
 /* 28 */
@@ -3850,7 +3838,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-checkbox\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-bindings, mdc-attrs\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
+  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></a>\n<!-- /ko -->\n";
 };
 
 /***/ }),
@@ -3869,7 +3857,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-parent-bindings --><!-- /ko -->\n<!-- ko mdc-parent-attrs --><!-- /ko -->\n<!-- ko mdc-child --><!-- /ko -->\n";
+  return "<div class=\"mdc-checkbox\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-bindings, mdc-attrs\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -3888,7 +3876,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
+  return "<!-- ko mdc-parent-bindings --><!-- /ko -->\n<!-- ko mdc-parent-attrs --><!-- /ko -->\n<!-- ko mdc-child --><!-- /ko -->\n";
 };
 
 /***/ }),
@@ -3907,7 +3895,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-radio\" data-bind=\"css: {\n  'mdc-radio--disabled': bindings.disable \n}\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
+  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
 };
 
 /***/ }),
@@ -3926,7 +3914,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': bindings.disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+  return "<div class=\"mdc-radio\" data-bind=\"css: {\n  'mdc-radio--disabled': bindings.disable \n}\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -3945,7 +3933,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persistent,\n        HELPTEXT_VALIDATION_MSG: validation\n      },\n      mdc-attr: { ARIA_HIDDEN: persistent }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': bindings.disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
 };
 
 /***/ }),
@@ -3955,58 +3943,17 @@ function _template() {
 "use strict";
 
 
-var _mdcKnockoutAugment = __webpack_require__(10);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _mdcKnockoutAugment2 = _interopRequireDefault(_mdcKnockoutAugment);
+exports.default = function (ctx) {
+  return _template.call(ctx, ctx);
+};
 
-var _mdcKnockoutTextfield = __webpack_require__(17);
-
-var _mdcKnockoutTextfield2 = _interopRequireDefault(_mdcKnockoutTextfield);
-
-var _mdcKnockoutFormField = __webpack_require__(14);
-
-var _mdcKnockoutFormField2 = _interopRequireDefault(_mdcKnockoutFormField);
-
-var _mdcKnockoutCheckbox = __webpack_require__(12);
-
-var _mdcKnockoutCheckbox2 = _interopRequireDefault(_mdcKnockoutCheckbox);
-
-var _mdcKnockoutRadio = __webpack_require__(15);
-
-var _mdcKnockoutRadio2 = _interopRequireDefault(_mdcKnockoutRadio);
-
-var _mdcKnockoutSwitch = __webpack_require__(16);
-
-var _mdcKnockoutSwitch2 = _interopRequireDefault(_mdcKnockoutSwitch);
-
-var _mdcKnockoutButton = __webpack_require__(11);
-
-var _mdcKnockoutButton2 = _interopRequireDefault(_mdcKnockoutButton);
-
-var _mdcKnockoutElevation = __webpack_require__(13);
-
-var _mdcKnockoutElevation2 = _interopRequireDefault(_mdcKnockoutElevation);
-
-var _textfield = __webpack_require__(9);
-
-var _formField = __webpack_require__(7);
-
-var _checkbox = __webpack_require__(6);
-
-var _radio = __webpack_require__(8);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_mdcKnockoutAugment2.default.registerBindings();
-
-_mdcKnockoutAugment2.default.registerComponent('mdc-textfield', _mdcKnockoutTextfield2.default, _textfield.MDCTextfield, _textfield.MDCTextfieldFoundation);
-_mdcKnockoutAugment2.default.registerComponent('mdc-form-field', _mdcKnockoutFormField2.default, _formField.MDCFormField, _formField.MDCFormFieldFoundation);
-_mdcKnockoutAugment2.default.registerComponent('mdc-checkbox', _mdcKnockoutCheckbox2.default, _checkbox.MDCCheckbox, _checkbox.MDCCheckboxFoundation);
-_mdcKnockoutAugment2.default.registerComponent('mdc-radio', _mdcKnockoutRadio2.default, _radio.MDCRadio, _radio.MDCRadioFoundation);
-
-_mdcKnockoutAugment2.default.registerComponent('mdc-switch', _mdcKnockoutSwitch2.default);
-_mdcKnockoutAugment2.default.registerComponent('mdc-button', _mdcKnockoutButton2.default);
-_mdcKnockoutAugment2.default.registerComponent('mdc-elevation', _mdcKnockoutElevation2.default);
+function _template() {
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persistent,\n        HELPTEXT_VALIDATION_MSG: validation\n      },\n      mdc-attr: { ARIA_HIDDEN: persistent }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+};
 
 /***/ })
 /******/ ]);
