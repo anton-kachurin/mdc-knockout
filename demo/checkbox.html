@@ -1,45 +1,60 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Checkbox Demo - Knockout Material Components</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+    <style>
+      /* additional styles here */
+      /*
+      body {
+        margin: 20px;
+      }
+      */
+    </style>
+  </head>
+  <body>
 
-<script src="../dist/mdc-knockout.js"></script>
+    <mdc-form-field params="alignEnd: alignEnd">
+      <mdc-checkbox params="
+        checked: isChecked,
+        disable: isDisabled,
+        indeterminate: indeterminate
+      "></mdc-checkbox>
+      check me
+    </mdc-form-field>
 
+    <br>
 
-<mdc-form-field params="alignEnd: alignEnd">
-  <mdc-checkbox params="
-    checked: isChecked,
-    disable: isDisabled,
-    indeterminate: indeterminate
-  "></mdc-checkbox>
-  check me
-</mdc-form-field>
+    <input type="button" value="set indeterminate" data-bind="click:function(){indeterminate(true)}">
+    <br>
+    <span data-bind="text: ('indeterminate: ' + (indeterminate()?'true':'false'))"></span>
+    <br>
+    <label>
+      checked/unchecked:
+      <input type="checkbox" data-bind="checked: isChecked">
+    </label>
+    <br>
+    <label>
+      disable:
+      <input type="checkbox" data-bind="checked: isDisabled">
+    </label>
+    <br>
+    <label>
+      align-end:
+      <input type="checkbox" data-bind="checked: alignEnd">
+    </label>
 
-<br>
-
-<input type="button" value="set indeterminate" data-bind="click:function(){indeterminate(true)}">
-<br>
-<span data-bind="text: ('indeterminate: ' + (indeterminate()?'true':'false'))"></span>
-<br>
-<label>
-  checked/unchecked:
-  <input type="checkbox" data-bind="checked: isChecked">
-</label>
-<br>
-<label>
-  disable:
-  <input type="checkbox" data-bind="checked: isDisabled">
-</label>
-<br>
-<label>
-  align-end:
-  <input type="checkbox" data-bind="checked: alignEnd">
-</label>
-
-
-<script>
-  ko.applyBindings({
-    isChecked: ko.observable(),
-    isDisabled: ko.observable(false),
-    indeterminate: ko.observable(true),
-    alignEnd: ko.observable(false)
-  });
-</script>
+    <script>
+      ko.applyBindings({
+        isChecked: ko.observable(),
+        isDisabled: ko.observable(false),
+        indeterminate: ko.observable(true),
+        alignEnd: ko.observable(false)
+      });
+    </script>
+  </body>
+</html>
