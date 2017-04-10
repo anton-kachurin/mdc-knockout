@@ -1,35 +1,87 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Elevation Demo - Knockout Material Components</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+    <style>
+    .demo-surfaces {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
 
-<script src="../dist/mdc-knockout.js"></script>
+    .demo-surface {
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-<style media="screen">
-  .demo-surface {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+      width: 15%;
+      height: 100px;
+      margin: 40px 60px 40px;
 
-    width: 200px;
-    height: 100px;
-    margin: 0 60px 80px;
+      border-radius: 3px;
+      font-size: .8em;
+      color: #9E9E9E;
+      background: white;
+    }
 
-    border-radius: 3px;
-    font-size: .8em;
-    color: #9E9E9E;
-    background: white;
-  }
-</style>
+    #hover-el {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      border-radius: 4px;
+    }
+    </style>
+  </head>
+  <body>
 
-<mdc-elevation class="demo-surface"
-  params="z: z"
-  onmouseover="obj.z(8)"
-  onmouseout="obj.z(2)">
-  Hover or tap
-</mdc-elevation>
+    <mdc-elevation id="hover-el" params="
+      z: elevation,
+      event: {
+        'mouseover': function () { elevation(8) },
+        'mouseout': function () { elevation(2) }
+      }"
+    >
+      Hover or tap
+    </mdc-elevation>
 
-<script>
-  var obj = {
-    z: ko.observable(1)
-  };
-  ko.applyBindings(obj);
-</script>
+    <div class="demo-surfaces">
+      <mdc-elevation class="demo-surface" params="z: 0">z == 0</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 1">z == 1</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 2">z == 2</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 3">z == 3</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 4">z == 4</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 5">z == 5</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 6">z == 6</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 7">z == 7</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 8">z == 8</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 9">z == 9</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 10">z == 10</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 11">z == 11</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 12">z == 12</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 13">z == 13</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 14">z == 14</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 15">z == 15</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 16">z == 16</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 17">z == 17</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 18">z == 18</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 19">z == 19</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 20">z == 20</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 21">z == 21</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 22">z == 22</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 23">z == 23</mdc-elevation>
+      <mdc-elevation class="demo-surface" params="z: 24">z == 24</mdc-elevation>
+    </div>
+
+    <script>
+      ko.applyBindings({
+        elevation: ko.observable(1)
+      });
+    </script>
+  </body>
+</html>
