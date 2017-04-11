@@ -1,22 +1,27 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.5.0/dist/material-components-web.css">
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Button Demo - Knockout Material Components</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+    <style>
+      body {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
 
-<script src="../dist/mdc-knockout.js"></script>
-
-<style media="screen">
-  body {
-    margin: 20px;
-  }
-  .container {
-    margin-bottom: 10px;
-  }
-</style>
-
-<body>
-  <div class="container">
     <mdc-button params="
-      text: 'button!',
-
+      text: (dense() ? 'dense ' : '')
+          + (compact() ? 'compact ' : '')
+          + (raised() ? 'raised' : 'default')
+          + (accent() ? ' with accent' : (primary() ? ' with primary' : ''))
+          + (isDisabled() ? ', disabled' : '')
+      ,
       dense: dense,
       raised: raised,
       compact: compact,
@@ -24,75 +29,76 @@
       accent: accent,
       disable: isDisabled
     "></mdc-button>
-  </div>
 
-  <br>
+    <br><br>
 
-  <label>
-    disable:
-    <input type="checkbox" data-bind="checked: isDisabled">
-  </label>
+    <label>
+      disable:
+      <input type="checkbox" data-bind="checked: isDisabled">
+    </label>
 
-  <br>
+    <br>
 
-  <label>
-    raised:
-    <input type="checkbox" data-bind="checked: raised">
-  </label>
+    <label>
+      raised:
+      <input type="checkbox" data-bind="checked: raised">
+    </label>
 
-  <br>
+    <br>
 
-  <label>
-    dense:
-    <input type="checkbox" data-bind="checked: dense">
-  </label>
+    <label>
+      dense:
+      <input type="checkbox" data-bind="checked: dense">
+    </label>
 
-  <br>
+    <br>
 
-  <label>
-    compact:
-    <input type="checkbox" data-bind="checked: compact">
-  </label>
+    <label>
+      compact:
+      <input type="checkbox" data-bind="checked: compact">
+    </label>
 
-  <br>
+    <br>
 
-  <label>
-    primary:
-    <input type="checkbox" data-bind="checked: primary">
-  </label>
+    <label>
+      primary:
+      <input type="checkbox" data-bind="checked: primary">
+    </label>
 
-  <br>
+    <br>
 
-  <label>
-    accent:
-    <input type="checkbox" data-bind="checked: accent">
-  </label>
+    <label>
+      accent:
+      <input type="checkbox" data-bind="checked: accent">
+    </label>
 
-  <br><br><br>
+    <br><br><br>
 
-  <div class="container">
     <mdc-button href="#" params="href: href, raised: true, primary: true">
       Link styled as button
     </mdc-button>
-  </div>
 
-  <br>
+    <br><br>
 
-  <label>
-    href:
-    <input type="text" data-bind="value: href">
-  </label>
+    <label>
+      href:
+      <input type="text" data-bind="value: href">
+    </label>
 
-  <script>
-    var obj = {
-      raised: ko.observable(true),
-      dense: ko.observable(false),
-      compact: ko.observable(false),
-      primary: ko.observable(false),
-      accent: ko.observable(false),
-      isDisabled: ko.observable(false),
-      href: ko.observable('')
-    };
-    ko.applyBindings(obj);
-  </script>
-</body>
+    <button type="button" data-bind="click: function () { href('') }">
+      Clear
+    </button>
+
+    <script>
+      ko.applyBindings({
+        raised: ko.observable(true),
+        dense: ko.observable(false),
+        compact: ko.observable(false),
+        primary: ko.observable(false),
+        accent: ko.observable(false),
+        isDisabled: ko.observable(false),
+        href: ko.observable('/demo')
+      });
+    </script>
+  </body>
+</html>
