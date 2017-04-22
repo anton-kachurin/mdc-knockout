@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -315,7 +315,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _foundation = __webpack_require__(25);
+var _foundation = __webpack_require__(26);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -801,6 +801,14 @@ var MDCCheckbox = exports.MDCCheckbox = function (_MDCComponent) {
     set: function set(disabled) {
       this.foundation_.setDisabled(disabled);
     }
+  }, {
+    key: 'value',
+    get: function get() {
+      return this.foundation_.getValue();
+    },
+    set: function set(value) {
+      this.foundation_.setValue(value);
+    }
   }]);
 
   return MDCCheckbox;
@@ -926,7 +934,7 @@ var _base = __webpack_require__(0);
 
 var _ripple = __webpack_require__(2);
 
-var _foundation = __webpack_require__(23);
+var _foundation = __webpack_require__(24);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -972,6 +980,14 @@ var MDCRadio = exports.MDCRadio = function (_MDCComponent) {
     },
     set: function set(disabled) {
       this.foundation_.setDisabled(disabled);
+    }
+  }, {
+    key: 'value',
+    get: function get() {
+      return this.foundation_.getValue();
+    },
+    set: function set(value) {
+      this.foundation_.setValue(value);
     }
   }, {
     key: 'ripple',
@@ -1088,7 +1104,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _foundation = __webpack_require__(26);
+var _foundation = __webpack_require__(28);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -1115,7 +1131,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
 exports.MDCTextfieldFoundation = _foundation2.default;
-var cssClasses = _foundation2.default.cssClasses;
 
 var MDCTextfield = exports.MDCTextfield = function (_MDCComponent) {
   _inherits(MDCTextfield, _MDCComponent);
@@ -1254,12 +1269,12 @@ var MDCTextfield = exports.MDCTextfield = function (_MDCComponent) {
   }, {
     key: 'input_',
     get: function get() {
-      return this.root_.querySelector('.' + cssClasses.ROOT + '__input');
+      return this.root_.querySelector(_foundation2.default.strings.INPUT_SELECTOR);
     }
   }, {
     key: 'label_',
     get: function get() {
-      return this.root_.querySelector('.' + cssClasses.ROOT + '__label');
+      return this.root_.querySelector(_foundation2.default.strings.LABEL_SELECTOR);
     }
   }]);
 
@@ -1465,7 +1480,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _button = __webpack_require__(28);
+var _button = __webpack_require__(30);
 
 var _button2 = _interopRequireDefault(_button);
 
@@ -1542,7 +1557,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _checkbox = __webpack_require__(29);
+var _checkbox = __webpack_require__(31);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
@@ -1619,7 +1634,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _elevation = __webpack_require__(30);
+var _elevation = __webpack_require__(32);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
@@ -1702,7 +1717,7 @@ var _mdcKnockoutBase = __webpack_require__(1);
 
 var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
 
-var _formField = __webpack_require__(31);
+var _formField = __webpack_require__(33);
 
 var _formField2 = _interopRequireDefault(_formField);
 
@@ -1778,7 +1793,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _radio = __webpack_require__(32);
+var _radio = __webpack_require__(34);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -1880,7 +1895,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _switch = __webpack_require__(33);
+var _switch = __webpack_require__(35);
 
 var _switch2 = _interopRequireDefault(_switch);
 
@@ -1963,7 +1978,7 @@ var _mdcKnockoutBase = __webpack_require__(1);
 
 var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
 
-var _textfield = __webpack_require__(34);
+var _textfield = __webpack_require__(36);
 
 var _textfield2 = _interopRequireDefault(_textfield);
 
@@ -2580,6 +2595,16 @@ var MDCCheckboxFoundation = function (_MDCFoundation) {
       this.getNativeControl_().disabled = disabled;
     }
   }, {
+    key: 'getValue',
+    value: function getValue() {
+      return this.getNativeControl_().value;
+    }
+  }, {
+    key: 'setValue',
+    value: function setValue(value) {
+      this.getNativeControl_().value = value;
+    }
+  }, {
     key: 'installPropertyChangeHooks_',
     value: function installPropertyChangeHooks_() {
       var _this2 = this;
@@ -2697,7 +2722,8 @@ var MDCCheckboxFoundation = function (_MDCFoundation) {
       return this.adapter_.getNativeControl() || {
         checked: false,
         indeterminate: false,
-        disabled: false
+        disabled: false,
+        value: null
       };
     }
   }]);
@@ -2856,10 +2882,46 @@ exports.default = MDCFormFieldFoundation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var strings = exports.strings = {
+  NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control'
+};
+
+var cssClasses = exports.cssClasses = {
+  ROOT: 'mdc-radio',
+  DISABLED: 'mdc-radio--disabled'
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _base = __webpack_require__(0);
+
+var _constants = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2880,8 +2942,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * See the License for the specific language governing permissions and
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * limitations under the License.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
-
-var ROOT = 'mdc-radio';
 
 var MDCRadioFoundation = function (_MDCFoundation) {
   _inherits(MDCRadioFoundation, _MDCFoundation);
@@ -2920,27 +2980,33 @@ var MDCRadioFoundation = function (_MDCFoundation) {
       }
     }
   }, {
+    key: 'getValue',
+    value: function getValue() {
+      return this.getNativeControl_().value;
+    }
+  }, {
+    key: 'setValue',
+    value: function setValue(value) {
+      this.getNativeControl_().value = value;
+    }
+  }, {
     key: 'getNativeControl_',
     value: function getNativeControl_() {
       return this.adapter_.getNativeControl() || {
         checked: false,
-        disabled: false
+        disabled: false,
+        value: null
       };
     }
   }], [{
     key: 'cssClasses',
     get: function get() {
-      return {
-        ROOT: ROOT,
-        DISABLED: ROOT + '--disabled'
-      };
+      return _constants.cssClasses;
     }
   }, {
     key: 'strings',
     get: function get() {
-      return {
-        NATIVE_CONTROL_SELECTOR: '.' + ROOT + '__native-control'
-      };
+      return _constants.strings;
     }
   }, {
     key: 'defaultAdapter',
@@ -2959,7 +3025,7 @@ var MDCRadioFoundation = function (_MDCFoundation) {
 exports.default = MDCRadioFoundation;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3014,7 +3080,7 @@ var numbers = exports.numbers = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3028,7 +3094,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(24);
+var _constants = __webpack_require__(25);
 
 var _util = __webpack_require__(3);
 
@@ -3512,7 +3578,50 @@ var MDCRippleFoundation = function (_MDCFoundation) {
 exports.default = MDCRippleFoundation;
 
 /***/ }),
-/* 26 */
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var strings = exports.strings = {
+  ARIA_HIDDEN: 'aria-hidden',
+  ROLE: 'role',
+  INPUT_SELECTOR: '.mdc-textfield__input',
+  LABEL_SELECTOR: '.mdc-textfield__label'
+};
+
+var cssClasses = exports.cssClasses = {
+  ROOT: 'mdc-textfield',
+  UPGRADED: 'mdc-textfield--upgraded',
+  DISABLED: 'mdc-textfield--disabled',
+  FOCUSED: 'mdc-textfield--focused',
+  INVALID: 'mdc-textfield--invalid',
+  HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
+  HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
+  LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above'
+};
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3525,6 +3634,8 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _base = __webpack_require__(0);
+
+var _constants = __webpack_require__(27);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3552,24 +3663,12 @@ var MDCTextfieldFoundation = function (_MDCFoundation) {
   _createClass(MDCTextfieldFoundation, null, [{
     key: 'cssClasses',
     get: function get() {
-      return {
-        ROOT: 'mdc-textfield',
-        UPGRADED: 'mdc-textfield--upgraded',
-        DISABLED: 'mdc-textfield--disabled',
-        FOCUSED: 'mdc-textfield--focused',
-        INVALID: 'mdc-textfield--invalid',
-        HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
-        HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
-        LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above'
-      };
+      return _constants.cssClasses;
     }
   }, {
     key: 'strings',
     get: function get() {
-      return {
-        ARIA_HIDDEN: 'aria-hidden',
-        ROLE: 'role'
-      };
+      return _constants.strings;
     }
   }, {
     key: 'defaultAdapter',
@@ -3763,7 +3862,7 @@ var MDCTextfieldFoundation = function (_MDCFoundation) {
 exports.default = MDCTextfieldFoundation;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3823,7 +3922,7 @@ _mdcKnockoutAugment2.default.registerComponent('mdc-button', _mdcKnockoutButton2
 _mdcKnockoutAugment2.default.registerComponent('mdc-elevation', _mdcKnockoutElevation2.default);
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3842,7 +3941,7 @@ function _template() {
 };
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3861,7 +3960,7 @@ function _template() {
 };
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3880,7 +3979,7 @@ function _template() {
 };
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3899,7 +3998,7 @@ function _template() {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3918,7 +4017,7 @@ function _template() {
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3937,7 +4036,7 @@ function _template() {
 };
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

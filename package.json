@@ -14,11 +14,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "material-components-web": "^0.8.0"
+    "material-components-web": "^0.9.1"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
+    "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.22.0",
     "es6-template-string-loader": "^1.0.1",
     "webpack": "^2.2.1",
