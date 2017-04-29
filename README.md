@@ -96,3 +96,12 @@ and updated on the fly every time when any file from `src` folder is edited.
 You also can open `demo/*.html` from the file system, without running a
 dev server, in this case the actual `dist/mdc-knockout.js` will be used, and
 no on the fly updates will be available.
+
+## Testing
+
+```shell
+npm run test
+```
+
+Karma will run tests in a watch mode using PhantomJS, headlessly. A webserver
+will run on `localhost:9876` allowing to use any additional browser.
