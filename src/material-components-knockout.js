@@ -14,13 +14,13 @@ import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
 import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 
-augment.registerBindings();
+augment.registerBindings(ko);
 
-augment.registerComponent('mdc-textfield', TextfieldViewModel, MDCTextfield, MDCTextfieldFoundation);
-augment.registerComponent('mdc-form-field', FormFieldViewModel, MDCFormField, MDCFormFieldFoundation);
-augment.registerComponent('mdc-checkbox', CheckboxViewModel, MDCCheckbox, MDCCheckboxFoundation);
-augment.registerComponent('mdc-radio', RadioViewModel, MDCRadio, MDCRadioFoundation);
+augment.registerComponent(ko, 'mdc-textfield', TextfieldViewModel, MDCTextfield, MDCTextfieldFoundation);
+augment.registerComponent(ko, 'mdc-form-field', FormFieldViewModel, MDCFormField, MDCFormFieldFoundation);
+augment.registerComponent(ko, 'mdc-checkbox', CheckboxViewModel, MDCCheckbox, MDCCheckboxFoundation);
+augment.registerComponent(ko, 'mdc-radio', RadioViewModel, MDCRadio, MDCRadioFoundation);
 
-augment.registerComponent('mdc-switch', SwitchViewModel);
-augment.registerComponent('mdc-button', ButtonViewModel);
-augment.registerComponent('mdc-elevation', ElevationViewModel);
+augment.registerComponent(ko, 'mdc-switch', SwitchViewModel);
+augment.registerComponent(ko, 'mdc-button', ButtonViewModel);
+augment.registerComponent(ko, 'mdc-elevation', ElevationViewModel);

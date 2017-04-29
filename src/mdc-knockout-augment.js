@@ -2,7 +2,7 @@ import {MDCRipple} from '@material/ripple';
 
 const WAS_BIND = 'mdc-bindings-already-added';
 
-function registerBindings () {
+function registerBindings (ko) {
   if (ko[WAS_BIND]) {
     return undefined;
   }
@@ -141,7 +141,7 @@ function registerBindings () {
   ko[WAS_BIND] = true;
 }
 
-function registerComponent (name, viewModelConstructor, MDCComponent, MDCFoundation) {
+function registerComponent (ko, name, viewModelConstructor, MDCComponent, MDCFoundation) {
   var template = viewModelConstructor.template();
 
   ko.components.register(name, {
