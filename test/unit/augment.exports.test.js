@@ -3,31 +3,9 @@ import td from 'testdouble';
 import bel from 'bel';
 import augment from '../../src/mdc-knockout-augment';
 
-import {utils} from 'knockout';
+import {koMock} from './helpers/knockout';
 
-function koMock () {
-  return {
-    bindingHandlers: {},
-    virtualElements: {
-      allowedBindings: []
-    },
-    components: {
-      register: function () {}
-    },
-    utils: utils
-  }
-}
-
-
-
-function expectBindings () {
-  return [
-    'mdc-bindings', 'mdc-attrs', 'mdc-parent-bindings', 'mdc-parent-attrs',
-    'mdc-child', 'mdc-ripple', 'mdc-css', 'mdc-attr', 'mdc-instance'
-  ];
-}
-
-suite('Augment');
+suite('augment exports');
 
 test('augment exports registerBindings and registerComponent', () => {
   assert.equal(typeof augment.registerBindings, 'function');
@@ -41,24 +19,6 @@ test('registerBindings requires knockout as a parameter', () => {
   assert.doesNotThrow(() => augment.registerBindings(ko));
 });
 
-test('registerBindings sets a complete list of bindings', () => {
-  const ko = koMock();
-  augment.registerBindings(ko);
-
-  const handlers = ko.bindingHandlers;
-  const bindings = expectBindings();
-
-  bindings.forEach(binding => {
-    if (handlers[binding]) {
-      delete handlers[binding];
-    }
-    else {
-      handlers[binding] = 'is missing';
-    }
-  });
-  assert.deepEqual(handlers, {});
-});
-
 test('registerBindings bounces multiple calls', () => {
   const ko = koMock();
   const handlers = ko.bindingHandlers;
@@ -67,14 +27,14 @@ test('registerBindings bounces multiple calls', () => {
   Object.keys(handlers).forEach(binding => handlers[binding] = 1);
   augment.registerBindings(ko);
 
-  const nonOnes = [];
+  const overwritten = [];
   Object.keys(handlers).forEach(binding => {
     if (handlers[binding] !== 1) {
-      nonOnes.push(binding);
+      overwritten.push(binding);
     }
   });
 
-  assert.equal(nonOnes.length, 0);
+  assert.deepEqual(overwritten, []);
 });
 
 test('registerComponent requires knockout as the first parameter', () => {
@@ -175,8 +135,4 @@ test('registerComponent passes right arguments to the viewmodel constructor', ()
                                 'paramsStub',
                                 {id: 'el_1', attr1: 'attr1', attr2: 'something'},
                                 'MDCComponentStub', 'MDCFoundationStub'));
-});
-
-test('', () => {
-
 });
