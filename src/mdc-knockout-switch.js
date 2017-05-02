@@ -1,7 +1,7 @@
 import {PlainViewModel} from './mdc-knockout-base';
-import template from './templates/switch.html';
+import SwitchTemplate from './templates/switch.html';
 
-export default class SwitchViewModel extends PlainViewModel {
+class SwitchViewModel extends PlainViewModel {
   extend () {
     // make sure that --disabled class is set if necessary
     if (!('disable' in this.bindings)) {
@@ -30,8 +30,6 @@ export default class SwitchViewModel extends PlainViewModel {
       label: ''
     }
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {SwitchTemplate, SwitchViewModel};

@@ -1,7 +1,7 @@
 import ComponentViewModel from './mdc-knockout-base';
-import template from './templates/textfield.html';
+import TextfieldTemplate from './templates/textfield.html';
 
-export default class TextfieldViewModel extends ComponentViewModel {
+class TextfieldViewModel extends ComponentViewModel {
   extend () {
     if (!this.attrs['id']) {
       this.attrs['id'] = this.randomPrefixed('textfield-auto-id');
@@ -94,8 +94,6 @@ export default class TextfieldViewModel extends ComponentViewModel {
   unwrapParams () {
     return ['multiline', 'fullwidth', 'invalid']
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {TextfieldTemplate, TextfieldViewModel};

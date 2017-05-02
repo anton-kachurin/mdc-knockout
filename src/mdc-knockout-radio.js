@@ -1,7 +1,7 @@
 import {CheckableComponentViewModel} from './mdc-knockout-base';
-import template from './templates/radio.html';
+import RadioTemplate from './templates/radio.html';
 
-export default class RadioViewModel extends CheckableComponentViewModel {
+class RadioViewModel extends CheckableComponentViewModel {
   initialize () {
     // make sure that --disabled class is set if necessary
     if (!('disable' in this.bindings)) {
@@ -53,8 +53,6 @@ export default class RadioViewModel extends CheckableComponentViewModel {
       isChecked: false
     }
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {RadioTemplate, RadioViewModel};

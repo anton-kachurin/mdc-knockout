@@ -1,7 +1,7 @@
 import {PlainViewModel} from './mdc-knockout-base';
-import template from './templates/button.html';
+import ButtonTemplate from './templates/button.html';
 
-export default class ButtonViewModel extends PlainViewModel {
+class ButtonViewModel extends PlainViewModel {
   extend () {
     if (this.attrs.href && this.href) {
       const defaultHref = this.attrs.href;
@@ -25,8 +25,6 @@ export default class ButtonViewModel extends PlainViewModel {
   unwrapParams () {
     return ['submit'];
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {ButtonTemplate, ButtonViewModel};

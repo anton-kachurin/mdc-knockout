@@ -1,7 +1,7 @@
 import {CheckableComponentViewModel} from './mdc-knockout-base';
-import template from './templates/checkbox.html';
+import CheckboxTemplate from './templates/checkbox.html';
 
-export default class CheckboxViewModel extends CheckableComponentViewModel {
+class CheckboxViewModel extends CheckableComponentViewModel {
   initialize () {
     const checked = this.bindings.checked;
     const instance = this.instance();
@@ -26,8 +26,6 @@ export default class CheckboxViewModel extends CheckableComponentViewModel {
       indeterminate: false
     }
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {CheckboxTemplate, CheckboxViewModel};

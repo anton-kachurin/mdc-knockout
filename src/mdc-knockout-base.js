@@ -72,11 +72,6 @@ class PlainViewModel extends DisposableViewModel {
   unwrapParams () {
     return []
   }
-
-  static template () {
-    return this.TEMPLATE;
-  }
-
 }
 
 class ComponentViewModel extends PlainViewModel {
@@ -90,10 +85,6 @@ class ComponentViewModel extends PlainViewModel {
 
   initialize (parent) {
 
-  }
-
-  static template () {
-    return this.TEMPLATE + '<!-- ko mdc-instance --><!-- /ko -->';
   }
 
   dispose () {

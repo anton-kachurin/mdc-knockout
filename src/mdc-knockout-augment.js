@@ -141,37 +141,35 @@ function registerBindings (ko) {
   ko[WAS_BIND] = true;
 }
 
-function registerComponent (ko, name, viewModelConstructor, MDCComponent, MDCFoundation) {
-  var template = viewModelConstructor.template();
-
+function registerComponent (ko, name, template, viewModelConstructor, MDCComponent, MDCFoundation) {
   ko.components.register(name, {
-      viewModel: {
-        createViewModel: function(params, componentInfo) {
-          var element = componentInfo.element;
-          var root = element;
-          var attributes = element.attributes;
-          var attrs = {}
-          var names = [];
+    template: template,
+    viewModel: {
+      createViewModel: function(params, componentInfo) {
+        var element = componentInfo.element;
+        var root = element;
+        var attributes = element.attributes;
+        var attrs = {}
+        var names = [];
 
-          ko.utils.arrayForEach(attributes, function (attr) {
-            var attrName = attr.name.toLowerCase();
-            if (attrName != 'params'
-             && attrName != 'class'
-             && attrName != 'data-bind') {
-              attrs[attr.name] = attr.value;
-              names.push(attr.name);
-            }
-          });
-          ko.utils.arrayForEach(names, function (name) {
-            element.removeAttribute(name);
-          });
-
-          return new viewModelConstructor(
-            root, params, attrs, MDCComponent, MDCFoundation
-          );
-        }
-      },
-      template: template
+        ko.utils.arrayForEach(attributes, function (attr) {
+          var attrName = attr.name.toLowerCase();
+          if (attrName != 'params'
+           && attrName != 'class'
+           && attrName != 'data-bind') {
+            attrs[attr.name] = attr.value;
+            names.push(attr.name);
+          }
+        });
+        ko.utils.arrayForEach(names, function (name) {
+          element.removeAttribute(name);
+        });
+        
+        return new viewModelConstructor(
+          root, params, attrs, MDCComponent, MDCFoundation
+        );
+      }
+    }
   });
 };
 

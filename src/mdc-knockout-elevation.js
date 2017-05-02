@@ -1,9 +1,9 @@
 import {PlainViewModel} from './mdc-knockout-base';
-import template from './templates/elevation.html';
+import ElevationTemplate from './templates/elevation.html';
 
 const Z_PREFIX = 'mdc-elevation--z';
 
-export default class ElevationViewModel extends PlainViewModel {
+class ElevationViewModel extends PlainViewModel {
   extend () {
     const css = {};
     if (ko.isSubscribable(this.z)) {
@@ -33,8 +33,6 @@ export default class ElevationViewModel extends PlainViewModel {
       z: 0
     }
   }
-
-  static get TEMPLATE () {
-    return template();
-  }
 }
+
+export {ElevationTemplate, ElevationViewModel};
