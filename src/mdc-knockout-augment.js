@@ -36,11 +36,7 @@ function registerBindings (ko) {
 
   ko.bindingHandlers['mdc-parent-attrs'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var attrList = ko.unwrap(valueAccessor());
-
-      ko.utils.objectForEach(attrList, function (key, value) {
-        element.parentNode.setAttribute(key, value);
-      });
+      ko.applyBindingsToNode(element.parentNode, {attr: valueAccessor()}, bindingContext);
     },
     preprocess: function (value, name, addBindingCallback) {
       return value || 'attrs';
@@ -164,7 +160,7 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
         ko.utils.arrayForEach(names, function (name) {
           element.removeAttribute(name);
         });
-        
+
         return new viewModelConstructor(
           root, params, attrs, MDCComponent, MDCFoundation
         );
