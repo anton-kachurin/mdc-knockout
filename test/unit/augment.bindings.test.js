@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import bel from 'bel';
 import augment from '../../src/mdc-knockout-augment';
-import {PlainViewModel} from '../../src/mdc-knockout-base';
 
 import {koMock} from './helpers/knockout';
 
@@ -143,4 +142,136 @@ test('mdc-parent-attrs binding provides a default "attrs" value', () => {
 
 test('mdc-parent-attrs binding is allowed for virtual elements', () => {
   allowedVirtual('mdc-parent-attrs');
+});
+
+test('mdc-child binding receives inner HTML of the component', (done) => {
+  ko.components.register('mdc-test', {
+    template: {
+      element: bel`
+        <div id="container">
+          <div id="a">
+            <div id="b" data-bind="mdc-child"></div>
+          </div>
+        </div>
+      `}
+    }
+  );
+
+  const child = bel`<span>child</span>`;
+  const component = bel`<mdc-test id="c">${child}</mdc-test>`;
+  assert.equal(child.parentNode.id, 'c');
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    assert.equal(child.parentNode.id, 'b');
+    assert.equal(child.parentNode.parentNode.id, 'a');
+    assert.equal(child.parentNode.parentNode.parentNode.id, 'c');
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-child binding persists the order of the inner elements', (done) => {
+  ko.components.register('mdc-test', {
+    template: {
+      element: bel`
+        <div id="container">
+          <div data-bind="mdc-child"></div>
+        </div>
+      `}
+    }
+  );
+
+  const child1 = bel`<span>child1</span>`;
+  const child2 = bel`<span>child2</span>`;
+  const component = bel`<mdc-test>${child1}${child2}</mdc-test>`;
+  assert.equal(component.children[0].textContent, 'child1');
+  assert.equal(component.children[1].textContent, 'child2');
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    assert.equal(component.children[0].children.length, 2);
+    assert.equal(component.children[0].children[0].textContent, 'child1');
+    assert.equal(component.children[0].children[1].textContent, 'child2');
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-child binding allows to filter what HTML elements are included', (done) => {
+  ko.components.register('mdc-test', {
+    template: {
+      element:bel`
+        <div id="container">
+          <div id="wrapper" data-bind="mdc-child: function (element) {
+            return element.nodeType == 1 && element.classList.contains('use');
+          }"></div>
+        </div>
+      `}
+    }
+  );
+
+  const component = bel`
+    <mdc-test>
+      <span class="ignore1">child1</span>
+      <span class="use">child2</span>
+      <span class="ignore2">child3</span>
+    </mdc-test>
+  `;
+  assert.equal(component.children.length, 3);
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    assert.equal(component.children.length, 1);
+    assert.equal(component.children[0].id, 'wrapper');
+    assert.equal(component.children[0].children.length, 1);
+    assert.equal(component.children[0].children[0].textContent, 'child2');
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-child binding keeps track of the inheritance of components', (done) => {
+  ko.components.register('mdc-inner', {
+    template: {
+      element:bel`
+        <div id="container-inner">
+          inner
+        </div>
+      `}
+    }
+  );
+  ko.components.register('mdc-outer', {
+    template: {
+      element:bel`
+        <div id="container-outer">
+          <span data-bind="mdc-child"></span>
+        </div>
+      `}
+    }
+  );
+
+  const components = bel`<mdc-outer><mdc-inner></mdc-inner></mdc-outer>`;
+
+  ko.applyBindings({}, components);
+  setTimeout(() => {
+    const outerContext = ko.contextFor(components.children[0]);
+    const innerContext = ko.contextFor(components.children[0].children[0]);
+    assert.strictEqual(innerContext['mdc-parent'], outerContext.$component);
+
+    ko.components.unregister('mdc-inner');
+    ko.components.unregister('mdc-outer');
+    done();
+  });
+});
+
+test('mdc-child binding is allowed for virtual elements', () => {
+  allowedVirtual('mdc-child');
+});
+
+test('', () => {
+
 });
