@@ -1,11 +1,10 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import td from 'testdouble';
 import augment from '../../src/mdc-knockout-augment';
 import {SwitchTemplate, SwitchViewModel} from '../../src/mdc-knockout-switch';
 
 import ko from 'knockout';
-global.ko = ko;
+augment.registerBindings(ko);
 augment.registerComponent(ko, 'mdc-switch', SwitchTemplate(), SwitchViewModel);
 
 suite('switch component');
