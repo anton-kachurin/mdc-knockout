@@ -148,7 +148,7 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
         var attrs = {}
         var names = [];
 
-        ko.utils.arrayForEach(attributes, function (attr) {
+        [].map.call(attributes, function (attr) {
           var attrName = attr.name.toLowerCase();
           if (attrName != 'params'
            && attrName != 'class'
@@ -156,8 +156,9 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
             attrs[attr.name] = attr.value;
             names.push(attr.name);
           }
+          return attr;
         });
-        ko.utils.arrayForEach(names, function (name) {
+        names.forEach(function (name) {
           element.removeAttribute(name);
         });
 

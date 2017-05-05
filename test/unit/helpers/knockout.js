@@ -1,5 +1,3 @@
-import {utils} from 'knockout';
-
 function koMock () {
   return {
     bindingHandlers: {},
@@ -9,7 +7,6 @@ function koMock () {
     components: {
       register: function () {}
     },
-    utils: utils
   }
 }
 
