@@ -1,14 +1,8 @@
 import {assert} from 'chai';
+import * as mdc from 'material-components-web';
+
 suite('switch api');
 
 test('MDCSwitch is not available', () => {
-  var componentError = false;
-  try {
-    require('@material/switch');
-  }
-  catch (e) {
-    componentError = true;
-  }
-
-  assert.isOk(componentError);
+  assert.notProperty(mdc, 'switch');
 });
