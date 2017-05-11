@@ -36,14 +36,15 @@ module.exports = function(config) {
     }),
 
     webpackMiddleware: {
-       watchOptions: {
-         poll: true
-       }
-     },
+      noInfo: true,
+      watchOptions: {
+        poll: true
+      }
+    },
+
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // test results reporter to use
