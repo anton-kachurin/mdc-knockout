@@ -1,4 +1,4 @@
-import {utils as ko_utils, toJS as ko_toJS} from 'knockout';
+import {toJS as ko_toJS} from 'knockout';
 
 class DisposableViewModel {
   constructor () {
@@ -34,8 +34,11 @@ class PlainViewModel extends DisposableViewModel {
   constructor (root, params, attrs) {
     super();
     this.root = root;
+    this.attrs = attrs;
 
-    ko_utils.objectForEach(this.defaultParams(), (name, defaultValue) => {
+    const defaultParams = this.defaultParams();
+    Object.keys(defaultParams).forEach( name => {
+      const defaultValue = defaultParams[name];
       if (params.hasOwnProperty(name)) {
         this[name] = params[name];
         delete params[name];
@@ -45,10 +48,7 @@ class PlainViewModel extends DisposableViewModel {
       }
     });
 
-    ko_utils.arrayForEach(
-      this.unwrapParams(),
-      name => this[name] = ko_toJS(this[name])
-    );
+    this.unwrapParams().forEach(name => this[name] = ko_toJS(this[name]));
 
     if (params && params.hasOwnProperty('$raw')) {
       delete params.$raw;
@@ -59,8 +59,6 @@ class PlainViewModel extends DisposableViewModel {
     }
 
     this.bindings = params;
-
-    this.attrs = attrs;
 
     this.extend();
   }
