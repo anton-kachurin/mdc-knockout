@@ -50,9 +50,11 @@ class PlainViewModel extends DisposableViewModel {
       name => this[name] = ko_toJS(this[name])
     );
 
-    delete params.$raw;
+    if (params && params.hasOwnProperty('$raw')) {
+      delete params.$raw;
+    }
 
-    if (params.hasOwnProperty('')) {
+    if (params && params.hasOwnProperty('')) {
       delete params[''];
     }
 
