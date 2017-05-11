@@ -118,4 +118,4 @@ class CheckableComponentViewModel extends ComponentViewModel {
 }
 
 export default ComponentViewModel;
-export { PlainViewModel, ComponentViewModel, CheckableComponentViewModel };
+export { DisposableViewModel, PlainViewModel, ComponentViewModel, CheckableComponentViewModel };
