@@ -127,22 +127,30 @@ test('PlainViewModel constructor overwrites default param value when it is prese
   assert.strictEqual(vm.bindings.c, 3);
 });
 
-test('unwrapParams', () => {
+test('PlainViewModel constructor converts properties to non-observables based on defaultParams value', () => {
   const observableA = ko.observable(1);
+  const computed = ko.computed(() => observableA() + 1);
+  const wrapped = ko.observable(observableA);
   class TestVM extends PlainViewModel {
     defaultParams () {
       return {
         a: observableA,
-        b: () => {}
+        computed: computed,
+        wrapped: wrapped,
+        b: 3
       }
     }
     unwrapParams () {
-      return ['a']
+      return ['a', 'computed', 'wrapped', 'b']
     }
   }
-  const vm = new TestVM('', {b: 2});
+  const vm = new TestVM('', {});
   assert.property(vm, 'a');
+  assert.property(vm, 'computed');
+  assert.property(vm, 'wrapped');
   assert.property(vm, 'b');
   assert.strictEqual(vm.a, 1);
-  assert.strictEqual(vm.b, 2);
+  assert.strictEqual(vm.computed, 2);
+  assert.strictEqual(vm.wrapped, 1);
+  assert.strictEqual(vm.b, 3);
 });

@@ -1,5 +1,3 @@
-import {toJS as ko_toJS} from 'knockout';
-
 class DisposableViewModel {
   constructor () {
     this.subscriptions_ = [];
@@ -48,7 +46,13 @@ class PlainViewModel extends DisposableViewModel {
       }
     });
 
-    this.unwrapParams().forEach(name => this[name] = ko_toJS(this[name]));
+    this.unwrapParams().forEach(name => {
+      let prop = this[name];
+      while (!!(prop && prop.constructor && prop.call && prop.apply)) {
+        prop = prop();
+      }
+      this[name] = prop;
+    });
 
     if (params && params.hasOwnProperty('$raw')) {
       delete params.$raw;
