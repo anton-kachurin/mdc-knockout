@@ -138,6 +138,10 @@ function registerBindings (ko) {
 }
 
 function registerComponent (ko, name, template, viewModelConstructor, MDCComponent, MDCFoundation) {
+  if (MDCComponent) {
+    template += '<!-- ko mdc-instance --><!-- /ko -->';
+  }
+  
   ko.components.register(name, {
     template: template,
     viewModel: {
