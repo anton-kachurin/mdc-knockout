@@ -5,7 +5,7 @@ class RadioViewModel extends CheckableComponentViewModel {
   initialize () {
     // make sure that --disabled class is set if necessary
     if (!('disable' in this.bindings)) {
-      this.instance().disabled = this.instance().disabled;
+      this.instance.disabled = this.instance.disabled;
     }
 
     const isChecked = this.isChecked;
@@ -44,7 +44,7 @@ class RadioViewModel extends CheckableComponentViewModel {
     }
     else {
       // check radio via MDCComponent
-      this.instance().checked = true;
+      this.instance.checked = true;
     }
   }
 

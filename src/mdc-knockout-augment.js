@@ -128,7 +128,7 @@ function registerBindings (ko) {
       var MDCComponent = bindingContext.$component.MDCComponent;
       var instance = MDCComponent.attachTo(root.children[0]);
       root[MDCComponent.name] = instance;
-      bindingContext.$component.instance(instance);
+      bindingContext.$component.instance = instance;
       bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
   };

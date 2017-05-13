@@ -70,10 +70,10 @@ class TextfieldViewModel extends ComponentViewModel {
       this.disable = true;
     }
 
-    this.instance().disabled = ko.unwrap(this.disable);
+    this.instance.disabled = ko.unwrap(this.disable);
     if (ko.isSubscribable(this.disable)) {
       this.track = this.disable.subscribe( value => {
-        this.instance().disabled = value;
+        this.instance.disabled = value;
       });
     }
   }

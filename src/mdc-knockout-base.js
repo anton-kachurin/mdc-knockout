@@ -82,7 +82,7 @@ class ComponentViewModel extends PlainViewModel {
 
     this.MDCFoundation = MDCFoundation;
     this.MDCComponent = MDCComponent;
-    this.instance = ko.observable({});
+    this.instance = null;
   }
 
   initialize (parent) {
@@ -91,7 +91,7 @@ class ComponentViewModel extends PlainViewModel {
 
   dispose () {
     super.dispose();
-    this.instance().destroy();
+    this.instance && this.instance.destroy();
   }
 }
 
@@ -109,7 +109,7 @@ class CheckableComponentViewModel extends ComponentViewModel {
     let init = this.initialize.bind(this);
     this.initialize = parent => {
       if (parent && ko.isSubscribable(parent.for)) {
-        parent.instance().input = this.instance();
+        parent.instance.input = this.instance;
         parent.for(this.attrs['id']);
       }
       init(parent);

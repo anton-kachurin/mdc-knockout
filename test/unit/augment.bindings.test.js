@@ -282,7 +282,7 @@ test('mdc-instance binding instantiates MDCComponent and ' +
       this.root = root;
       this.MDCComponent = {attachTo: attach};
 
-      this.instance = () => {};
+      this.instance = null;
       this.initialize = () => {};
     }
   }
@@ -301,15 +301,18 @@ test('mdc-instance binding instantiates MDCComponent and ' +
   });
 });
 
-test('mdc-instance binding passes mdcInstance into observable property of viewmodel', (done) => {
-  const instanceObservable = td.function();
+test('mdc-instance binding passes mdcInstance into "instance" property of viewmodel', (done) => {
+  const setter = td.function();
   class TestViewModel {
     constructor (root) {
       this.root = root;
       this.MDCComponent = {attachTo: () => 'mdcInstance'};
-      this.instance = instanceObservable;
 
       this.initialize = () => {};
+    }
+
+    set instance (value) {
+      setter(value);
     }
   }
   augment.registerComponent(ko, 'mdc-test', '<span data-bind="mdc-instance"></span>', TestViewModel)
@@ -318,7 +321,7 @@ test('mdc-instance binding passes mdcInstance into observable property of viewmo
 
   ko.applyBindings({}, component);
   setTimeout(() => {
-    td.verify(instanceObservable('mdcInstance'));
+    td.verify(setter('mdcInstance'));
 
     ko.components.unregister('mdc-test');
     done();
@@ -331,7 +334,7 @@ test('mdc-instance binding makes mdcInstance available at the HTML element', (do
       this.root = root;
       this.MDCComponent = {attachTo: () => 'mdcInstanceStub', name: 'MDCTestComponent'};
 
-      this.instance = () => {};
+      this.instance = null;
       this.initialize = () => {};
     }
   }
@@ -355,7 +358,7 @@ test('mdc-instance binding initializes viewmodel', (done) => {
       this.root = root;
       this.initialize = initialize;
 
-      this.instance = () => {};
+      this.instance = null;
       this.MDCComponent = {attachTo: () => {}};
     }
   }
@@ -379,7 +382,7 @@ test('mdc-instance bindings passes proper parent when initializing viewmodel', (
       this.root = root;
       this.initialize = initialize;
 
-      this.instance = () => {};
+      this.instance = null;
       this.MDCComponent = {attachTo: () => {}};
     }
   }
