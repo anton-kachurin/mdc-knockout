@@ -1,6 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
+import td from 'testdouble';
 import augment from '../../src/mdc-knockout-augment';
+import ComponentViewModel from '../../src/mdc-knockout-base';
 
 import {koMock} from './helpers/knockout';
 
@@ -272,6 +274,137 @@ test('mdc-child binding is allowed for virtual elements', () => {
   allowedVirtual('mdc-child');
 });
 
-test('', () => {
+test('mdc-instance binding instantiates MDCComponent and ' +
+     'attaches the instance to the first element of the template', (done) => {
+  const attach = td.function();
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+      this.MDCComponent = {attachTo: attach};
 
+      this.instance = null;
+      this.initialize = () => {};
+    }
+  }
+  augment.registerComponent(ko, 'mdc-test', '<input /><span data-bind="mdc-instance"></span>', TestViewModel)
+
+  const component = bel`<mdc-test></mdc-test>`;
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    td.verify(attach(td.matchers.argThat(
+      element => element && element.nodeType && element.tagName === 'INPUT'
+    )));
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-instance binding passes mdcInstance into "instance" property of viewmodel', (done) => {
+  const setter = td.function();
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+      this.MDCComponent = {attachTo: () => 'mdcInstance'};
+
+      this.initialize = () => {};
+    }
+
+    set instance (value) {
+      setter(value);
+    }
+  }
+  augment.registerComponent(ko, 'mdc-test', '<span data-bind="mdc-instance"></span>', TestViewModel)
+
+  const component = bel`<mdc-test></mdc-test>`;
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    td.verify(setter('mdcInstance'));
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-instance binding makes mdcInstance available at the HTML element', (done) => {
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+      this.MDCComponent = {attachTo: () => 'mdcInstanceStub', name: 'MDCTestComponent'};
+
+      this.instance = null;
+      this.initialize = () => {};
+    }
+  }
+  augment.registerComponent(ko, 'mdc-test', '<span data-bind="mdc-instance"></span>', TestViewModel)
+
+  const component = bel`<mdc-test></mdc-test>`;
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    assert.equal(component.MDCTestComponent, 'mdcInstanceStub');
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-instance binding initializes viewmodel', (done) => {
+  const initialize = td.function();
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+      this.initialize = initialize;
+
+      this.instance = null;
+      this.MDCComponent = {attachTo: () => {}};
+    }
+  }
+  augment.registerComponent(ko, 'mdc-test', '<span data-bind="mdc-instance"></span>', TestViewModel)
+
+  const component = bel`<mdc-test></mdc-test>`;
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    td.verify(initialize(undefined));
+
+    ko.components.unregister('mdc-test');
+    done();
+  });
+});
+
+test('mdc-instance bindings passes proper parent when initializing viewmodel', (done) => {
+  const initialize = td.function();
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+      this.initialize = initialize;
+
+      this.instance = null;
+      this.MDCComponent = {attachTo: () => {}};
+    }
+  }
+  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-instance"></span>', TestViewModel)
+  augment.registerComponent(ko, 'mdc-outer', '<span data-bind="mdc-instance, mdc-child"></span>', TestViewModel)
+
+  const component = bel`<mdc-outer><mdc-inner></mdc-inner></mdc-outer>`;
+
+  ko.applyBindings({}, component);
+  setTimeout(() => {
+    td.verify(initialize(td.matchers.argThat(
+      obj => obj && obj.root && obj.root.tagName === 'MDC-OUTER'
+    )), {times: 1});
+    td.verify(initialize(undefined), {times: 1});
+
+
+    ko.components.unregister('mdc-inner');
+    ko.components.unregister('mdc-outer');
+    done();
+  });
+});
+
+test('mdc-instance binding is allowed for virtual elements', () => {
+  allowedVirtual('mdc-instance');
 });

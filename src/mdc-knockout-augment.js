@@ -128,7 +128,7 @@ function registerBindings (ko) {
       var MDCComponent = bindingContext.$component.MDCComponent;
       var instance = MDCComponent.attachTo(root.children[0]);
       root[MDCComponent.name] = instance;
-      bindingContext.$component.instance(instance);
+      bindingContext.$component.instance = instance;
       bindingContext.$component.initialize(bindingContext['mdc-parent'])
     }
   };
@@ -138,6 +138,10 @@ function registerBindings (ko) {
 }
 
 function registerComponent (ko, name, template, viewModelConstructor, MDCComponent, MDCFoundation) {
+  if (MDCComponent) {
+    template += '<!-- ko mdc-instance --><!-- /ko -->';
+  }
+  
   ko.components.register(name, {
     template: template,
     viewModel: {
@@ -148,7 +152,7 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
         var attrs = {}
         var names = [];
 
-        ko.utils.arrayForEach(attributes, function (attr) {
+        [].map.call(attributes, function (attr) {
           var attrName = attr.name.toLowerCase();
           if (attrName != 'params'
            && attrName != 'class'
@@ -156,8 +160,9 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
             attrs[attr.name] = attr.value;
             names.push(attr.name);
           }
+          return attr;
         });
-        ko.utils.arrayForEach(names, function (name) {
+        names.forEach(function (name) {
           element.removeAttribute(name);
         });
 

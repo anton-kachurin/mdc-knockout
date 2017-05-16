@@ -32,8 +32,11 @@ class PlainViewModel extends DisposableViewModel {
   constructor (root, params, attrs) {
     super();
     this.root = root;
+    this.attrs = attrs;
 
-    ko.utils.objectForEach(this.defaultParams(), (name, defaultValue) => {
+    const defaultParams = this.defaultParams();
+    Object.keys(defaultParams).forEach( name => {
+      const defaultValue = defaultParams[name];
       if (params.hasOwnProperty(name)) {
         this[name] = params[name];
         delete params[name];
@@ -43,20 +46,23 @@ class PlainViewModel extends DisposableViewModel {
       }
     });
 
-    ko.utils.arrayForEach(
-      this.unwrapParams(),
-      name => this[name] = ko.toJS(this[name])
-    );
+    this.unwrapParams().forEach(name => {
+      let prop = this[name];
+      while (!!(prop && prop.constructor && prop.call && prop.apply)) {
+        prop = prop();
+      }
+      this[name] = prop;
+    });
 
-    delete params.$raw;
+    if (params && params.hasOwnProperty('$raw')) {
+      delete params.$raw;
+    }
 
-    if (params.hasOwnProperty('')) {
+    if (params && params.hasOwnProperty('')) {
       delete params[''];
     }
 
     this.bindings = params;
-
-    this.attrs = attrs;
 
     this.extend();
   }
@@ -80,7 +86,7 @@ class ComponentViewModel extends PlainViewModel {
 
     this.MDCFoundation = MDCFoundation;
     this.MDCComponent = MDCComponent;
-    this.instance = ko.observable({});
+    this.instance = null;
   }
 
   initialize (parent) {
@@ -89,7 +95,7 @@ class ComponentViewModel extends PlainViewModel {
 
   dispose () {
     super.dispose();
-    this.instance().destroy();
+    this.instance && this.instance.destroy();
   }
 }
 
@@ -107,7 +113,7 @@ class CheckableComponentViewModel extends ComponentViewModel {
     let init = this.initialize.bind(this);
     this.initialize = parent => {
       if (parent && ko.isSubscribable(parent.for)) {
-        parent.instance().input = this.instance();
+        parent.instance.input = this.instance;
         parent.for(this.attrs['id']);
       }
       init(parent);
@@ -116,4 +122,4 @@ class CheckableComponentViewModel extends ComponentViewModel {
 }
 
 export default ComponentViewModel;
-export { PlainViewModel, ComponentViewModel, CheckableComponentViewModel };
+export { DisposableViewModel, PlainViewModel, ComponentViewModel, CheckableComponentViewModel };

@@ -136,3 +136,13 @@ test('registerComponent passes right arguments to the viewmodel constructor', ()
                                 {id: 'el_1', attr1: 'attr1', attr2: 'something'},
                                 'MDCComponentStub', 'MDCFoundationStub'));
 });
+
+test('registerComponent triggers mdc-instance binding if the fifth argument (MDCComponent) is passed', () => {
+  const ko = koMock();
+
+  ko.components.register = (name, obj) => {
+    assert.strictEqual(obj.template, '<!-- ko mdc-instance --><!-- /ko -->');
+  }
+
+  augment.registerComponent(ko, '', '', {}, 'MDCComponentStub')
+});

@@ -20,14 +20,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/unit/index.js'
+      'test/unit/*test.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/unit/index.js': ['webpack', 'sourcemap']
+      'test/unit/*test.js': ['webpack', 'sourcemap']
     },
 
 
@@ -36,14 +36,15 @@ module.exports = function(config) {
     }),
 
     webpackMiddleware: {
-       watchOptions: {
-         poll: true
-       }
-     },
+      noInfo: true,
+      watchOptions: {
+        poll: true
+      }
+    },
+
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // test results reporter to use
