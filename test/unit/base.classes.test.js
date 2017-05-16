@@ -154,3 +154,30 @@ test('PlainViewModel constructor converts properties to non-observables based on
   assert.strictEqual(vm.wrapped, 1);
   assert.strictEqual(vm.b, 3);
 });
+
+test('ComponentViewModel extends PlainViewModel', () => {
+  const vm = new ComponentViewModel();
+  assert.instanceOf(vm, PlainViewModel);
+});
+
+test('ComponentViewModel constructor assigns "MDCFoundation" and "MDCComponent" arguments ' +
+     'to corresponding instance properties', () => {
+  const vm = new ComponentViewModel(null, null, null, 'MDCComponent', 'MDCFoundation');
+  assert.strictEqual(vm.MDCComponent, 'MDCComponent');
+  assert.strictEqual(vm.MDCFoundation, 'MDCFoundation');
+});
+
+test('ComponentViewModel instance has "instance" property and "initialize" method', () => {
+  const vm = new ComponentViewModel();
+  assert.strictEqual(vm.instance, null);
+  assert.isFunction(vm.initialize);
+});
+
+test('ComponentViewModel instance destroys its "instance" property on disposal', () => {
+  const vm = new ComponentViewModel();
+  const destroy = td.function();
+  vm.instance = {destroy: destroy};
+
+  vm.dispose();
+  td.verify(destroy());
+});
