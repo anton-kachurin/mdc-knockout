@@ -12,7 +12,7 @@ augment.registerBindings(ko);
 function expectBindings () {
   return [
     'mdc-bindings', 'mdc-attrs', 'mdc-parent-bindings', 'mdc-parent-attrs',
-    'mdc-child', 'mdc-ripple', 'mdc-css', 'mdc-attr', 'mdc-instance'
+    'mdc-child', 'mdc-ripple', 'mdc-css', 'mdc-attr', 'mdc-instance', 'mdc-force-bindings'
   ];
 }
 
