@@ -99,6 +99,72 @@ class ComponentViewModel extends PlainViewModel {
   }
 }
 
+class HookableComponentViewModel extends ComponentViewModel {
+  constructor (...args) {
+    super(...args);
+
+    // don't have to use super() in the extending class method
+    let init = this.initialize.bind(this);
+    this.initialize = parent => {
+      init(parent);
+      this.installHooks_();
+    }
+  }
+
+  get forceBindings () {
+    // e.g return ['disable']
+    throw new Error('Define "forceBindings" property in your class')
+  }
+
+  get hookedElement () {
+    // e.g return this.root.querySelector('input')
+    throw new Error('Define "hookedElement" property in your class')
+  }
+
+  get hookedProperties () {
+    // e.g return {'disabled': state => {}}
+    throw new Error('Define "hookedProperties" property in your class')
+  }
+
+  installHooks_ () {
+    const element = this.hookedElement;
+    const elementProto = Object.getPrototypeOf(element);
+
+    Object.keys(this.hookedProperties).forEach(propertyName => {
+      let desc = Object.getOwnPropertyDescriptor(element, propertyName);
+      if (!desc) {
+        desc = Object.getOwnPropertyDescriptor(elementProto, propertyName);
+      }
+      // We have to check for this descriptor, since some browsers (Safari) don't support its return.
+      // See: https://bugs.webkit.org/show_bug.cgi?id=49739
+      if (validDescriptor(desc)) {
+        Object.defineProperty(element, propertyName, {
+          get: desc.get,
+          set: (state) => {
+            desc.set.call(element, state);
+            this.hookedProperties[propertyName](state);
+          },
+          configurable: desc.configurable,
+          enumerable: desc.enumerable,
+        });
+      }
+    });
+  }
+
+  uninstallHooks_ () {
+
+  }
+
+  dispose () {
+    this.uninstallHooks_();
+    super.dispose();
+  }
+}
+
+function validDescriptor(elementPropDesc) {
+  return elementPropDesc && typeof elementPropDesc.set === 'function';
+}
+
 class CheckableComponentViewModel extends ComponentViewModel {
   constructor (...args) {
     super(...args);
@@ -122,4 +188,4 @@ class CheckableComponentViewModel extends ComponentViewModel {
 }
 
 export default ComponentViewModel;
-export { DisposableViewModel, PlainViewModel, ComponentViewModel, CheckableComponentViewModel };
+export { DisposableViewModel, PlainViewModel, ComponentViewModel, HookableComponentViewModel, CheckableComponentViewModel };
