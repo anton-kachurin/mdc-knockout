@@ -1,3 +1,5 @@
+import {toJS, isSubscribable} from './util.js';
+
 class DisposableViewModel {
   constructor () {
     this.subscriptions_ = [];
@@ -47,11 +49,7 @@ class PlainViewModel extends DisposableViewModel {
     });
 
     this.unwrapParams().forEach(name => {
-      let prop = this[name];
-      while (!!(prop && prop.constructor && prop.call && prop.apply)) {
-        prop = prop();
-      }
-      this[name] = prop;
+      this[name] = toJS(this[name]);
     });
 
     if (params && params.hasOwnProperty('$raw')) {
@@ -178,7 +176,7 @@ class CheckableComponentViewModel extends ComponentViewModel {
 
     let init = this.initialize.bind(this);
     this.initialize = parent => {
-      if (parent && ko.isSubscribable(parent.for)) {
+      if (parent && isSubscribable(parent.for)) {
         parent.instance.input = this.instance;
         parent.for(this.attrs['id']);
       }

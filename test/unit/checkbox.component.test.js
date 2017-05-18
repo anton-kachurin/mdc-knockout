@@ -6,7 +6,6 @@ import {CheckboxTemplate, CheckboxViewModel} from '../../src/mdc-knockout-checkb
 import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 
 import ko from 'knockout';
-global.ko = ko;
 augment.registerBindings(ko);
 augment.registerComponent(ko, 'mdc-checkbox', CheckboxTemplate(), CheckboxViewModel, MDCCheckbox, MDCCheckboxFoundation);
 

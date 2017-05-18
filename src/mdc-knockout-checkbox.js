@@ -1,5 +1,6 @@
 import {HookableComponentViewModel} from './mdc-knockout-base';
 import CheckboxTemplate from './templates/checkbox.html';
+import {isSubscribable, unwrap} from './util.js';
 
 class CheckboxViewModel extends HookableComponentViewModel {
   extend () {
@@ -9,16 +10,16 @@ class CheckboxViewModel extends HookableComponentViewModel {
   }
 
   initialize (parent) {
-    if (parent && ko.isSubscribable(parent.for)) {
+    if (parent && isSubscribable(parent.for)) {
       parent.instance.input = this.instance;
       parent.for(this.attrs['id']);
     }
 
-    this.instance.indeterminate = ko.unwrap(this.indeterminate);
-    if (ko.isSubscribable(this.indeterminate)) {
+    this.instance.indeterminate = unwrap(this.indeterminate);
+    if (isSubscribable(this.indeterminate)) {
       this.track = this.indeterminate.subscribe(value => {
         this.instance.indeterminate = value;
-      })
+      });
     }
   }
 
@@ -36,14 +37,14 @@ class CheckboxViewModel extends HookableComponentViewModel {
   }
 
   get hookedElement () {
-    return this.root.querySelector('input');
+    return this.root.querySelector('input')
   }
 
   get hookedProperties () {
     return {
       checked: state => this.hookedElement.indeterminate = false,
       indeterminate: state => {
-        if (ko.isSubscribable(this.indeterminate)) {
+        if (isSubscribable(this.indeterminate)) {
           this.indeterminate(state);
         }
       }
