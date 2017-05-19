@@ -408,3 +408,33 @@ test('mdc-instance bindings passes proper parent when initializing viewmodel', (
 test('mdc-instance binding is allowed for virtual elements', () => {
   allowedVirtual('mdc-instance');
 });
+
+test('mdc-force-bindings binding applies given bindings to the node', () => {
+  const element = bel`<div data-bind="mdc-bindings: bindings, mdc-force-bindings: forceBindings"></div>`;
+  assert.equal(element.textContent, '');
+
+  ko.applyBindings({bindings: {}, forceBindings: {text: () => 'text content'}}, element);
+  assert.equal(element.textContent, 'text content');
+});
+
+test('mdc-force-bindings binding does nothing if there is no mdc-bindings', () => {
+  const element = bel`<div data-bind="mdc-force-bindings: forceBindings"></div>`;
+  assert.equal(element.textContent, '');
+
+  ko.applyBindings({forceBindings: {text: () => 'text content'}}, element);
+  assert.equal(element.textContent, '');
+});
+
+test('mdc-force-bindings binding does not apply bindings found in "mdc-bindings"', () => {
+  const element = bel`<div data-bind="mdc-bindings: bindings, mdc-force-bindings: forceBindings"></div>`;
+  ko.applyBindings({bindings: {text: 'text1'}, forceBindings: {text: () => 'text2'}}, element);
+
+  assert.equal(element.textContent, 'text1');
+});
+
+test('mdc-force-bindings binding provides a default "forceBindings" value', () => {
+  const element = bel`<div data-bind="mdc-bindings: bindings, mdc-force-bindings"></div>`;
+  ko.applyBindings({bindings: {}, forceBindings: {text: () => 'text content'}}, element);
+
+  assert.equal(element.textContent, 'text content');
+});
