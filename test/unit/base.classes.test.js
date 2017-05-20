@@ -1,7 +1,10 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
-import {DisposableViewModel, PlainViewModel, ComponentViewModel} from '../../src/mdc-knockout-base';
+import {DisposableViewModel,
+        PlainViewModel,
+        ComponentViewModel,
+        HookableComponentViewModel} from '../../src/mdc-knockout-base';
 
 import ko from 'knockout';
 
@@ -180,4 +183,86 @@ test('ComponentViewModel instance destroys its "instance" property on disposal',
 
   vm.dispose();
   td.verify(destroy());
+});
+
+test('HookableComponentViewModel extends ComponentViewModel', () => {
+  const vm = new HookableComponentViewModel();
+  assert.instanceOf(vm, ComponentViewModel);
+});
+
+test('HookableComponentViewModel has stub property-getters "hookedElement" and "hookedProperties"', () => {
+  const vm = new HookableComponentViewModel();
+  const getHookedElement = () => vm.hookedElement;
+  const getHookedProperties = () => vm.hookedProperties;
+  assert.isOk('hookedElement' in vm);
+  assert.isOk('hookedProperties' in vm);
+  assert.throws(getHookedElement);
+  assert.throws(getHookedProperties);
+});
+
+test('HookableComponentViewModel installs hooks on initialization', () => {
+  const hook = td.function();
+  const element = bel`<input>`;
+  class TestClass extends HookableComponentViewModel {
+    get hookedElement () {
+      return element;
+    }
+
+    get hookedProperties () {
+      return {disabled: hook}
+    }
+  }
+  const vm = new TestClass(null, null, null, 'MDCComponentStub');
+  vm.initialize();
+
+  element.disabled = true;
+  td.verify(hook(true));
+});
+
+test('HookableComponentViewModel does not require extending classes to use "super()" ' +
+     'inside "initialize" method', () => {
+  const hook = td.function();
+  const init = td.function();
+  const element = bel`<input>`;
+  class TestClass extends HookableComponentViewModel {
+    initialize () {
+      init();
+    }
+
+    get hookedElement () {
+      return element;
+    }
+
+    get hookedProperties () {
+      return {disabled: hook}
+    }
+  }
+  const vm = new TestClass(null, null, null, 'MDCComponentStub');
+
+  vm.initialize();
+  td.verify(init());
+
+  element.disabled = true;
+  td.verify(hook(true));
+});
+
+test('HookableComponentViewModel uninstalls hooks on disposal', () => {
+  const hook = td.function();
+  const element = bel`<input>`;
+  class TestClass extends HookableComponentViewModel {
+    get hookedElement () {
+      return element
+    }
+
+    get hookedProperties () {
+      return {disabled: hook}
+    }
+  }
+  const vm = new TestClass(null, null, null, 'MDCComponentStub');
+  vm.initialize();
+
+  element.disabled = true;
+  vm.dispose();
+  element.disabled = false;
+  td.verify(hook(td.matchers.anything()), {times: 1});
 });
