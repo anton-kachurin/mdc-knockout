@@ -101,6 +101,8 @@ class HookableComponentViewModel extends ComponentViewModel {
   constructor (...args) {
     super(...args);
 
+    this.hooked_ = [];
+
     // don't have to use super() in the extending class method
     let init = this.initialize.bind(this);
     this.initialize = parent => {
@@ -110,7 +112,7 @@ class HookableComponentViewModel extends ComponentViewModel {
   }
 
   get forceBindings () {
-    // e.g return ['disable']
+    // e.g return {'disable': () => this.disableOnInit}
     throw new Error('Define "forceBindings" property in your class')
   }
 
@@ -120,7 +122,7 @@ class HookableComponentViewModel extends ComponentViewModel {
   }
 
   get hookedProperties () {
-    // e.g return {'disabled': state => {}}
+    // e.g return {'disabled': state => console.log(state)}
     throw new Error('Define "hookedProperties" property in your class')
   }
 
@@ -136,9 +138,10 @@ class HookableComponentViewModel extends ComponentViewModel {
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
       if (validDescriptor(desc)) {
+        this.hooked_.push({element: element, propertyName: propertyName, descriptor: desc});
         Object.defineProperty(element, propertyName, {
           get: desc.get,
-          set: (state) => {
+          set: state => {
             desc.set.call(element, state);
             this.hookedProperties[propertyName](state);
           },
@@ -150,7 +153,9 @@ class HookableComponentViewModel extends ComponentViewModel {
   }
 
   uninstallHooks_ () {
-
+    this.hooked_.forEach(item => {
+      Object.defineProperty(item.element, item.propertyName, item.descriptor);
+    });
   }
 
   dispose () {
