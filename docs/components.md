@@ -235,9 +235,7 @@ to easily position checkboxes and their labels.
 
 | Name          | Type     | Description                                  |
 | --------------|--------- | -------------------------------------------- |
-| checked       | ko, bool | Whether or not the input is checked.         |
 | indeterminate | ko, bool | Whether or not the input is indeterminate.   |
-| disable       | ko, bool | Wheter or not the input is disabled.         |
 
 
 ### HTML-only
@@ -245,13 +243,11 @@ to easily position checkboxes and their labels.
 Checked:
 ```HTML
 <mdc-checkbox checked></mdc-checkbox>
-<mdc-checkbox params="checked: true"></mdc-checkbox>
 ```
 
 Disabled:
 ```HTML
 <mdc-checkbox disabled></mdc-checkbox>
-<mdc-checkbox params="disable: true"></mdc-checkbox>
 ```
 
 Indeterminate:
@@ -259,9 +255,13 @@ Indeterminate:
 <mdc-checkbox params="indeterminate: true"></mdc-checkbox>
 ```
 
-Although using `checked` and `disabled` attributes looks prettier, there are
-reasons why sometimes it's better to stick to the `params=""` syntax,
-[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page) for example.
+As a form element:
+```HTML
+<mdc-form-field>
+  <mdc-checkbox name="notifications" checked></mdc-checkbox>
+  I'd like to receive notifications
+</mdc-form-field>
+```
 
 #### MDCComponent API
 
@@ -286,20 +286,17 @@ for example:
 ```
 
 Keep in mind that if you add `id` attribute to the `<mdc-checkbox>` element, it
-will be passed to the native element along with all other attributes during
-the initialization, so the only reliable way to access `<mdc-checkbox>` element
-itself is to add some unique class name to it.
+will be passed to the native input element along with all other attributes during
+the initialization, so adding some unique class name to the `<mdc-checkbox>`
+element is a more reliable way to get access to it.
 
 For full API please refer to the [original component's documentation](https://github.com/material-components/material-components-web/blob/master/packages/mdc-checkbox/README.md#mdccheckbox-api).
 
 
 ### Fully featured
 
-The component uses the standard Knockout binding for `checked` and accepts an  
-observable for `indeterminate`, and `indeterminate` will automatically be set
-to `false` when `checked` is updated. Thus, if you use an observable for the
-`indeterminate` parameter, you have to use an observable for the `checked` too,
-not a plain value or an attribute:
+In addition to the `indeterminate` parameter, any standard or third-party
+binding can be used, such as `checked`, `checkedValue`, `disabled`, etc:
 ```HTML
 <mdc-checkbox params="
   checked: checkboxIsChecked,
