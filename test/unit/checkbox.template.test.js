@@ -2,21 +2,13 @@ import {assert} from 'chai';
 import bel from 'bel';
 import augment from '../../src/mdc-knockout-augment.js';
 import {CheckboxTemplate, CheckboxViewModel} from '../../src/mdc-knockout-checkbox';
+import {componentTest} from './helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
 augment.registerComponent(ko, 'mdc-checkbox', CheckboxTemplate(), CheckboxViewModel);
 
-function componentTest (component, description, callback) {
-  test(description, (done) => {
-    setTimeout(() => {
-      callback(component);
-      done();
-    });
-  });
-}
-
-function getComponent (isDisabled) {
+function initComponent (isDisabled) {
   const component = bel`<mdc-checkbox params="disable: isDisabled"></mdc-checkbox>`;
   ko.applyBindings({isDisabled: isDisabled}, component);
 
@@ -25,7 +17,7 @@ function getComponent (isDisabled) {
 
 suite('checkbox template');
 
-componentTest(getComponent(false), 'has all elements', (component) => {
+componentTest(initComponent(false), 'has all elements', (component) => {
   assert.equal(component.children.length, 1);
   assert.equal(component.children[0].tagName, 'DIV');
 
@@ -41,7 +33,7 @@ componentTest(getComponent(false), 'has all elements', (component) => {
   assert.equal(component.children[0].children[1].children[0].children[0].tagName.toUpperCase(), 'PATH');
 });
 
-componentTest(getComponent(false), 'has proper classes', (component) => {
+componentTest(initComponent(false), 'has proper classes', (component) => {
   assert.equal(component.children[0].className, 'mdc-checkbox');
 
   assert.equal(component.children[0].children[0].className, 'mdc-checkbox__native-control');
@@ -54,6 +46,6 @@ componentTest(getComponent(false), 'has proper classes', (component) => {
               'mdc-checkbox__checkmark__path');
 });
 
-componentTest(getComponent(true), 'sets "disabled" modifier', (component) => {
+componentTest(initComponent(true), 'sets "disabled" modifier', (component) => {
   assert.isOk(component.children[0].classList.contains('mdc-checkbox--disabled'));
 });
