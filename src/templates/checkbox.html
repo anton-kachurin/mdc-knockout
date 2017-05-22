@@ -1,4 +1,6 @@
-<div class="mdc-checkbox">
+<div class="mdc-checkbox" data-bind="css: {
+  'mdc-checkbox--disabled': bindings.disable
+}">
   <input type="checkbox"
          class="mdc-checkbox__native-control"
          data-bind="mdc-attrs, mdc-bindings, mdc-force-bindings"/>
