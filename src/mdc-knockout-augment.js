@@ -134,6 +134,25 @@ function registerBindings (ko) {
   };
   ko.virtualElements.allowedBindings['mdc-instance'] = true;
 
+  ko.bindingHandlers['mdc-force-bindings'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      const bindings = allBindings()['mdc-bindings'];
+      const forced = valueAccessor();
+      if (bindings) {
+        Object.keys(forced).forEach(name => {
+          if (!(name in bindings)){
+            const binding = {};
+            binding[name] = ko.observable(forced[name]());
+            ko.applyBindingsToNode(element, binding);
+          }
+        });
+      }
+    },
+    preprocess: function (value, name, addBindingCallback) {
+      return value || 'forceBindings';
+    }
+  }
+
   ko[WAS_BIND] = true;
 }
 
@@ -141,7 +160,7 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
   if (MDCComponent) {
     template += '<!-- ko mdc-instance --><!-- /ko -->';
   }
-  
+
   ko.components.register(name, {
     template: template,
     viewModel: {
