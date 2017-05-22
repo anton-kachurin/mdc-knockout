@@ -103,5 +103,5 @@ no on the fly updates will be available.
 npm run test
 ```
 
-Karma will run tests in a watch mode using PhantomJS, headlessly. A webserver
+Karma will run tests in a watch mode using Chrome, headlessly. A webserver
 will run on `localhost:9876` allowing to use any additional browser.
