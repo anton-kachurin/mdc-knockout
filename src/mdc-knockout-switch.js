@@ -25,7 +25,7 @@ class SwitchViewModel extends PlainViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       label: ''
     }

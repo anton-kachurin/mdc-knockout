@@ -23,7 +23,7 @@ class CheckboxViewModel extends HookableComponentViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       indeterminate: false
     }

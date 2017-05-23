@@ -28,7 +28,7 @@ class ElevationViewModel extends PlainViewModel {
     this.bindings.css = Object.assign({}, this.bindings.css, css);
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       z: 0
     }

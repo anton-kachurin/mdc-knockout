@@ -11,7 +11,7 @@ class ButtonViewModel extends PlainViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       href: '',
       dense: false,
@@ -22,7 +22,7 @@ class ButtonViewModel extends PlainViewModel {
     }
   }
 
-  unwrapParams () {
+  get unwrapParams () {
     return ['submit'];
   }
 }

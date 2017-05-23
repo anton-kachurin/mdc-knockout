@@ -9,6 +9,12 @@ function registerBindings (ko) {
 
   ko.bindingHandlers['mdc-bindings'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      const bindings = valueAccessor();
+      Object.keys(bindings).forEach(name => {
+        if (!ko.isSubscribable(bindings[name])) {
+          bindings[name] = ko.observable(bindings[name]);
+        }
+      });
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
     },
     preprocess: function (value, name, addBindingCallback) {
@@ -133,25 +139,6 @@ function registerBindings (ko) {
     }
   };
   ko.virtualElements.allowedBindings['mdc-instance'] = true;
-
-  ko.bindingHandlers['mdc-force-bindings'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      const bindings = allBindings()['mdc-bindings'];
-      const forced = valueAccessor();
-      if (bindings) {
-        Object.keys(forced).forEach(name => {
-          if (!(name in bindings)){
-            const binding = {};
-            binding[name] = ko.observable(forced[name]());
-            ko.applyBindingsToNode(element, binding);
-          }
-        });
-      }
-    },
-    preprocess: function (value, name, addBindingCallback) {
-      return value || 'forceBindings';
-    }
-  }
 
   ko[WAS_BIND] = true;
 }

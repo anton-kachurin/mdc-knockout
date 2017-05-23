@@ -20,7 +20,7 @@ class FormFieldViewModel extends ComponentViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       alignEnd: false
     }

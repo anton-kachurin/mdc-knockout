@@ -47,12 +47,14 @@ test('PlainViewModel instance has "root", "bindings", and "attrs" properties', (
   assert.property(vm, 'attrs');
 });
 
-test('PlainViewModel has "defaultParams" and "unwrapParams" methods', () => {
+test('PlainViewModel has "defaultParams", "unwrapParams", and "forceBindings" property-getters', () => {
   const vm = new PlainViewModel();
-  assert.isFunction(vm.defaultParams);
-  assert.deepEqual(vm.defaultParams(), {});
-  assert.isFunction(vm.unwrapParams);
-  assert.deepEqual(vm.unwrapParams(), []);
+  assert.property(vm, 'defaultParams');
+  assert.deepEqual(vm.defaultParams, {});
+  assert.property(vm, 'unwrapParams');
+  assert.deepEqual(vm.unwrapParams, []);
+  assert.property(vm, 'forceBindings');
+  assert.deepEqual(vm.forceBindings, {});
 });
 
 test('PlainViewModel has "extend" method', () => {
@@ -82,7 +84,7 @@ test('PlainViewModel constructor assigns "root" and "attrs" arguments to corresp
 });
 
 test('PlainViewModel constructor assigns "params" argument to "bindings" instance property ' +
-     'when defaultParams and unwrapParams have default values', () => {
+     'when "defaultParams", "unwrapParams", and "forceBindings" have default values', () => {
   const params = {
     a: 1,
     b: 'b',
@@ -92,10 +94,42 @@ test('PlainViewModel constructor assigns "params" argument to "bindings" instanc
   assert.strictEqual(vm.bindings, params);
 });
 
-test('PlainViewModel constructor adds properties to instance based on defaultParams value', () => {
+test('PlainViewModel constructor adds bindings based on "forceBindings" value', () => {
+  class TestVM extends PlainViewModel {
+    get forceBindings () {
+      return {
+        a: () => 1,
+        b: () => 2,
+      }
+    }
+  }
+  const vm = new TestVM('', {});
+  assert.property(vm.bindings, 'a');
+  assert.property(vm.bindings, 'b');
+  assert.strictEqual(vm.bindings.a, 1);
+  assert.strictEqual(vm.bindings.b, 2);
+});
+
+test('PlainViewModel constructor does not force bindings if they are already present', () => {
+  class TestVM extends PlainViewModel {
+    get forceBindings () {
+      return {
+        a: () => 1,
+        b: () => 2,
+      }
+    }
+  }
+  const vm = new TestVM('', {a: 3});
+  assert.property(vm.bindings, 'a');
+  assert.property(vm.bindings, 'b');
+  assert.strictEqual(vm.bindings.a, 3);
+  assert.strictEqual(vm.bindings.b, 2);
+});
+
+test('PlainViewModel constructor adds properties to instance based on "defaultParams" value', () => {
   const observable = ko.observable();
   class TestVM extends PlainViewModel {
-    defaultParams () {
+    get defaultParams () {
       return {
         a: '',
         b: 1,
@@ -114,7 +148,7 @@ test('PlainViewModel constructor adds properties to instance based on defaultPar
 
 test('PlainViewModel constructor overwrites default param value when it is present in "params" argument', () => {
   class TestVM extends PlainViewModel {
-    defaultParams () {
+    get defaultParams () {
       return {
         a: '',
         b: 2
@@ -130,12 +164,12 @@ test('PlainViewModel constructor overwrites default param value when it is prese
   assert.strictEqual(vm.bindings.c, 3);
 });
 
-test('PlainViewModel constructor converts properties to non-observables based on defaultParams value', () => {
+test('PlainViewModel constructor converts properties to non-observables based on "unwrapParams" value', () => {
   const observableA = ko.observable(1);
   const computed = ko.computed(() => observableA() + 1);
   const wrapped = ko.observable(observableA);
   class TestVM extends PlainViewModel {
-    defaultParams () {
+    get defaultParams () {
       return {
         a: observableA,
         computed: computed,
@@ -143,7 +177,7 @@ test('PlainViewModel constructor converts properties to non-observables based on
         b: 3
       }
     }
-    unwrapParams () {
+    get unwrapParams () {
       return ['a', 'computed', 'wrapped', 'b']
     }
   }

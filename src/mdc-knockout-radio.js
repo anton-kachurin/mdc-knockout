@@ -48,7 +48,7 @@ class RadioViewModel extends CheckableComponentViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       isChecked: false
     }

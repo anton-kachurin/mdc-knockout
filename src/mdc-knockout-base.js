@@ -36,7 +36,7 @@ class PlainViewModel extends DisposableViewModel {
     this.root = root;
     this.attrs = attrs;
 
-    const defaultParams = this.defaultParams();
+    const defaultParams = this.defaultParams;
     Object.keys(defaultParams).forEach( name => {
       const defaultValue = defaultParams[name];
       if (params.hasOwnProperty(name)) {
@@ -48,7 +48,7 @@ class PlainViewModel extends DisposableViewModel {
       }
     });
 
-    this.unwrapParams().forEach(name => {
+    this.unwrapParams.forEach(name => {
       this[name] = toJS(this[name]);
     });
 
@@ -60,6 +60,15 @@ class PlainViewModel extends DisposableViewModel {
       delete params[''];
     }
 
+    const forced = this.forceBindings;
+    if (params) {
+      Object.keys(forced).forEach(name => {
+        if (!(name in params)){
+          params[name] = forced[name]();
+        }
+      });
+    }
+
     this.bindings = params;
 
     this.extend();
@@ -69,11 +78,18 @@ class PlainViewModel extends DisposableViewModel {
 
   }
 
-  defaultParams () {
+  get forceBindings () {
+    // e.g return {'disable': () => this.disableOnInit}
     return {}
   }
 
-  unwrapParams () {
+  get defaultParams () {
+    // e.g return {text: 'default'}
+    return {}
+  }
+
+  get unwrapParams () {
+    // e.g return ['fullwidth']
     return []
   }
 }
@@ -109,11 +125,6 @@ class HookableComponentViewModel extends ComponentViewModel {
       init(parent);
       this.installHooks_();
     }
-  }
-
-  get forceBindings () {
-    // e.g return {'disable': () => this.disableOnInit}
-    throw new Error('Define "forceBindings" property in your class')
   }
 
   get hookedElement () {

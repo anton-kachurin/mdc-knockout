@@ -78,7 +78,7 @@ class TextfieldViewModel extends ComponentViewModel {
     }
   }
 
-  defaultParams () {
+  get defaultParams () {
     return {
       label: '',
       help: '',
@@ -91,7 +91,7 @@ class TextfieldViewModel extends ComponentViewModel {
     }
   }
 
-  unwrapParams () {
+  get unwrapParams () {
     return ['multiline', 'fullwidth', 'invalid']
   }
 }
