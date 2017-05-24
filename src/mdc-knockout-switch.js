@@ -3,13 +3,6 @@ import SwitchTemplate from './templates/switch.html';
 
 class SwitchViewModel extends PlainViewModel {
   extend () {
-    // make sure that --disabled class is set if necessary
-    if (!('disable' in this.bindings)) {
-      if ('disabled' in this.attrs) {
-        this.bindings.disable = true;
-      }
-    }
-
     if (!this.attrs['id']) {
       this.attrs['id'] = this.randomPrefixed('switch-auto-id');
     }
@@ -28,6 +21,13 @@ class SwitchViewModel extends PlainViewModel {
   get defaultParams () {
     return {
       label: ''
+    }
+  }
+
+  get forceBindings () {
+    return {
+      disable: () => ('disabled' in this.attrs),
+      checked: () => ('checked' in this.attrs)
     }
   }
 }
