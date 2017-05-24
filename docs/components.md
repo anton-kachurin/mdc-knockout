@@ -545,7 +545,7 @@ both are present.
 
 ## Switch
 The MDC Switch component is a spec-aligned switch component adhering to the
-[Material Design Switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
+[Material Design switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
 
 The component resembles the native checkbox element. You can add standard
 attributes to it, such as `name` or `required`, to use in HTML forms.
@@ -554,8 +554,6 @@ attributes to it, such as `name` or `required`, to use in HTML forms.
 
 | Name    | Type     | Description                           |
 | --------|--------- | --------------------------------------|
-| checked | ko, bool | Whether or not the switch is on.      |
-| disable | ko, bool | Wheter or not the switch is disabled. |
 | label   | ko, str  | The text of the corresponding label.  |
 
 
@@ -564,19 +562,19 @@ attributes to it, such as `name` or `required`, to use in HTML forms.
 Checked:
 ```HTML
 <mdc-switch checked>on/off</mdc-switch>
-<mdc-switch params="checked: true">on/off</mdc-switch>
 ```
 
 Disabled:
 ```HTML
 <mdc-switch disabled>on/off</mdc-switch>
-<mdc-switch params="disable: true">on/off</mdc-switch>
 ```
 
-Although using `checked` and `disabled` attributes looks prettier, there are
-reasons why sometimes it's better to stick to the `params="..."` syntax,
-[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page)
-for example.
+As a form element:
+```HTML
+<mdc-switch name="billing">
+  Enable Billing
+</mdc-switch>
+```
 
 #### MDCComponent API
 
@@ -603,6 +601,17 @@ for full details.
 
 
 ### Fully featured
+
+Any standard or third-party binding that are normally used for checkboxes, such
+as `checked`, `checkedValue`, `disabled`, etc, are applicable to MDC Switch:
+```HTML
+<mdc-switch value="news" params="checked: options">
+  Get newsletters about service
+</mdc-switch>
+<mdc-switch value="promotions" params="checked: options">
+  Get info about promotions
+</mdc-switch>
+```
 
 Use `label` parameter if you want to set label's text dynamically:
 ```HTML
