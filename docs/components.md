@@ -457,38 +457,34 @@ to easily position radio buttons and their labels.
 
 #### Parameters
 
-| Name      | Type     | Description                          |
-| ----------|--------- | ------------------------------------ |
-| isChecked | ko, bool | Whether or not the radio is checked  |
-| disable   | ko, bool | Whether or not the radio is disabled |
-
+This component doesn't have any special parameters.
 
 ### HTML-only
 
 Checked:
 ```HTML
-<mdc-radio name="radios-1" value="yes"></mdc-radio>
-<mdc-radio name="radios-1" value="no" checked></mdc-radio>
-
-<mdc-radio name="radios-2" value="yes" params="isChecked: true"></mdc-radio>
-<mdc-radio name="radios-2" value="no"></mdc-radio>
+<mdc-radio name="radios" value="yes"></mdc-radio>
+<mdc-radio name="radios" value="no" checked></mdc-radio>
 ```
 
 Disabled:
 ```HTML
-<mdc-radio name="radios-1" value="yes"></mdc-radio>
-<mdc-radio name="radios-1" value="no"></mdc-radio>
-<mdc-radio name="radios-1" value="maybe" checked disabled></mdc-radio>
-
-<mdc-radio name="radios-2" value="yes"></mdc-radio>
-<mdc-radio name="radios-2" value="no"></mdc-radio>
-<mdc-radio name="radios-2" value="maybe" params="isChecked: true, disable: true">
-</mdc-radio>
+<mdc-radio name="radios" value="yes"></mdc-radio>
+<mdc-radio name="radios" value="no"></mdc-radio>
+<mdc-radio name="radios" value="maybe" checked disabled></mdc-radio>
 ```
 
-Although using `checked` and `disabled` attributes looks prettier,
-there are reasons why sometimes it's better to stick to the `params="..."` syntax,
-[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page) for example.
+As a form element:
+```HTML
+<mdc-form-field>
+  <mdc-radio name="plan" value="basic"></mdc-radio>
+  Basic
+</mdc-form-field>
+<mdc-form-field>
+  <mdc-radio name="plan" value="advanced" checked></mdc-radio>
+  Advanced
+</mdc-form-field>
+```
 
 #### MDCComponent API
 
@@ -498,8 +494,7 @@ for example:
 ```HTML
 <mdc-radio name="radios-1" value="yes"></mdc-radio>
 <mdc-radio name="radios-1" value="no" checked></mdc-radio>
-<mdc-radio class="radio-maybe" name="radios-1" value="maybe" disabled>
-</mdc-radio>
+<mdc-radio class="radio-maybe" name="radios-1" value="maybe" disabled></mdc-radio>
 <button onclick="checkDefault()">Check disabled</button>
 
 <script>
@@ -511,9 +506,9 @@ for example:
 ```
 
 Keep in mind that if you add `id` attribute to the `<mdc-radio>` element, it
-will be passed to the native element along with all other attributes during
-the initialization, so the only reliable way to access `<mdc-radio>` element
-itself is to add some unique class name to it.
+will be passed to the native input element along with all other attributes during
+the initialization, so adding some unique class name to the `<mdc-radio>`
+element is a more reliable way to get access to it.
 
 For full API please refer to the
 [original component's documentation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-radio#mdcradio-api).
@@ -521,25 +516,15 @@ For full API please refer to the
 
 ### Fully featured
 
-The component allows to use the standard `checked` binding to associate
-`<mdc-radio value="...">` with some observable value. Please use only
-observables, not plain values, for `checked` and `isChecked` when
-both are present.
+Any standard or third-party bindings that are normally used with radio inputs,
+such as `checked`, `checkedValue`, `disabled`, etc, are applicable to MDC Radio:
 
 ```HTML
 <div>Would you like to receive emails from us?</div>
-<mdc-radio value="yes" params="checked: radio1"></mdc-radio> yes
-<mdc-radio value="no"  params="checked: radio1"></mdc-radio> no
-<div data-bind="if: radio1() == 'yes'">Thank you</div>
-<div data-bind="if: radio1() == 'no'">We promise not to spam</div>
-
-<div>Would you like to receive emails from us?</div>
-<mdc-radio value="yes"
-           params="checked: radio2, isChecked: checkedYes"></mdc-radio> yes
-<mdc-radio value="no"  
-           params="checked: radio2, isChecked: checkedNo"></mdc-radio> no
-<div data-bind="if: checkedYes">Thank you</div>
-<div data-bind="if: checkedNo">We promise not to spam</div>
+<mdc-radio value="yes" params="checked: emails"></mdc-radio> yes
+<mdc-radio value="no"  params="checked: emails"></mdc-radio> no
+<div data-bind="if: emails() == 'yes'">Thank you</div>
+<div data-bind="if: emails() == 'no'">We promise not to spam</div>
 ```
 
 
