@@ -1,56 +1,29 @@
-import {CheckableComponentViewModel} from './mdc-knockout-base';
+import {ComponentViewModel} from './mdc-knockout-base';
 import RadioTemplate from './templates/radio.html';
+import {isSubscribable} from './util.js';
 
-class RadioViewModel extends CheckableComponentViewModel {
-  initialize () {
-    // make sure that --disabled class is set if necessary
-    if (!('disable' in this.bindings)) {
-      this.instance.disabled = this.instance.disabled;
-    }
-
-    const isChecked = this.isChecked;
-
-    if (ko.unwrap(isChecked)) {
-      this.setChecked();
-    }
-
-    if (ko.isSubscribable(isChecked)) {
-      this.track = isChecked.subscribe(value => {
-        if (value) {
-          this.setChecked();
-        }
-        else if (this.attrs.value == ko.unwrap(this.bindings.checked)) {
-          this.bindings.checked(undefined);
-        }
-      });
-
-      if (ko.isSubscribable(this.bindings.checked)) {
-        this.track = this.bindings.checked.subscribe(value => {
-          if (value == this.attrs.value) {
-            isChecked(true);
-          }
-          else {
-            isChecked(false);
-          }
-        });
-      }
+class RadioViewModel extends ComponentViewModel {
+  extend () {
+    if (!this.attrs['id']) {
+      this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
     }
   }
 
-  setChecked () {
-    if (ko.isObservable(this.bindings.checked)) {
-      // check radio input knockout-way
-      this.bindings.checked(this.attrs.value);
-    }
-    else {
-      // check radio via MDCComponent
-      this.instance.checked = true;
+  initialize (parent) {
+    if (parent && isSubscribable(parent.for)) {
+      parent.instance.input = this.instance;
+      parent.for(this.attrs['id']);
     }
   }
 
-  get defaultParams () {
+  get forceBindings () {
     return {
-      isChecked: false
+      disable: () => ('disabled' in this.attrs),
+      checked: () => {
+        if ('checked' in this.attrs) {
+          return this.attrs.value;
+        }
+      }
     }
   }
 }
