@@ -1,4 +1,4 @@
-<!-- ko ifnot: attrs.href -->
+<!-- ko ifnot: ('href' in attrs) -->
   <button class="mdc-button" data-bind="
     mdc-attrs,
     mdc-bindings,
@@ -12,7 +12,7 @@
     }
   "><!-- ko mdc-child --><!-- /ko --></button>
 <!-- /ko -->
-<!-- ko if: attrs.href -->
+<!-- ko if: ('href' in attrs) -->
   <a class="mdc-button" data-bind="
     mdc-attrs,
     mdc-bindings,
