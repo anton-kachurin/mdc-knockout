@@ -77,7 +77,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _foundation = __webpack_require__(4);
+var _foundation = __webpack_require__(5);
 
 Object.defineProperty(exports, 'MDCFoundation', {
   enumerable: true,
@@ -113,7 +113,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(4);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -174,7 +174,7 @@ var PlainViewModel = function (_DisposableViewModel) {
     _this.root = root;
     _this.attrs = attrs;
 
-    var defaultParams = _this.defaultParams();
+    var defaultParams = _this.defaultParams;
     Object.keys(defaultParams).forEach(function (name) {
       var defaultValue = defaultParams[name];
       if (params.hasOwnProperty(name)) {
@@ -185,7 +185,7 @@ var PlainViewModel = function (_DisposableViewModel) {
       }
     });
 
-    _this.unwrapParams().forEach(function (name) {
+    _this.unwrapParams.forEach(function (name) {
       _this[name] = (0, _util.toJS)(_this[name]);
     });
 
@@ -195,6 +195,15 @@ var PlainViewModel = function (_DisposableViewModel) {
 
     if (params && params.hasOwnProperty('')) {
       delete params[''];
+    }
+
+    var forced = _this.forceBindings;
+    if (params) {
+      Object.keys(forced).forEach(function (name) {
+        if (!(name in params)) {
+          params[name] = forced[name]();
+        }
+      });
     }
 
     _this.bindings = params;
@@ -207,13 +216,21 @@ var PlainViewModel = function (_DisposableViewModel) {
     key: 'extend',
     value: function extend() {}
   }, {
+    key: 'forceBindings',
+    get: function get() {
+      // e.g return {'disable': () => this.disableOnInit}
+      return {};
+    }
+  }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
+      // e.g return {text: 'default'}
       return {};
     }
   }, {
     key: 'unwrapParams',
-    value: function unwrapParams() {
+    get: function get() {
+      // e.g return ['fullwidth']
       return [];
     }
   }]);
@@ -315,12 +332,6 @@ var HookableComponentViewModel = function (_ComponentViewModel) {
     value: function dispose() {
       this.uninstallHooks_();
       _get(HookableComponentViewModel.prototype.__proto__ || Object.getPrototypeOf(HookableComponentViewModel.prototype), 'dispose', this).call(this);
-    }
-  }, {
-    key: 'forceBindings',
-    get: function get() {
-      // e.g return {'disable': () => this.disableOnInit}
-      throw new Error('Define "forceBindings" property in your class');
     }
   }, {
     key: 'hookedElement',
@@ -621,6 +632,52 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var isSubscribable = function isSubscribable(instance) {
+  if ('ko' in global) {
+    return ko.isSubscribable(instance);
+  } else {
+    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
+  }
+};
+
+var unwrap = function unwrap(instance) {
+  if ('ko' in global) {
+    return ko.unwrap(instance);
+  } else {
+    if (isSubscribable(instance)) {
+      return instance();
+    } else {
+      return instance;
+    }
+  }
+};
+
+var toJS = function toJS(instance) {
+  if ('ko' in global) {
+    return ko.toJS(instance);
+  } else {
+    while (isSubscribable(instance)) {
+      instance = instance();
+    }
+    return instance;
+  }
+};
+
+exports.isSubscribable = isSubscribable;
+exports.unwrap = unwrap;
+exports.toJS = toJS;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -703,52 +760,6 @@ var MDCFoundation = function () {
 }();
 
 exports.default = MDCFoundation;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var isSubscribable = function isSubscribable(instance) {
-  if ('ko' in global) {
-    return ko.isSubscribable(instance);
-  } else {
-    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
-  }
-};
-
-var unwrap = function unwrap(instance) {
-  if ('ko' in global) {
-    return ko.unwrap(instance);
-  } else {
-    if (isSubscribable(instance)) {
-      return instance();
-    } else {
-      return instance;
-    }
-  }
-};
-
-var toJS = function toJS(instance) {
-  if ('ko' in global) {
-    return ko.toJS(instance);
-  } else {
-    while (isSubscribable(instance)) {
-      instance = instance();
-    }
-    return instance;
-  }
-};
-
-exports.isSubscribable = isSubscribable;
-exports.unwrap = unwrap;
-exports.toJS = toJS;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ }),
 /* 6 */
@@ -1444,6 +1455,12 @@ function registerBindings(ko) {
 
   ko.bindingHandlers['mdc-bindings'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var bindings = valueAccessor();
+      Object.keys(bindings).forEach(function (name) {
+        if (!ko.isSubscribable(bindings[name])) {
+          bindings[name] = ko.observable(bindings[name]);
+        }
+      });
       ko.applyBindingsToNode(element, valueAccessor(), bindingContext);
     },
     preprocess: function preprocess(value, name, addBindingCallback) {
@@ -1567,25 +1584,6 @@ function registerBindings(ko) {
   };
   ko.virtualElements.allowedBindings['mdc-instance'] = true;
 
-  ko.bindingHandlers['mdc-force-bindings'] = {
-    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var bindings = allBindings()['mdc-bindings'];
-      var forced = valueAccessor();
-      if (bindings) {
-        Object.keys(forced).forEach(function (name) {
-          if (!(name in bindings)) {
-            var binding = {};
-            binding[name] = ko.observable(forced[name]());
-            ko.applyBindingsToNode(element, binding);
-          }
-        });
-      }
-    },
-    preprocess: function preprocess(value, name, addBindingCallback) {
-      return value || 'forceBindings';
-    }
-  };
-
   ko[WAS_BIND] = true;
 }
 
@@ -1664,18 +1662,13 @@ var ButtonViewModel = function (_PlainViewModel) {
   _createClass(ButtonViewModel, [{
     key: 'extend',
     value: function extend() {
-      var _this2 = this;
-
-      if (this.attrs.href && this.href) {
-        var defaultHref = this.attrs.href;
-        this.attrs.href = ko.pureComputed(function () {
-          return ko.unwrap(_this2.href) || defaultHref;
-        });
+      if (this.href) {
+        this.attrs.href = this.href;
       }
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         href: '',
         dense: false,
@@ -1687,7 +1680,7 @@ var ButtonViewModel = function (_PlainViewModel) {
     }
   }, {
     key: 'unwrapParams',
-    value: function unwrapParams() {
+    get: function get() {
       return ['submit'];
     }
   }]);
@@ -1718,7 +1711,7 @@ var _checkbox = __webpack_require__(32);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1763,7 +1756,7 @@ var CheckboxViewModel = function (_HookableComponentVie) {
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         indeterminate: false
       };
@@ -1876,7 +1869,7 @@ var ElevationViewModel = function (_PlainViewModel) {
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         z: 0
       };
@@ -1951,7 +1944,7 @@ var FormFieldViewModel = function (_ComponentViewModel) {
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         alignEnd: false
       };
@@ -1984,6 +1977,8 @@ var _radio = __webpack_require__(35);
 
 var _radio2 = _interopRequireDefault(_radio);
 
+var _util = __webpack_require__(4);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1992,8 +1987,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var RadioViewModel = function (_CheckableComponentVi) {
-  _inherits(RadioViewModel, _CheckableComponentVi);
+var RadioViewModel = function (_ComponentViewModel) {
+  _inherits(RadioViewModel, _ComponentViewModel);
 
   function RadioViewModel() {
     _classCallCheck(this, RadioViewModel);
@@ -2002,63 +1997,40 @@ var RadioViewModel = function (_CheckableComponentVi) {
   }
 
   _createClass(RadioViewModel, [{
+    key: 'extend',
+    value: function extend() {
+      if (!this.attrs['id']) {
+        this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
+      }
+    }
+  }, {
     key: 'initialize',
-    value: function initialize() {
+    value: function initialize(parent) {
+      if (parent && (0, _util.isSubscribable)(parent.for)) {
+        parent.instance.input = this.instance;
+        parent.for(this.attrs['id']);
+      }
+    }
+  }, {
+    key: 'forceBindings',
+    get: function get() {
       var _this2 = this;
 
-      // make sure that --disabled class is set if necessary
-      if (!('disable' in this.bindings)) {
-        this.instance.disabled = this.instance.disabled;
-      }
-
-      var isChecked = this.isChecked;
-
-      if (ko.unwrap(isChecked)) {
-        this.setChecked();
-      }
-
-      if (ko.isSubscribable(isChecked)) {
-        this.track = isChecked.subscribe(function (value) {
-          if (value) {
-            _this2.setChecked();
-          } else if (_this2.attrs.value == ko.unwrap(_this2.bindings.checked)) {
-            _this2.bindings.checked(undefined);
-          }
-        });
-
-        if (ko.isSubscribable(this.bindings.checked)) {
-          this.track = this.bindings.checked.subscribe(function (value) {
-            if (value == _this2.attrs.value) {
-              isChecked(true);
-            } else {
-              isChecked(false);
-            }
-          });
-        }
-      }
-    }
-  }, {
-    key: 'setChecked',
-    value: function setChecked() {
-      if (ko.isObservable(this.bindings.checked)) {
-        // check radio input knockout-way
-        this.bindings.checked(this.attrs.value);
-      } else {
-        // check radio via MDCComponent
-        this.instance.checked = true;
-      }
-    }
-  }, {
-    key: 'defaultParams',
-    value: function defaultParams() {
       return {
-        isChecked: false
+        disable: function disable() {
+          return 'disabled' in _this2.attrs;
+        },
+        checked: function checked() {
+          if ('checked' in _this2.attrs) {
+            return _this2.attrs.value;
+          }
+        }
       };
     }
   }]);
 
   return RadioViewModel;
-}(_mdcKnockoutBase.CheckableComponentViewModel);
+}(_mdcKnockoutBase.ComponentViewModel);
 
 exports.RadioTemplate = _radio2.default;
 exports.RadioViewModel = RadioViewModel;
@@ -2105,13 +2077,6 @@ var SwitchViewModel = function (_PlainViewModel) {
     value: function extend() {
       var _this2 = this;
 
-      // make sure that --disabled class is set if necessary
-      if (!('disable' in this.bindings)) {
-        if ('disabled' in this.attrs) {
-          this.bindings.disable = true;
-        }
-      }
-
       if (!this.attrs['id']) {
         this.attrs['id'] = this.randomPrefixed('switch-auto-id');
       }
@@ -2128,9 +2093,23 @@ var SwitchViewModel = function (_PlainViewModel) {
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         label: ''
+      };
+    }
+  }, {
+    key: 'forceBindings',
+    get: function get() {
+      var _this3 = this;
+
+      return {
+        disable: function disable() {
+          return 'disabled' in _this3.attrs;
+        },
+        checked: function checked() {
+          return 'checked' in _this3.attrs;
+        }
       };
     }
   }]);
@@ -2285,7 +2264,7 @@ var TextfieldViewModel = function (_ComponentViewModel) {
     }
   }, {
     key: 'defaultParams',
-    value: function defaultParams() {
+    get: function get() {
       return {
         label: '',
         help: '',
@@ -2299,7 +2278,7 @@ var TextfieldViewModel = function (_ComponentViewModel) {
     }
   }, {
     key: 'unwrapParams',
-    value: function unwrapParams() {
+    get: function get() {
       return ['multiline', 'fullwidth', 'invalid'];
     }
   }]);
@@ -2485,7 +2464,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * limitations under the License.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _foundation = __webpack_require__(4);
+var _foundation = __webpack_require__(5);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -4132,7 +4111,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko ifnot: attrs.href -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></button>\n<!-- /ko -->\n<!-- ko if: attrs.href -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></a>\n<!-- /ko -->\n";
+  return "<!-- ko ifnot: ('href' in attrs) -->\n  <button class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></button>\n<!-- /ko -->\n<!-- ko if: ('href' in attrs) -->\n  <a class=\"mdc-button\" data-bind=\"\n    mdc-attrs,\n    mdc-bindings,\n    mdc-ripple,\n    css: {\n      'mdc-button--dense': dense,\n      'mdc-button--raised': raised,\n      'mdc-button--compact': compact,\n      'mdc-button--primary': primary,\n      'mdc-button--accent': accent,\n    }\n  \"><!-- ko mdc-child --><!-- /ko --></a>\n<!-- /ko -->\n";
 };
 
 /***/ }),
@@ -4151,7 +4130,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-checkbox\" data-bind=\"css: {\n  'mdc-checkbox--disabled': bindings.disable\n}\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-attrs, mdc-bindings, mdc-force-bindings\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
+  return "<div class=\"mdc-checkbox\" data-bind=\"css: {\n  'mdc-checkbox--disabled': bindings.disable\n}\">\n  <input type=\"checkbox\"\n         class=\"mdc-checkbox__native-control\"\n         data-bind=\"mdc-attrs, mdc-bindings\"/>\n  <div class=\"mdc-checkbox__background\">\n    <svg version=\"1.1\"\n         class=\"mdc-checkbox__checkmark\"\n         xmlns=\"http://www.w3.org/2000/svg\"\n         viewBox=\"0 0 24 24\"\n         xml:space=\"preserve\">\n      <path class=\"mdc-checkbox__checkmark__path\"\n            fill=\"none\"\n            stroke=\"white\"\n            d=\"M1.73,12.91 8.1,19.28 22.79,4.59\"/>\n    </svg>\n    <div class=\"mdc-checkbox__mixedmark\"></div>\n  </div>\n</div>\n";
 };
 
 /***/ }),
@@ -4227,7 +4206,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"\n  css: {\n    'mdc-switch--disabled': bindings.disable\n  }\n\">\n  <input type=\"checkbox\" class=\"mdc-switch__native-control\" data-bind=\"\n    mdc-bindings,\n    mdc-attrs\n  \" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"css: {\n  'mdc-switch--disabled': bindings.disable\n}\">\n  <input type=\"checkbox\"\n         class=\"mdc-switch__native-control\"\n         data-bind=\"mdc-attrs, mdc-bindings\" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
 };
 
 /***/ }),
