@@ -1,31 +1,23 @@
 import {PlainViewModel} from './mdc-knockout-base';
 import ElevationTemplate from './templates/elevation.html';
+import {isSubscribable, unwrap} from './util';
 
 const Z_PREFIX = 'mdc-elevation--z';
 
 class ElevationViewModel extends PlainViewModel {
   extend () {
     const css = {};
-    if (ko.isSubscribable(this.z)) {
-      css['mdc-elevation-transition'] = true;
-      for (let i=0; i<=24; i++) {
-        css[Z_PREFIX + i] = ko.observable(false);
-      }
-
-      let prev = ko.unwrap(this.z);
+    const z = unwrap(this.z);
+    if (isSubscribable(this.z)) {
+      this.root.classList.add('mdc-elevation-transition');
+      let prev = z;
       this.track = this.z.subscribe((value) => {
-        css[Z_PREFIX + prev](false);
-        css[Z_PREFIX + value](true);
+        this.root.classList.remove(Z_PREFIX + prev);
+        this.root.classList.add(Z_PREFIX + value);
         prev = value;
       });
-
-      css[Z_PREFIX + prev](true);
     }
-    else{
-      css[Z_PREFIX + this.z] = true;
-    }
-
-    this.bindings.css = Object.assign({}, this.bindings.css, css);
+    this.root.classList.add(Z_PREFIX + z);
   }
 
   get defaultParams () {
