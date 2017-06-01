@@ -324,7 +324,8 @@ The MDC Elevation component allows to add
 [shadows and elevation](https://material.google.com/what-is-material/elevation-shadows.html)
 to the material components.
 
-Elevation is the relative depth, or distance, between two surfaces along the z-axis, and it ranges from `0` to `24`.
+Elevation is the relative depth, or distance, between two surfaces along the
+z-axis, and it ranges from `0` to `24`.
 
 This component only adds shadows to the HTML element, all other styles
 including `display: block`, or margins, or paddings must be defined separately.
@@ -358,7 +359,8 @@ Create a surface whose elevation will not change:
 
 #### MDCComponent API
 
-The original MDC-Web component is CSS-only, so there's no MDCComponent instance attached to the `<mdc-elevation>` element.
+The original MDC-Web component is CSS-only, so there's no MDCComponent instance
+attached to the `<mdc-elevation>` element.
 
 
 ### Fully featured
@@ -454,7 +456,8 @@ Use `text` binding if you want to set label's text dynamically:
 The MDC Radio component is a spec-aligned radio button adhering to the
 [Material Design radio button requirements](https://material.google.com/components/selection-controls.html#selection-controls-radio-button).
 
-The component fully resembles the native radio element. You can add standard attributes to it, such as `name`, `value`, or `required`, to use in HTML forms.
+The component fully resembles the native radio element. You can add standard
+attributes to it, such as `name`, `value`, or `required`, to use in HTML forms.
 
 The mdc-radio can be used in conjunction with [mdc-form-field](#form-field)
 to easily position radio buttons and their labels.
