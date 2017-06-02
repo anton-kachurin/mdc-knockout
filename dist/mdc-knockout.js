@@ -113,7 +113,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(2);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -407,6 +407,52 @@ exports.CheckableComponentViewModel = CheckableComponentViewModel;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var isSubscribable = function isSubscribable(instance) {
+  if ('ko' in global) {
+    return ko.isSubscribable(instance);
+  } else {
+    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
+  }
+};
+
+var unwrap = function unwrap(instance) {
+  if ('ko' in global) {
+    return ko.unwrap(instance);
+  } else {
+    if (isSubscribable(instance)) {
+      return instance();
+    } else {
+      return instance;
+    }
+  }
+};
+
+var toJS = function toJS(instance) {
+  if ('ko' in global) {
+    return ko.toJS(instance);
+  } else {
+    while (isSubscribable(instance)) {
+      instance = instance();
+    }
+    return instance;
+  }
+};
+
+exports.isSubscribable = isSubscribable;
+exports.unwrap = unwrap;
+exports.toJS = toJS;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -422,7 +468,7 @@ var _foundation = __webpack_require__(27);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -559,7 +605,7 @@ var MDCRipple = exports.MDCRipple = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,52 +672,6 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 
   return { x: normalizedX, y: normalizedY };
 }
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var isSubscribable = function isSubscribable(instance) {
-  if ('ko' in global) {
-    return ko.isSubscribable(instance);
-  } else {
-    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
-  }
-};
-
-var unwrap = function unwrap(instance) {
-  if ('ko' in global) {
-    return ko.unwrap(instance);
-  } else {
-    if (isSubscribable(instance)) {
-      return instance();
-    } else {
-      return instance;
-    }
-  }
-};
-
-var toJS = function toJS(instance) {
-  if ('ko' in global) {
-    return ko.toJS(instance);
-  } else {
-    while (isSubscribable(instance)) {
-      instance = instance();
-    }
-    return instance;
-  }
-};
-
-exports.isSubscribable = isSubscribable;
-exports.unwrap = unwrap;
-exports.toJS = toJS;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ }),
 /* 5 */
@@ -779,9 +779,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _ripple = __webpack_require__(2);
+var _ripple = __webpack_require__(3);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(4);
 
 var _animation = __webpack_require__(18);
 
@@ -1084,7 +1084,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _ripple = __webpack_require__(2);
+var _ripple = __webpack_require__(3);
 
 var _foundation = __webpack_require__(25);
 
@@ -1444,7 +1444,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ripple = __webpack_require__(2);
+var _ripple = __webpack_require__(3);
 
 var WAS_BIND = 'mdc-bindings-already-added';
 
@@ -1711,7 +1711,7 @@ var _checkbox = __webpack_require__(32);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1742,9 +1742,9 @@ var CheckboxViewModel = function (_HookableComponentVie) {
     value: function initialize(parent) {
       var _this2 = this;
 
-      if (parent && (0, _util.isSubscribable)(parent.for)) {
+      if (parent && parent.attrFor) {
         parent.instance.input = this.instance;
-        parent.for(this.attrs['id']);
+        parent.attrFor(this.attrs['id']);
       }
 
       this.instance.indeterminate = (0, _util.unwrap)(this.indeterminate);
@@ -1824,6 +1824,8 @@ var _elevation = __webpack_require__(33);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
+var _util = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1846,26 +1848,20 @@ var ElevationViewModel = function (_PlainViewModel) {
   _createClass(ElevationViewModel, [{
     key: 'extend',
     value: function extend() {
-      var css = {};
-      if (ko.isSubscribable(this.z)) {
-        css['mdc-elevation-transition'] = true;
-        for (var i = 0; i <= 24; i++) {
-          css[Z_PREFIX + i] = ko.observable(false);
-        }
+      var _this2 = this;
 
-        var prev = ko.unwrap(this.z);
+      var css = {};
+      var z = (0, _util.unwrap)(this.z);
+      if ((0, _util.isSubscribable)(this.z)) {
+        this.root.classList.add('mdc-elevation-transition');
+        var prev = z;
         this.track = this.z.subscribe(function (value) {
-          css[Z_PREFIX + prev](false);
-          css[Z_PREFIX + value](true);
+          _this2.root.classList.remove(Z_PREFIX + prev);
+          _this2.root.classList.add(Z_PREFIX + value);
           prev = value;
         });
-
-        css[Z_PREFIX + prev](true);
-      } else {
-        css[Z_PREFIX + this.z] = true;
       }
-
-      this.bindings.css = Object.assign({}, this.bindings.css, css);
+      this.root.classList.add(Z_PREFIX + z);
     }
   }, {
     key: 'defaultParams',
@@ -1926,16 +1922,11 @@ var FormFieldViewModel = function (_ComponentViewModel) {
     value: function extend() {
       var _this2 = this;
 
-      this.for = ko.observable('');
-      if (!this.attrs['for']) {
-        this.attrs['for'] = this.for;
-      }
-
       this.nodeFilter = function (child) {
-        if (!('text' in _this2.bindings) && child.nodeType == 3) {
+        if (!_this2.label && child.nodeType == 3) {
           var text = child.textContent;
           if (text.match(/[^\s]/)) {
-            _this2.bindings.text = text;
+            _this2.label = text;
           }
           return false;
         }
@@ -1943,10 +1934,23 @@ var FormFieldViewModel = function (_ComponentViewModel) {
       };
     }
   }, {
+    key: 'attrFor',
+    value: function attrFor(value) {
+      if (!this.attrs['for']) {
+        this.labelElement_.setAttribute('for', value);
+      }
+    }
+  }, {
+    key: 'labelElement_',
+    get: function get() {
+      return this.root.querySelector('label');
+    }
+  }, {
     key: 'defaultParams',
     get: function get() {
       return {
-        alignEnd: false
+        alignEnd: false,
+        label: ''
       };
     }
   }]);
@@ -1977,7 +1981,7 @@ var _radio = __webpack_require__(35);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2006,9 +2010,9 @@ var RadioViewModel = function (_ComponentViewModel) {
   }, {
     key: 'initialize',
     value: function initialize(parent) {
-      if (parent && (0, _util.isSubscribable)(parent.for)) {
+      if (parent && parent.attrFor) {
         parent.instance.input = this.instance;
-        parent.for(this.attrs['id']);
+        parent.attrFor(this.attrs['id']);
       }
     }
   }, {
@@ -3272,7 +3276,7 @@ var _base = __webpack_require__(0);
 
 var _constants = __webpack_require__(26);
 
-var _util = __webpack_require__(3);
+var _util = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4168,7 +4172,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"mdc-bindings, mdc-attrs\"></label>\n</div>\n";
+  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"text: label, mdc-attrs\"></label>\n</div>\n";
 };
 
 /***/ }),
