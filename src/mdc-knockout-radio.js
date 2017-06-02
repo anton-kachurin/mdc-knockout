@@ -10,9 +10,9 @@ class RadioViewModel extends ComponentViewModel {
   }
 
   initialize (parent) {
-    if (parent && isSubscribable(parent.for)) {
+    if (parent && parent.attrFor) {
       parent.instance.input = this.instance;
-      parent.for(this.attrs['id']);
+      parent.attrFor(this.attrs['id']);
     }
   }
 

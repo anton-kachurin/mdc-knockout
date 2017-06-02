@@ -396,6 +396,7 @@ necessary.
 | Name     | Type     | Description                                           |
 | ---------|--------- | ----------------------------------------------------- |
 | alignEnd | ko, bool | Whether or not the label should go before the control |
+| label    | ko, str  | The text of the corresponding label.                  |
 
 
 ### HTML-only
@@ -413,7 +414,7 @@ rendered:
 </mdc-form-field>
 ```
 
-Use `alignEnd` to place the label before the control:
+Use `alignEnd` to visually place the label before the control:
 ```HTML
 <mdc-form-field params="alignEnd: true">
   <mdc-checkbox></mdc-checkbox>
@@ -443,10 +444,10 @@ For full API please refer to the [original component's documentation](https://gi
 
 ### Fully featured
 
-Use `text` binding if you want to set label's text dynamically:
+Use `label` parameter to set label's text dynamically:
 ```HTML
 <mdc-form-field
-  params="text: 'Checkbox now is ' + (checked() ? 'checked' : 'unchecked')">
+  params="label: 'Checkbox now is ' + (checked() ? 'checked' : 'unchecked')">
   <mdc-checkbox params="checked: checked"></mdc-checkbox>
 </mdc-form-field>
 ```

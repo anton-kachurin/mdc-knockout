@@ -3,16 +3,11 @@ import FormFieldTemplate from './templates/form-field.html';
 
 class FormFieldViewModel extends ComponentViewModel {
   extend () {
-    this.for = ko.observable('');
-    if (!this.attrs['for']) {
-      this.attrs['for'] = this.for;
-    }
-
     this.nodeFilter = (child) => {
-      if (!('text' in this.bindings) && child.nodeType == 3) {
+      if (!this.label && child.nodeType == 3) {
         let text = child.textContent;
         if (text.match(/[^\s]/)) {
-          this.bindings.text = text;
+          this.label = text;
         }
         return false;
       }
@@ -20,9 +15,20 @@ class FormFieldViewModel extends ComponentViewModel {
     }
   }
 
+  get labelElement_ () {
+    return this.root.querySelector('label');
+  }
+
+  attrFor (value) {
+    if (!this.attrs['for']) {
+      this.labelElement_.setAttribute('for', value);
+    }
+  }
+
   get defaultParams () {
     return {
-      alignEnd: false
+      alignEnd: false,
+      label: ''
     }
   }
 }

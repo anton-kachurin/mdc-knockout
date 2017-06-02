@@ -10,9 +10,9 @@ class CheckboxViewModel extends HookableComponentViewModel {
   }
 
   initialize (parent) {
-    if (parent && isSubscribable(parent.for)) {
+    if (parent && parent.attrFor) {
       parent.instance.input = this.instance;
-      parent.for(this.attrs['id']);
+      parent.attrFor(this.attrs['id']);
     }
 
     this.instance.indeterminate = unwrap(this.indeterminate);
