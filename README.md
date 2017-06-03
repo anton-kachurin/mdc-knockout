@@ -101,7 +101,8 @@ no on the fly updates will be available.
 
 ```shell
 npm run test
+npm run test:watch
 ```
 
-Karma will run tests in a watch mode using Chrome, headlessly. A webserver
-will run on `localhost:9876` allowing to use any additional browser.
+Karma will run tests using a headless Chrome. In the watch mode, a webserver
+will run on `localhost:9876` allowing to use any other additional browser.
