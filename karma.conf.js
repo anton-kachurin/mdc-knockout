@@ -1,4 +1,5 @@
-const webpackConfig = require('./webpack.config');
+const path = require('path');
+const webpackConfig = require('./webpack.config')();
 
 module.exports = function(config) {
   config.set({
@@ -31,8 +32,19 @@ module.exports = function(config) {
     },
 
 
-    webpack: Object.assign({}, webpackConfig(), {
+    webpack: Object.assign({}, webpackConfig, {
       devtool: 'inline-source-map',
+      module: Object.assign({}, webpackConfig.module, {
+        // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
+        // uncluttered source maps.
+        loaders: webpackConfig.module.loaders.concat([config.singleRun ? {
+          test: /\.js$/,
+          include: path.resolve('./src'),
+          exclude: /node_modules/,
+          loader: 'istanbul-instrumenter-loader',
+          query: {esModules: true},
+        } : undefined]).filter(Boolean),
+      }),
     }),
 
     webpackMiddleware: {
@@ -50,8 +62,16 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
+    coverageReporter: {
+      dir: 'coverage',
+      reporters: [
+        {type: 'lcovonly', subdir: '.'},
+        {type: 'json', subdir: '.', file: 'coverage.json'},
+        {type: 'html'},
+      ],
+    },
 
     // web server port
     port: 9876,
