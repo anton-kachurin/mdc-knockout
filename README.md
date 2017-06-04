@@ -17,6 +17,8 @@ and free of error-prone copy pasting. Besides, the bindings that can be used
 with MDC-Knockout are not limited only to the standard ones, so it's easy to
 plug these components in any existing Knockout project.
 
+[Demos](https://anton-kachurin.github.io/mdc-knockout/).
+
 ## Quick start
 
 MDC-Knockout doesn't come bundled with `Knockout` itself, so make sure to
