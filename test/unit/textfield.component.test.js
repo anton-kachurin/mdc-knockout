@@ -160,7 +160,7 @@ test('text node in inner html is treated as label text', (done) => {
   });
 });
 
-test('fullwidth textarea renders label as "placeholder" and "aria-label" attributes', (done) => {
+test('fullwidth component renders label as "placeholder" and "aria-label" attributes', (done) => {
   const component = bel`
     <div>
       <mdc-textfield params="fullwidth: true, label: 'text'"></mdc-textfield>
@@ -289,7 +289,7 @@ test('if no id was set to the component, it is generated automatically', (done) 
 });
 
 test('"for" attribute of the label element equals to "id" of the input', (done) => {
-  const component = bel`<mdc-textfield></mdc-textfield>`;
+  const component = bel`<mdc-textfield id="t1"></mdc-textfield>`;
   ko.applyBindings({}, component);
 
   setTimeout(() => {
