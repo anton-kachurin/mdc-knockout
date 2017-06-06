@@ -18,9 +18,14 @@ function initPlain (invalid) {
   return component;
 }
 
-function initPlainHelptext (invalid) {
-  const component = bel`<mdc-textfield params="help: 'help', invalid: invalid"></mdc-textfield>`;
-  ko.applyBindings({invalid: invalid}, component);
+function initPlainHelptext (invalid, persistent, validation) {
+  const component = bel`<mdc-textfield params="
+    help: 'help',
+    invalid: invalid,
+    persistent: persistent,
+    validation: validation
+  "></mdc-textfield>`;
+  ko.applyBindings({invalid: invalid, persistent: persistent, validation: validation}, component);
 
   return component;
 }
@@ -78,6 +83,14 @@ componentTest(initPlainHelptext(), 'plain with helptext component has proper cla
 
   assert.equal(component.children[0].children[0].className, 'mdc-textfield__input');
   assert.equal(component.children[0].children[1].className, 'mdc-textfield__label');
+});
+
+componentTest(initPlainHelptext(false, true), 'plain with helptext sets "persistent" modifier', (component) => {
+  assert.equal(component.children[1].className, 'mdc-textfield-helptext mdc-textfield-helptext--persistent');
+});
+
+componentTest(initPlainHelptext(false, false, true), 'plain with helptext sets "validation" modifier', (component) => {
+  assert.equal(component.children[1].className, 'mdc-textfield-helptext mdc-textfield-helptext--validation-msg');
 });
 
 componentTest(initPlainHelptext(true), 'plain with helptext sets "invalid" modifier', (component) => {

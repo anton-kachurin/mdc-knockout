@@ -229,6 +229,42 @@ test('<p> node in inner html is treated as help text', (done) => {
   });
 });
 
+test('<p persistent> node in inner html is treated as persistent help text', (done) => {
+  const component = bel`
+    <div>
+      <mdc-textfield><p persistent>text</p></mdc-textfield>
+      <mdc-textfield params="help: 'text', persistent: true"></mdc-textfield>
+    </div>
+  `;
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    const help1 = component.querySelector('mdc-textfield:nth-child(1) p');
+    const help2 = component.querySelector('mdc-textfield:nth-child(2) p');
+    assert.equal(help1.className, help2.className);
+
+    done();
+  });
+});
+
+test('<p validation> node in inner html is treated as help text with validation', (done) => {
+  const component = bel`
+    <div>
+      <mdc-textfield><p validation>text</p></mdc-textfield>
+      <mdc-textfield params="help: 'text', validation: true"></mdc-textfield>
+    </div>
+  `;
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    const help1 = component.querySelector('mdc-textfield:nth-child(1) p');
+    const help2 = component.querySelector('mdc-textfield:nth-child(2) p');
+    assert.equal(help1.className, help2.className);
+
+    done();
+  });
+});
+
 test('not a text or <p> node in inner html is ignored', (done) => {
   const component = bel`<mdc-textfield><span id="ignored"></span></mdc-textfield>`;
   ko.applyBindings({}, component);
