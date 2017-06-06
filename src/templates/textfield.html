@@ -2,10 +2,8 @@
 <div class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
-    'mdc-textfield--fullwidth': fullwidth
-  },
-  mdc-css: {
-    INVALID: invalid
+    'mdc-textfield--fullwidth': fullwidth,
+    'mdc-textfield--invalid': invalid
   }
 ">
   <!-- ko ifnot: multiline -->
@@ -28,14 +26,14 @@
 <!-- ko ifnot: multiline -->
 <!-- ko ifnot: fullwidth -->
   <p class="mdc-textfield-helptext"
+     aria-hidden="true"
      data-bind="
       text: help,
-      attr: { id: ariaControls },
-      mdc-css: {
-        HELPTEXT_PERSISTENT: persistent,
-        HELPTEXT_VALIDATION_MSG: validation
-      },
-      mdc-attr: { ARIA_HIDDEN: persistent }
+      attr: { id: attrs['aria-controls'] },
+      css: {
+        'mdc-textfield-helptext--persistent': persistent,
+        'mdc-textfield-helptext--validation-msg': validation
+      }
      ">
   </p>
 <!-- /ko -->
