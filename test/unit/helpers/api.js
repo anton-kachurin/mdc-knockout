@@ -1,4 +1,4 @@
-const ignoredProperties = ['constructor', 'destroy', 'getDefaultFoundation'];
+const ignoredProperties = ['constructor', 'destroy', 'getDefaultFoundation', 'initialSyncWithDom'];
 
 function excludeExpectedProperties (properties, expected) {
   // ignore MDCComponent properties
