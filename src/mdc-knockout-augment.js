@@ -102,7 +102,7 @@ function registerBindings (ko) {
   ko[WAS_BIND] = true;
 }
 
-function registerComponent (ko, name, template, viewModelConstructor, MDCComponent, MDCFoundation) {
+function registerComponent (ko, name, template, viewModelConstructor, MDCComponent) {
   if (MDCComponent) {
     template += '<!-- ko mdc-instance --><!-- /ko -->';
   }
@@ -131,9 +131,7 @@ function registerComponent (ko, name, template, viewModelConstructor, MDCCompone
           element.removeAttribute(name);
         });
 
-        return new viewModelConstructor(
-          root, params, attrs, MDCComponent, MDCFoundation
-        );
+        return new viewModelConstructor(root, params, attrs, MDCComponent);
       }
     }
   });

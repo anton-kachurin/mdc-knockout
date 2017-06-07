@@ -197,11 +197,10 @@ test('ComponentViewModel extends PlainViewModel', () => {
   assert.instanceOf(vm, PlainViewModel);
 });
 
-test('ComponentViewModel constructor assigns "MDCFoundation" and "MDCComponent" arguments ' +
+test('ComponentViewModel constructor assigns "MDCComponent" argument ' +
      'to corresponding instance properties', () => {
-  const vm = new ComponentViewModel(null, null, null, 'MDCComponent', 'MDCFoundation');
+  const vm = new ComponentViewModel(null, null, null, 'MDCComponent');
   assert.strictEqual(vm.MDCComponent, 'MDCComponent');
-  assert.strictEqual(vm.MDCFoundation, 'MDCFoundation');
 });
 
 test('ComponentViewModel instance has "instance" property and "initialize" method', () => {

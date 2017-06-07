@@ -4,11 +4,11 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import augment from '../../src/mdc-knockout-augment';
 import {RadioTemplate, RadioViewModel} from '../../src/mdc-knockout-radio';
-import {MDCRadio, MDCRadioFoundation} from '@material/radio';
+import {MDCRadio} from '@material/radio';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
-augment.registerComponent(ko, 'mdc-radio', RadioTemplate(), RadioViewModel, MDCRadio, MDCRadioFoundation);
+augment.registerComponent(ko, 'mdc-radio', RadioTemplate(), RadioViewModel, MDCRadio);
 
 suite('radio component');
 

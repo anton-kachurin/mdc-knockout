@@ -3,11 +3,11 @@ import bel from 'bel';
 import td from 'testdouble';
 import augment from '../../src/mdc-knockout-augment';
 import {FormFieldTemplate, FormFieldViewModel} from '../../src/mdc-knockout-form-field';
-import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
+import {MDCFormField} from '@material/form-field';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
-augment.registerComponent(ko, 'mdc-form-field', FormFieldTemplate(), FormFieldViewModel, MDCFormField, MDCFormFieldFoundation);
+augment.registerComponent(ko, 'mdc-form-field', FormFieldTemplate(), FormFieldViewModel, MDCFormField);
 
 suite('form-field component');
 

@@ -1,4 +1,4 @@
-import {toJS, isSubscribable} from './util.js';
+import {toJS} from './util.js';
 
 class DisposableViewModel {
   constructor () {
@@ -52,10 +52,6 @@ class PlainViewModel extends DisposableViewModel {
       this[name] = toJS(this[name]);
     });
 
-    if (params && params.hasOwnProperty('$raw')) {
-      delete params.$raw;
-    }
-
     const forced = this.forceBindings;
     if (params) {
       Object.keys(forced).forEach(name => {
@@ -91,10 +87,9 @@ class PlainViewModel extends DisposableViewModel {
 }
 
 class ComponentViewModel extends PlainViewModel {
-  constructor (root, params, attrs, MDCComponent, MDCFoundation) {
+  constructor (root, params, attrs, MDCComponent) {
     super(root, params, attrs);
 
-    this.MDCFoundation = MDCFoundation;
     this.MDCComponent = MDCComponent;
     this.instance = null;
   }
@@ -175,5 +170,4 @@ function validDescriptor(elementPropDesc) {
   return elementPropDesc && typeof elementPropDesc.set === 'function';
 }
 
-export default ComponentViewModel;
 export { DisposableViewModel, PlainViewModel, ComponentViewModel, HookableComponentViewModel };

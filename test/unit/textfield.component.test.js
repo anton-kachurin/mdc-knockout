@@ -3,11 +3,11 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import augment from '../../src/mdc-knockout-augment';
 import {TextfieldTemplate, TextfieldViewModel} from '../../src/mdc-knockout-textfield';
-import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
+import {MDCTextfield} from '@material/textfield';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
-augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel, MDCTextfield, MDCTextfieldFoundation);
+augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel, MDCTextfield);
 
 suite('textfield component');
 

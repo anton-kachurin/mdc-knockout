@@ -1,4 +1,4 @@
-import ComponentViewModel from './mdc-knockout-base';
+import {ComponentViewModel} from './mdc-knockout-base';
 import TextfieldTemplate from './templates/textfield.html';
 
 class TextfieldViewModel extends ComponentViewModel {

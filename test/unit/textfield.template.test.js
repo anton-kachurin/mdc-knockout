@@ -2,14 +2,12 @@ import {assert} from 'chai';
 import bel from 'bel';
 import augment from '../../src/mdc-knockout-augment.js';
 import {TextfieldTemplate, TextfieldViewModel} from '../../src/mdc-knockout-textfield';
+import {MDCTextfield} from '@material/textfield';
 import {componentTest} from './helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
-//augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel);
-
-import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
-augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel, MDCTextfield, MDCTextfieldFoundation);
+augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel, MDCTextfield);
 
 function initPlain (invalid) {
   const component = bel`<mdc-textfield params="invalid: invalid"></mdc-textfield>`;

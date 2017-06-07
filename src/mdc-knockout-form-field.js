@@ -1,4 +1,4 @@
-import ComponentViewModel from './mdc-knockout-base';
+import {ComponentViewModel} from './mdc-knockout-base';
 import FormFieldTemplate from './templates/form-field.html';
 
 class FormFieldViewModel extends ComponentViewModel {

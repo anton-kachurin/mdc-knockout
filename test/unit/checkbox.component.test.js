@@ -4,11 +4,11 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import augment from '../../src/mdc-knockout-augment';
 import {CheckboxTemplate, CheckboxViewModel} from '../../src/mdc-knockout-checkbox';
-import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
+import {MDCCheckbox} from '@material/checkbox';
 
 import ko from 'knockout';
 augment.registerBindings(ko);
-augment.registerComponent(ko, 'mdc-checkbox', CheckboxTemplate(), CheckboxViewModel, MDCCheckbox, MDCCheckboxFoundation);
+augment.registerComponent(ko, 'mdc-checkbox', CheckboxTemplate(), CheckboxViewModel, MDCCheckbox);
 
 suite('checkbox component');
 

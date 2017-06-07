@@ -129,12 +129,11 @@ test('registerComponent passes right arguments to the viewmodel constructor', ()
     obj.viewModel.createViewModel('paramsStub', {element: element});
   };
 
-  augment.registerComponent(ko, '', '', ViewModelConstructor,
-                            'MDCComponentStub', 'MDCFoundationStub');
+  augment.registerComponent(ko, '', '', ViewModelConstructor, 'MDCComponentStub');
   td.verify(ViewModelConstructor(element,
                                 'paramsStub',
                                 {id: 'el_1', attr1: 'attr1', attr2: 'something'},
-                                'MDCComponentStub', 'MDCFoundationStub'));
+                                'MDCComponentStub'));
 });
 
 test('registerComponent triggers mdc-instance binding if the fifth argument (MDCComponent) is passed', () => {
