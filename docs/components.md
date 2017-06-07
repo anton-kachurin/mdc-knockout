@@ -621,8 +621,8 @@ The MDC Textfield component provides a textual input field adhering to the
 
 By default, the textfield is rendered via `<input>` element, but a multiline
 version is available too, which is rendered via the `<textarea>`.
-You can add standard attributes to it, such as `type`, `name`, `required`,
-`pattern`, `minlength`, `autofocus`, to use in HTML forms.
+You can add standard attributes to it, such as `value`, `type`, `name`,
+`required`, `pattern`, `minlength`, `autofocus`, to use in HTML forms.
 
 HTML5 validation is supported by using the `:invalid` and `:required` CSS
 attributes, and input's validity is checked via checkValidity() on blur.
@@ -638,7 +638,6 @@ attributes, and input's validity is checked via checkValidity() on blur.
 | invalid    | bool     | Applies on initialization only, will render the textfield as if it didn't pass validation. |
 | multiline  | bool     | If it needs to be multiline, checked once on initialization.  |
 | fullwidth  | bool     | If it needs to be full-width, checked once on initialization. |
-| disable    | ko, bool | Whether or not the textfield must be disabled.                |
 
 
 ### HTML-only
@@ -655,15 +654,7 @@ Disabled:
 <mdc-textfield disabled>
   Label text (placeholder)
 </mdc-textfield>
-<mdc-textfield params="disable: true">
-  Label text (placeholder)
-</mdc-textfield>
 ```
-
-Although using `disabled` attributes looks prettier, there are
-reasons why sometimes it's better to stick to the `params="..."` syntax,
-[this one](http://stackoverflow.com/questions/299811/why-does-the-checkbox-stay-checked-when-reloading-the-page)
-for example.
 
 With help text:
 ```HTML
