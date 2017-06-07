@@ -5,7 +5,7 @@ The MDC Checkbox component is a spec-aligned checkbox component adhering to the
 The component fully resembles the native checkbox element. You can add standard
 attributes to it, such as `name` or `required`, to use in HTML forms.
 
-The mdc-checkbox can by used in conjunction with [mdc-form-field](#form-field)
+The mdc-checkbox can by used in conjunction with [mdc-form-field](./mdc-form-field.md)
 to easily position checkboxes and their labels.
 
 #### Parameters
