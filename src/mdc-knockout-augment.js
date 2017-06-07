@@ -73,61 +73,6 @@ function registerBindings (ko) {
   }
   ko.virtualElements.allowedBindings['mdc-child'] = true;
 
-  ko.bindingHandlers['mdc-ripple'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var ripple = MDCRipple.attachTo(element);
-      element['MDCRipple'] = ripple;
-
-      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-        ripple.destroy();
-      });
-    }
-  };
-
-  ko.bindingHandlers['mdc-css'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      function toggleClass(className, value) {
-        ko.utils.toggleDomNodeCssClass(element, className, value);
-      }
-
-      var subscriptions_ = [];
-      var classList = ko.unwrap(valueAccessor());
-
-      ko.utils.objectForEach(classList, function (key, value) {
-        var className = bindingContext.$component.MDCFoundation.cssClasses[key];
-        if (ko.unwrap(value)) {
-          toggleClass(className, true);
-        }
-        if (ko.isSubscribable(value)) {
-          subscriptions_.push(
-            value.subscribe( function (value) {
-              toggleClass(className, value)
-            })
-          );
-        }
-      });
-
-      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-        ko.utils.arrayForEach(subscriptions_, function (subscription) {
-          subscription.dispose()
-        });
-      });
-    }
-  };
-
-  ko.bindingHandlers['mdc-attr'] = {
-    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var attrList = ko.unwrap(valueAccessor());
-
-      ko.utils.objectForEach(attrList, function (key, value) {
-        var attrName = bindingContext.$component.MDCFoundation.strings[key];
-        if (ko.unwrap(value)) {
-          element.setAttribute(attrName, true);
-        }
-      });
-    }
-  };
-
   ko.bindingHandlers['mdc-instance'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
       var root = bindingContext.$component.root;
@@ -139,6 +84,17 @@ function registerBindings (ko) {
     }
   };
   ko.virtualElements.allowedBindings['mdc-instance'] = true;
+
+  ko.bindingHandlers['mdc-ripple'] = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var ripple = MDCRipple.attachTo(element);
+      element['MDCRipple'] = ripple;
+
+      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+        element['MDCRipple'].destroy();
+      });
+    }
+  };
 
   ko[WAS_BIND] = true;
 }

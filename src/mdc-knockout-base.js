@@ -56,10 +56,6 @@ class PlainViewModel extends DisposableViewModel {
       delete params.$raw;
     }
 
-    if (params && params.hasOwnProperty('')) {
-      delete params[''];
-    }
-
     const forced = this.forceBindings;
     if (params) {
       Object.keys(forced).forEach(name => {
@@ -179,27 +175,5 @@ function validDescriptor(elementPropDesc) {
   return elementPropDesc && typeof elementPropDesc.set === 'function';
 }
 
-class CheckableComponentViewModel extends ComponentViewModel {
-  constructor (...args) {
-    super(...args);
-    this.verifyId();
-  }
-
-  verifyId () {
-    if (!this.attrs['id']) {
-      this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
-    }
-
-    let init = this.initialize.bind(this);
-    this.initialize = parent => {
-      if (parent && isSubscribable(parent.for)) {
-        parent.instance.input = this.instance;
-        parent.for(this.attrs['id']);
-      }
-      init(parent);
-    }
-  }
-}
-
 export default ComponentViewModel;
-export { DisposableViewModel, PlainViewModel, ComponentViewModel, HookableComponentViewModel, CheckableComponentViewModel };
+export { DisposableViewModel, PlainViewModel, ComponentViewModel, HookableComponentViewModel };

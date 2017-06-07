@@ -12,7 +12,7 @@ augment.registerBindings(ko);
 function expectBindings () {
   return [
     'mdc-bindings', 'mdc-attrs', 'mdc-parent-bindings', 'mdc-parent-attrs',
-    'mdc-child', 'mdc-ripple', 'mdc-css', 'mdc-attr', 'mdc-instance',
+    'mdc-child', 'mdc-ripple', 'mdc-instance',
   ];
 }
 
@@ -408,7 +408,6 @@ test('mdc-instance bindings passes proper parent when initializing viewmodel', (
     )), {times: 1});
     td.verify(initialize(undefined), {times: 1});
 
-
     ko.components.unregister('mdc-inner');
     ko.components.unregister('mdc-outer');
     done();
@@ -417,4 +416,30 @@ test('mdc-instance bindings passes proper parent when initializing viewmodel', (
 
 test('mdc-instance binding is allowed for virtual elements', () => {
   allowedVirtual('mdc-instance');
+});
+
+test('mdc-ripple binding attaches MDCRipple instance to the element', (done) => {
+  const component = bel`<span data-bind="mdc-ripple"></span>`;
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    assert.property(component, 'MDCRipple');
+    done();
+  });
+});
+
+test('mdc-ripple binding disposes MDCRipple instance on element removal', (done) => {
+  const component = bel`<span data-bind="mdc-ripple"></span>`;
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    const onDispose = td.function();
+    component.MDCRipple.destroy = onDispose;
+
+    ko.cleanNode(component);
+
+    td.verify(onDispose());
+    done();
+  });
+
 });

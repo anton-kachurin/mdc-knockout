@@ -1,6 +1,5 @@
 import {ComponentViewModel} from './mdc-knockout-base';
 import RadioTemplate from './templates/radio.html';
-import {isSubscribable} from './util.js';
 
 class RadioViewModel extends ComponentViewModel {
   extend () {

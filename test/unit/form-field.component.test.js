@@ -93,6 +93,20 @@ test('not a text node in inner html is ignored', (done) => {
   });
 });
 
+test('empty text nodes in inner html are ignored', (done) => {
+  const emptyTextNode = document.createTextNode(' ');
+  const component = bel`<mdc-form-field></mdc-form-field>`;
+  component.appendChild(emptyTextNode);
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    const label = component.querySelector('label');
+    assert.equal(label.textContent, '');
+
+    done();
+  });
+});
+
 test('label as param has higher priority than label as inner html', (done) => {
   const component = bel`<mdc-form-field params="label: 'as param'">as inner</mdc-form-field>`;
   ko.applyBindings({}, component);

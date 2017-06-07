@@ -160,6 +160,20 @@ test('text node in inner html is treated as label text', (done) => {
   });
 });
 
+test('empty text nodes in inner html are ignored', (done) => {
+  const emptyTextNode = document.createTextNode(' ');
+  const component = bel`<mdc-textfield></mdc-textfield>`;
+  component.appendChild(emptyTextNode);
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    const label = component.querySelector('label');
+    assert.equal(label.textContent, '');
+
+    done();
+  });
+});
+
 test('fullwidth component renders label as "placeholder" and "aria-label" attributes', (done) => {
   const component = bel`
     <div>

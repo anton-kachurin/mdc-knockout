@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import td from 'testdouble';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import augment from '../../src/mdc-knockout-augment';
@@ -306,6 +307,34 @@ test('if no id was set to the component, it is generated automatically', (done) 
     const input = component.querySelector('input');
     assert.isOk(input.id.length);
 
+    done();
+  });
+});
+
+test('"attrFor" method of the parent is used when available', (done) => {
+  const onAttrFor = td.function();
+  class TestViewModel {
+    constructor (root) {
+      this.root = root;
+
+      this.instance = null;
+      this.MDCComponent = {attachTo: () => ({})};
+    }
+
+    attrFor (value) {
+      onAttrFor(value);
+    }
+  }
+  const template = '<span data-bind="mdc-child"></span><span data-bind="mdc-instance"></span>';
+  augment.registerComponent(ko, 'mdc-outer', template, TestViewModel);
+
+  const component = bel`<mdc-outer><mdc-checkbox id="some_id"></mdc-checkbox></mdc-outer>`;
+  ko.applyBindings({}, component);
+
+  setTimeout(() => {
+    td.verify(onAttrFor('some_id'));
+
+    ko.components.unregister('mdc-outer');
     done();
   });
 });
