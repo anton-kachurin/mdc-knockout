@@ -18,10 +18,6 @@ class ButtonViewModel extends PlainViewModel {
       accent: false,
     }
   }
-
-  get unwrapParams () {
-    return ['submit'];
-  }
 }
 
 export {ButtonTemplate, ButtonViewModel};
