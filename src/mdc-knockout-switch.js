@@ -6,18 +6,18 @@ class SwitchViewModel extends PlainViewModel {
     if (!this.attrs['id']) {
       this.attrs['id'] = this.randomPrefixed('switch-auto-id');
     }
+  }
 
-    this.nodeFilter = (child) => {
-      if (!this.label && child.nodeType == 3) {
-        let text = child.textContent;
+  nodeFilter (child) {
+    if (!this.label && child.nodeType == 3) {
+      let text = child.textContent;
 
-        // ignore empty text nodes
-        if (text.match(/[^\s]/)) {
-          this.label = text;
-        }
+      // ignore empty text nodes
+      if (text.match(/[^\s]/)) {
+        this.label = text;
       }
-      return false;
     }
+    return false;
   }
 
   get defaultParams () {

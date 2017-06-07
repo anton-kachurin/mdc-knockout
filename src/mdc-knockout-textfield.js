@@ -13,37 +13,37 @@ class TextfieldViewModel extends ComponentViewModel {
       this.attrs['aria-label'] = this.label;
       this.attrs['placeholder'] = this.label;
     }
+  }
 
-    this.nodeFilter = (child) => {
-      if (!this.label && child.nodeType == 3) {
-        let text = child.textContent;
+  nodeFilter (child) {
+    if (!this.label && child.nodeType == 3) {
+      let text = child.textContent;
 
-        // ignore empty text nodes
-        if (text.match(/[^\s]/)) {
-          this.label = text;
-          if (this.fullwidth) {
-            this.attrs['aria-label'] = text;
-            this.attrs['placeholder'] = text;
-          }
+      // ignore empty text nodes
+      if (text.match(/[^\s]/)) {
+        this.label = text;
+        if (this.fullwidth) {
+          this.attrs['aria-label'] = text;
+          this.attrs['placeholder'] = text;
         }
       }
-
-      if (!this.help && child.nodeType == 1 && child.tagName == 'P') {
-        let text = child.textContent;
-        this.help = text;
-        for (let attr of child.attributes) {
-          if (attr.name == 'persistent') {
-            this.persistent = true;
-          }
-
-          if (attr.name == 'validation') {
-            this.validation = true;
-          }
-        }
-      }
-
-      return false;
     }
+
+    if (!this.help && child.nodeType == 1 && child.tagName == 'P') {
+      let text = child.textContent;
+      this.help = text;
+      for (let attr of child.attributes) {
+        if (attr.name == 'persistent') {
+          this.persistent = true;
+        }
+
+        if (attr.name == 'validation') {
+          this.validation = true;
+        }
+      }
+    }
+
+    return false;
   }
 
   get forceBindings () {

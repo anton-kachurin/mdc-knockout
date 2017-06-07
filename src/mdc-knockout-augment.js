@@ -58,6 +58,9 @@ function registerBindings (ko) {
       });
 
       var filterFunction = valueAccessor();
+      if (filterFunction) {
+        filterFunction = filterFunction.bind(bindingContext.$component);
+      }
 
       var children = bindingContext.$componentTemplateNodes;
       ko.utils.arrayForEach(children.reverse(), function (child) {

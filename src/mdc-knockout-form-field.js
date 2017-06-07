@@ -2,19 +2,17 @@ import ComponentViewModel from './mdc-knockout-base';
 import FormFieldTemplate from './templates/form-field.html';
 
 class FormFieldViewModel extends ComponentViewModel {
-  extend () {
-    this.nodeFilter = (child) => {
-      if (!this.label && child.nodeType == 3) {
-        let text = child.textContent;
+  nodeFilter (child) {
+    if (!this.label && child.nodeType == 3) {
+      let text = child.textContent;
 
-        // ignore empty text nodes
-        if (text.match(/[^\s]/)) {
-          this.label = text;
-        }
-        return false;
+      // ignore empty text nodes
+      if (text.match(/[^\s]/)) {
+        this.label = text;
       }
-      return true;
+      return false;
     }
+    return true;
   }
 
   get labelElement_ () {
