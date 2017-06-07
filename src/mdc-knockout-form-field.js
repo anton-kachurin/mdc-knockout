@@ -3,13 +3,15 @@ import FormFieldTemplate from './templates/form-field.html';
 
 class FormFieldViewModel extends ComponentViewModel {
   nodeFilter (child) {
-    if (!this.label && child.nodeType == 3) {
-      let text = child.textContent;
+    if (child.nodeType == 3) {
+      if (!this.label) {
+        let text = child.textContent;
 
-      // ignore empty text nodes
-      if (text.match(/[^\s]/)) {
-        this.label = text;
-      }
+        // ignore empty text nodes
+        if (text.match(/[^\s]/)) {
+          this.label = text;
+        }
+      } 
       return false;
     }
     return true;
