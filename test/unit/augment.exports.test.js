@@ -3,7 +3,7 @@ import td from 'testdouble';
 import bel from 'bel';
 import augment from '../../src/mdc-knockout-augment';
 
-import {koMock} from './helpers/knockout';
+import {koMock} from '../helpers/knockout';
 
 suite('augment exports');
 

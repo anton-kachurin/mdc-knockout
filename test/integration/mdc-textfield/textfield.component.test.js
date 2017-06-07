@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
-import augment from '../../src/mdc-knockout-augment';
-import {TextfieldTemplate, TextfieldViewModel} from '../../src/mdc-knockout-textfield';
+import augment from '../../../src/mdc-knockout-augment';
+import {TextfieldTemplate, TextfieldViewModel} from '../../../src/mdc-knockout-textfield';
 import {MDCTextfield} from '@material/textfield';
 
 import ko from 'knockout';

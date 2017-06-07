@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import augment from '../../src/mdc-knockout-augment.js';
-import {ButtonTemplate, ButtonViewModel} from '../../src/mdc-knockout-button';
-import {componentTest} from './helpers/component.js';
+import augment from '../../../src/mdc-knockout-augment.js';
+import {ButtonTemplate, ButtonViewModel} from '../../../src/mdc-knockout-button';
+import {componentTest} from '../../helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

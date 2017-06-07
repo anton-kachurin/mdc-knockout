@@ -2,8 +2,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 import domEvents from 'dom-events';
-import augment from '../../src/mdc-knockout-augment';
-import {CheckboxTemplate, CheckboxViewModel} from '../../src/mdc-knockout-checkbox';
+import augment from '../../../src/mdc-knockout-augment';
+import {CheckboxTemplate, CheckboxViewModel} from '../../../src/mdc-knockout-checkbox';
 import {MDCCheckbox} from '@material/checkbox';
 
 import ko from 'knockout';

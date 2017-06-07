@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import augment from '../../src/mdc-knockout-augment';
-import {ElevationTemplate, ElevationViewModel} from '../../src/mdc-knockout-elevation';
+import augment from '../../../src/mdc-knockout-augment';
+import {ElevationTemplate, ElevationViewModel} from '../../../src/mdc-knockout-elevation';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

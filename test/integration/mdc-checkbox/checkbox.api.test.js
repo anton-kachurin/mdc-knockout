@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {MDCCheckbox} from '@material/checkbox';
-import {excludeExpectedProperties} from './helpers/api.js';
+import {excludeExpectedProperties} from '../../helpers/api.js';
 
 const expected = ['checked', 'disabled', 'indeterminate', 'value', 'ripple'];
 

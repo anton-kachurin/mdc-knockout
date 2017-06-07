@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {MDCRadio} from '@material/radio';
-import {excludeExpectedProperties} from './helpers/api.js';
+import {excludeExpectedProperties} from '../../helpers/api.js';
 
 const expected = ['checked', 'disabled', 'value', 'ripple'];
 

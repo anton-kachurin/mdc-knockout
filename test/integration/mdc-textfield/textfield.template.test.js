@@ -1,9 +1,9 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import augment from '../../src/mdc-knockout-augment.js';
-import {TextfieldTemplate, TextfieldViewModel} from '../../src/mdc-knockout-textfield';
+import augment from '../../../src/mdc-knockout-augment.js';
+import {TextfieldTemplate, TextfieldViewModel} from '../../../src/mdc-knockout-textfield';
 import {MDCTextfield} from '@material/textfield';
-import {componentTest} from './helpers/component.js';
+import {componentTest} from '../../helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import augment from '../../src/mdc-knockout-augment.js';
-import {CheckboxTemplate, CheckboxViewModel} from '../../src/mdc-knockout-checkbox';
-import {componentTest} from './helpers/component.js';
+import augment from '../../../src/mdc-knockout-augment.js';
+import {CheckboxTemplate, CheckboxViewModel} from '../../../src/mdc-knockout-checkbox';
+import {componentTest} from '../../helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

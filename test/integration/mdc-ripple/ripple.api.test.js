@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {MDCRipple} from '@material/ripple';
-import {excludeExpectedProperties} from './helpers/api.js';
+import {excludeExpectedProperties} from '../../helpers/api.js';
 
 const expected = ['activate', 'deactivate', 'unbounded'];
 

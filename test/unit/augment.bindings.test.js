@@ -4,7 +4,7 @@ import td from 'testdouble';
 import augment from '../../src/mdc-knockout-augment';
 import ComponentViewModel from '../../src/mdc-knockout-base';
 
-import {koMock} from './helpers/knockout';
+import {koMock} from '../helpers/knockout';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

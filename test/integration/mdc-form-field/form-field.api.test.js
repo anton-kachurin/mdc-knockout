@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {MDCFormField} from '@material/form-field';
-import {excludeExpectedProperties} from './helpers/api.js';
+import {excludeExpectedProperties} from '../../helpers/api.js';
 
 const expected = ['input'];
 

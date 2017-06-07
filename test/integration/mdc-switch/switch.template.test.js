@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
-import augment from '../../src/mdc-knockout-augment.js';
-import {SwitchTemplate, SwitchViewModel} from '../../src/mdc-knockout-switch';
-import {componentTest} from './helpers/component.js';
+import augment from '../../../src/mdc-knockout-augment.js';
+import {SwitchTemplate, SwitchViewModel} from '../../../src/mdc-knockout-switch';
+import {componentTest} from '../../helpers/component.js';
 
 import ko from 'knockout';
 augment.registerBindings(ko);

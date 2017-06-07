@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
-import augment from '../../src/mdc-knockout-augment';
-import {FormFieldTemplate, FormFieldViewModel} from '../../src/mdc-knockout-form-field';
+import augment from '../../../src/mdc-knockout-augment';
+import {FormFieldTemplate, FormFieldViewModel} from '../../../src/mdc-knockout-form-field';
 import {MDCFormField} from '@material/form-field';
 
 import ko from 'knockout';
