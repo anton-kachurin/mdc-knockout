@@ -5,14 +5,16 @@ import {isSubscribable, unwrap} from './util.js';
 class CheckboxViewModel extends HookableComponentViewModel {
   extend () {
     if (!this.attrs['id']) {
-      this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
+      this.attrs['id'] = this.randomPrefixed('checkbox-auto-id');
     }
   }
 
   initialize (parent) {
     if (parent && parent.attrFor) {
-      parent.instance.input = this.instance;
       parent.attrFor(this.attrs['id']);
+    }
+    if (parent && parent.instance && ('input' in parent.instance)) {
+      parent.instance.input = this.instance;
     }
 
     this.instance.indeterminate = unwrap(this.indeterminate);

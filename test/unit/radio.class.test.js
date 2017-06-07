@@ -62,5 +62,5 @@ test('initialize assigns "instance" property to parent.instance.input', () => {
   const vm = setupTestVM();
   vm.instance = 'input2';
   vm.initialize(parent);
-  assert(parent.instance.input, 'input2');
+  assert.equal(parent.instance.input, 'input2');
 });
