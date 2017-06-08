@@ -11,8 +11,10 @@
     "build:min": "webpack --env=prod --display-error-details -p",
     "dist": "npm run build && npm run build:min",
     "dev": "webpack-dev-server --watch-poll --inline --hot --host 0.0.0.0 ",
-    "test": "karma start --single-run",
     "test:watch": "karma start",
+    "test:unit": "karma start karma-unit.conf.js --single-run",
+    "test:integration": "karma start karma-integration.conf.js --single-run",
+    "test": "npm run test:unit && npm run test:integration",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95"
   },
   "dependencies": {

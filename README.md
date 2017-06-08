@@ -102,7 +102,17 @@ no on the fly updates will be available.
 ## Testing
 
 ```shell
+# Unit + integration tests + coverage report, single-run
 npm run test
+
+# Unit tests only, single-run
+npm run test:unit
+
+# Integration tests only, single-run
+npm run test:integration
+
+
+# Test debugging, watch-mode
 npm run test:watch
 ```
 
