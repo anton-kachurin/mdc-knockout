@@ -107,13 +107,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CheckableComponentViewModel = exports.HookableComponentViewModel = exports.ComponentViewModel = exports.PlainViewModel = exports.DisposableViewModel = undefined;
+exports.HookableComponentViewModel = exports.ComponentViewModel = exports.PlainViewModel = exports.DisposableViewModel = undefined;
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(4);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -189,14 +189,6 @@ var PlainViewModel = function (_DisposableViewModel) {
       _this[name] = (0, _util.toJS)(_this[name]);
     });
 
-    if (params && params.hasOwnProperty('$raw')) {
-      delete params.$raw;
-    }
-
-    if (params && params.hasOwnProperty('')) {
-      delete params[''];
-    }
-
     var forced = _this.forceBindings;
     if (params) {
       Object.keys(forced).forEach(function (name) {
@@ -241,12 +233,11 @@ var PlainViewModel = function (_DisposableViewModel) {
 var ComponentViewModel = function (_PlainViewModel) {
   _inherits(ComponentViewModel, _PlainViewModel);
 
-  function ComponentViewModel(root, params, attrs, MDCComponent, MDCFoundation) {
+  function ComponentViewModel(root, params, attrs, MDCComponent) {
     _classCallCheck(this, ComponentViewModel);
 
     var _this2 = _possibleConstructorReturn(this, (ComponentViewModel.__proto__ || Object.getPrototypeOf(ComponentViewModel)).call(this, root, params, attrs));
 
-    _this2.MDCFoundation = MDCFoundation;
     _this2.MDCComponent = MDCComponent;
     _this2.instance = null;
     return _this2;
@@ -354,102 +345,13 @@ function validDescriptor(elementPropDesc) {
   return elementPropDesc && typeof elementPropDesc.set === 'function';
 }
 
-var CheckableComponentViewModel = function (_ComponentViewModel2) {
-  _inherits(CheckableComponentViewModel, _ComponentViewModel2);
-
-  function CheckableComponentViewModel() {
-    var _ref2;
-
-    _classCallCheck(this, CheckableComponentViewModel);
-
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    var _this5 = _possibleConstructorReturn(this, (_ref2 = CheckableComponentViewModel.__proto__ || Object.getPrototypeOf(CheckableComponentViewModel)).call.apply(_ref2, [this].concat(args)));
-
-    _this5.verifyId();
-    return _this5;
-  }
-
-  _createClass(CheckableComponentViewModel, [{
-    key: 'verifyId',
-    value: function verifyId() {
-      var _this6 = this;
-
-      if (!this.attrs['id']) {
-        this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
-      }
-
-      var init = this.initialize.bind(this);
-      this.initialize = function (parent) {
-        if (parent && (0, _util.isSubscribable)(parent.for)) {
-          parent.instance.input = _this6.instance;
-          parent.for(_this6.attrs['id']);
-        }
-        init(parent);
-      };
-    }
-  }]);
-
-  return CheckableComponentViewModel;
-}(ComponentViewModel);
-
-exports.default = ComponentViewModel;
 exports.DisposableViewModel = DisposableViewModel;
 exports.PlainViewModel = PlainViewModel;
 exports.ComponentViewModel = ComponentViewModel;
 exports.HookableComponentViewModel = HookableComponentViewModel;
-exports.CheckableComponentViewModel = CheckableComponentViewModel;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var isSubscribable = function isSubscribable(instance) {
-  if ('ko' in global) {
-    return ko.isSubscribable(instance);
-  } else {
-    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
-  }
-};
-
-var unwrap = function unwrap(instance) {
-  if ('ko' in global) {
-    return ko.unwrap(instance);
-  } else {
-    if (isSubscribable(instance)) {
-      return instance();
-    } else {
-      return instance;
-    }
-  }
-};
-
-var toJS = function toJS(instance) {
-  if ('ko' in global) {
-    return ko.toJS(instance);
-  } else {
-    while (isSubscribable(instance)) {
-      instance = instance();
-    }
-    return instance;
-  }
-};
-
-exports.isSubscribable = isSubscribable;
-exports.unwrap = unwrap;
-exports.toJS = toJS;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -468,7 +370,7 @@ var _foundation = __webpack_require__(27);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -577,10 +479,10 @@ var MDCRipple = exports.MDCRipple = function (_MDCComponent) {
           return instance.root_.classList.remove(className);
         },
         registerInteractionHandler: function registerInteractionHandler(evtType, handler) {
-          return instance.root_.addEventListener(evtType, handler);
+          return instance.root_.addEventListener(evtType, handler, (0, _util.applyPassive)());
         },
         deregisterInteractionHandler: function deregisterInteractionHandler(evtType, handler) {
-          return instance.root_.removeEventListener(evtType, handler);
+          return instance.root_.removeEventListener(evtType, handler, (0, _util.applyPassive)());
         },
         registerResizeHandler: function registerResizeHandler(handler) {
           return window.addEventListener('resize', handler);
@@ -605,7 +507,7 @@ var MDCRipple = exports.MDCRipple = function (_MDCComponent) {
 }(_base.MDCComponent);
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -615,6 +517,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.supportsCssVariables = supportsCssVariables;
+exports.applyPassive = applyPassive;
 exports.getMatchesProperty = getMatchesProperty;
 exports.getNormalizedEventCoords = getNormalizedEventCoords;
 /**
@@ -633,6 +536,8 @@ exports.getNormalizedEventCoords = getNormalizedEventCoords;
  * limitations under the License.
  */
 
+var supportsPassive_ = void 0;
+
 function supportsCssVariables(windowObj) {
   var supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
   if (!supportsFunctionPresent) {
@@ -644,6 +549,25 @@ function supportsCssVariables(windowObj) {
   // See: README section on Safari
   var weAreFeatureDetectingSafari10plus = windowObj.CSS.supports('(--css-vars: yes)') && windowObj.CSS.supports('color', '#00000000');
   return explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
+}
+
+// Determine whether the current browser supports passive event listeners, and if so, use them.
+function applyPassive() {
+  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+  var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (supportsPassive_ === undefined || forceRefresh) {
+    var isSupported = false;
+    try {
+      globalObj.document.addEventListener('test', null, { get passive() {
+          isSupported = true;
+        } });
+    } catch (e) {}
+
+    supportsPassive_ = isSupported;
+  }
+
+  return supportsPassive_ ? { passive: true } : false;
 }
 
 function getMatchesProperty(HTMLElementPrototype) {
@@ -672,6 +596,52 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 
   return { x: normalizedX, y: normalizedY };
 }
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var isSubscribable = function isSubscribable(instance) {
+  if ('ko' in global) {
+    return ko.isSubscribable(instance);
+  } else {
+    return instance != null && typeof instance.subscribe == "function" && typeof instance["notifySubscribers"] == "function";
+  }
+};
+
+var unwrap = function unwrap(instance) {
+  if ('ko' in global) {
+    return ko.unwrap(instance);
+  } else {
+    if (isSubscribable(instance)) {
+      return instance();
+    } else {
+      return instance;
+    }
+  }
+};
+
+var toJS = function toJS(instance) {
+  if ('ko' in global) {
+    return ko.toJS(instance);
+  } else {
+    while (isSubscribable(instance)) {
+      instance = instance();
+    }
+    return instance;
+  }
+};
+
+exports.isSubscribable = isSubscribable;
+exports.unwrap = unwrap;
+exports.toJS = toJS;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ }),
 /* 5 */
@@ -704,14 +674,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * limitations under the License.
  */
 
+/**
+ * @template A
+ */
 var MDCFoundation = function () {
   _createClass(MDCFoundation, null, [{
     key: "cssClasses",
+
+
+    /** @return enum{cssClasses} */
     get: function get() {
       // Classes extending MDCFoundation should implement this method to return an object which exports every
       // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
       return {};
     }
+
+    /** @return enum{strings} */
+
   }, {
     key: "strings",
     get: function get() {
@@ -719,6 +698,9 @@ var MDCFoundation = function () {
       // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
       return {};
     }
+
+    /** @return enum{numbers} */
+
   }, {
     key: "numbers",
     get: function get() {
@@ -726,6 +708,9 @@ var MDCFoundation = function () {
       // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
       return {};
     }
+
+    /** @return {!Object} */
+
   }, {
     key: "defaultAdapter",
     get: function get() {
@@ -734,6 +719,11 @@ var MDCFoundation = function () {
       // validation.
       return {};
     }
+
+    /**
+     * @param {!A} adapter
+     */
+
   }]);
 
   function MDCFoundation() {
@@ -741,6 +731,7 @@ var MDCFoundation = function () {
 
     _classCallCheck(this, MDCFoundation);
 
+    /** @private {!A} */
     this.adapter_ = adapter;
   }
 
@@ -779,9 +770,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _ripple = __webpack_require__(3);
+var _ripple = __webpack_require__(2);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(3);
 
 var _animation = __webpack_require__(18);
 
@@ -1084,7 +1075,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _ripple = __webpack_require__(3);
+var _ripple = __webpack_require__(2);
 
 var _foundation = __webpack_require__(25);
 
@@ -1444,7 +1435,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ripple = __webpack_require__(3);
+var _ripple = __webpack_require__(2);
 
 var WAS_BIND = 'mdc-bindings-already-added';
 
@@ -1504,6 +1495,9 @@ function registerBindings(ko) {
       });
 
       var filterFunction = valueAccessor();
+      if (filterFunction) {
+        filterFunction = filterFunction.bind(bindingContext.$component);
+      }
 
       var children = bindingContext.$componentTemplateNodes;
       ko.utils.arrayForEach(children.reverse(), function (child) {
@@ -1519,59 +1513,6 @@ function registerBindings(ko) {
   };
   ko.virtualElements.allowedBindings['mdc-child'] = true;
 
-  ko.bindingHandlers['mdc-ripple'] = {
-    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var ripple = _ripple.MDCRipple.attachTo(element);
-      element['MDCRipple'] = ripple;
-
-      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-        ripple.destroy();
-      });
-    }
-  };
-
-  ko.bindingHandlers['mdc-css'] = {
-    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
-      function toggleClass(className, value) {
-        ko.utils.toggleDomNodeCssClass(element, className, value);
-      }
-
-      var subscriptions_ = [];
-      var classList = ko.unwrap(valueAccessor());
-
-      ko.utils.objectForEach(classList, function (key, value) {
-        var className = bindingContext.$component.MDCFoundation.cssClasses[key];
-        if (ko.unwrap(value)) {
-          toggleClass(className, true);
-        }
-        if (ko.isSubscribable(value)) {
-          subscriptions_.push(value.subscribe(function (value) {
-            toggleClass(className, value);
-          }));
-        }
-      });
-
-      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-        ko.utils.arrayForEach(subscriptions_, function (subscription) {
-          subscription.dispose();
-        });
-      });
-    }
-  };
-
-  ko.bindingHandlers['mdc-attr'] = {
-    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var attrList = ko.unwrap(valueAccessor());
-
-      ko.utils.objectForEach(attrList, function (key, value) {
-        var attrName = bindingContext.$component.MDCFoundation.strings[key];
-        if (ko.unwrap(value)) {
-          element.setAttribute(attrName, true);
-        }
-      });
-    }
-  };
-
   ko.bindingHandlers['mdc-instance'] = {
     init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var root = bindingContext.$component.root;
@@ -1584,10 +1525,21 @@ function registerBindings(ko) {
   };
   ko.virtualElements.allowedBindings['mdc-instance'] = true;
 
+  ko.bindingHandlers['mdc-ripple'] = {
+    init: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var ripple = _ripple.MDCRipple.attachTo(element);
+      element['MDCRipple'] = ripple;
+
+      ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+        element['MDCRipple'].destroy();
+      });
+    }
+  };
+
   ko[WAS_BIND] = true;
 }
 
-function registerComponent(ko, name, template, viewModelConstructor, MDCComponent, MDCFoundation) {
+function registerComponent(ko, name, template, viewModelConstructor, MDCComponent) {
   if (MDCComponent) {
     template += '<!-- ko mdc-instance --><!-- /ko -->';
   }
@@ -1614,7 +1566,7 @@ function registerComponent(ko, name, template, viewModelConstructor, MDCComponen
           element.removeAttribute(name);
         });
 
-        return new viewModelConstructor(root, params, attrs, MDCComponent, MDCFoundation);
+        return new viewModelConstructor(root, params, attrs, MDCComponent);
       }
     }
   });
@@ -1678,11 +1630,6 @@ var ButtonViewModel = function (_PlainViewModel) {
         accent: false
       };
     }
-  }, {
-    key: 'unwrapParams',
-    get: function get() {
-      return ['submit'];
-    }
   }]);
 
   return ButtonViewModel;
@@ -1711,7 +1658,7 @@ var _checkbox = __webpack_require__(32);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1734,7 +1681,7 @@ var CheckboxViewModel = function (_HookableComponentVie) {
     key: 'extend',
     value: function extend() {
       if (!this.attrs['id']) {
-        this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
+        this.attrs['id'] = this.randomPrefixed('checkbox-auto-id');
       }
     }
   }, {
@@ -1743,8 +1690,10 @@ var CheckboxViewModel = function (_HookableComponentVie) {
       var _this2 = this;
 
       if (parent && parent.attrFor) {
-        parent.instance.input = this.instance;
         parent.attrFor(this.attrs['id']);
+      }
+      if (parent && parent.instance && 'input' in parent.instance) {
+        parent.instance.input = this.instance;
       }
 
       this.instance.indeterminate = (0, _util.unwrap)(this.indeterminate);
@@ -1824,7 +1773,7 @@ var _elevation = __webpack_require__(33);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1894,8 +1843,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
-
 var _formField = __webpack_require__(34);
 
 var _formField2 = _interopRequireDefault(_formField);
@@ -1918,20 +1865,20 @@ var FormFieldViewModel = function (_ComponentViewModel) {
   }
 
   _createClass(FormFieldViewModel, [{
-    key: 'extend',
-    value: function extend() {
-      var _this2 = this;
-
-      this.nodeFilter = function (child) {
-        if (!_this2.label && child.nodeType == 3) {
+    key: 'nodeFilter',
+    value: function nodeFilter(child) {
+      if (child.nodeType == 3) {
+        if (!this.label) {
           var text = child.textContent;
+
+          // ignore empty text nodes
           if (text.match(/[^\s]/)) {
-            _this2.label = text;
+            this.label = text;
           }
-          return false;
         }
-        return true;
-      };
+        return false;
+      }
+      return true;
     }
   }, {
     key: 'attrFor',
@@ -1956,7 +1903,7 @@ var FormFieldViewModel = function (_ComponentViewModel) {
   }]);
 
   return FormFieldViewModel;
-}(_mdcKnockoutBase2.default);
+}(_mdcKnockoutBase.ComponentViewModel);
 
 exports.FormFieldTemplate = _formField2.default;
 exports.FormFieldViewModel = FormFieldViewModel;
@@ -1981,8 +1928,6 @@ var _radio = __webpack_require__(35);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _util = __webpack_require__(2);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2004,15 +1949,17 @@ var RadioViewModel = function (_ComponentViewModel) {
     key: 'extend',
     value: function extend() {
       if (!this.attrs['id']) {
-        this.attrs['id'] = this.randomPrefixed('checkable-auto-id');
+        this.attrs['id'] = this.randomPrefixed('radio-auto-id');
       }
     }
   }, {
     key: 'initialize',
     value: function initialize(parent) {
       if (parent && parent.attrFor) {
-        parent.instance.input = this.instance;
         parent.attrFor(this.attrs['id']);
+      }
+      if (parent && parent.instance && 'input' in parent.instance) {
+        parent.instance.input = this.instance;
       }
     }
   }, {
@@ -2028,6 +1975,7 @@ var RadioViewModel = function (_ComponentViewModel) {
           if ('checked' in _this2.attrs) {
             return _this2.attrs.value;
           }
+          return false;
         }
       };
     }
@@ -2079,21 +2027,22 @@ var SwitchViewModel = function (_PlainViewModel) {
   _createClass(SwitchViewModel, [{
     key: 'extend',
     value: function extend() {
-      var _this2 = this;
-
       if (!this.attrs['id']) {
         this.attrs['id'] = this.randomPrefixed('switch-auto-id');
       }
+    }
+  }, {
+    key: 'nodeFilter',
+    value: function nodeFilter(child) {
+      if (!this.label && child.nodeType == 3) {
+        var text = child.textContent;
 
-      this.nodeFilter = function (child) {
-        if (!_this2.label && child.nodeType == 3) {
-          var text = child.textContent;
-          if (text.match(/[^\s]/)) {
-            _this2.label = text;
-          }
+        // ignore empty text nodes
+        if (text.match(/[^\s]/)) {
+          this.label = text;
         }
-        return false;
-      };
+      }
+      return false;
     }
   }, {
     key: 'defaultParams',
@@ -2105,14 +2054,14 @@ var SwitchViewModel = function (_PlainViewModel) {
   }, {
     key: 'forceBindings',
     get: function get() {
-      var _this3 = this;
+      var _this2 = this;
 
       return {
         disable: function disable() {
-          return 'disabled' in _this3.attrs;
+          return 'disabled' in _this2.attrs;
         },
         checked: function checked() {
-          return 'checked' in _this3.attrs;
+          return 'checked' in _this2.attrs;
         }
       };
     }
@@ -2140,8 +2089,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _mdcKnockoutBase2 = _interopRequireDefault(_mdcKnockoutBase);
-
 var _textfield = __webpack_require__(37);
 
 var _textfield2 = _interopRequireDefault(_textfield);
@@ -2166,105 +2113,80 @@ var TextfieldViewModel = function (_ComponentViewModel) {
   _createClass(TextfieldViewModel, [{
     key: 'extend',
     value: function extend() {
-      var _this2 = this;
-
       if (!this.attrs['id']) {
         this.attrs['id'] = this.randomPrefixed('textfield-auto-id');
       }
 
-      this.ariaControls = this.randomPrefixed('textfield-helptext');
-      this.attrs['aria-controls'] = ko.unwrap(this.help) && this.ariaControls;
+      this.attrs['aria-controls'] = this.randomPrefixed('textfield-helptext');
 
-      this.updateLabel(this.label);
+      if (this.fullwidth) {
+        this.attrs['aria-label'] = this.label;
+        this.attrs['placeholder'] = this.label;
+      }
+    }
+  }, {
+    key: 'nodeFilter',
+    value: function nodeFilter(child) {
+      if (!this.label && child.nodeType == 3) {
+        var text = child.textContent;
 
-      this.nodeFilter = function (child) {
-        function textNotEmpty(text) {
-          return text.match(/[^\s]/);
-        }
-
-        if (!_this2.label && child.nodeType == 3) {
-          var text = child.textContent;
-          if (textNotEmpty(text)) {
-            _this2.updateLabel(text);
+        // ignore empty text nodes
+        if (text.match(/[^\s]/)) {
+          this.label = text;
+          if (this.fullwidth) {
+            this.attrs['aria-label'] = text;
+            this.attrs['placeholder'] = text;
           }
         }
-        if (!_this2.help && child.nodeType == 1 && child.tagName == 'P') {
-          var _text = child.textContent;
-          if (textNotEmpty(_text)) {
-            _this2.help = _text;
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
+      }
 
-            try {
-              for (var _iterator = child.attributes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var attr = _step.value;
+      if (!this.help && child.nodeType == 1 && child.tagName == 'P') {
+        var _text = child.textContent;
+        this.help = _text;
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-                if (attr.name == 'persistent') {
-                  _this2.persistent = true;
-                }
+        try {
+          for (var _iterator = child.attributes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var attr = _step.value;
 
-                if (attr.name == 'validation') {
-                  _this2.validation = true;
-                }
-              }
-            } catch (err) {
-              _didIteratorError = true;
-              _iteratorError = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion && _iterator.return) {
-                  _iterator.return();
-                }
-              } finally {
-                if (_didIteratorError) {
-                  throw _iteratorError;
-                }
-              }
+            if (attr.name == 'persistent') {
+              this.persistent = true;
+            }
+
+            if (attr.name == 'validation') {
+              this.validation = true;
+            }
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
             }
           }
         }
-        return false;
+      }
+
+      return false;
+    }
+  }, {
+    key: 'forceBindings',
+    get: function get() {
+      var _this2 = this;
+
+      return {
+        disable: function disable() {
+          return 'disabled' in _this2.attrs;
+        }
       };
-    }
-  }, {
-    key: 'updateLabel',
-    value: function updateLabel(label) {
-      label = ko.unwrap(label);
-      label = String(label).trim();
-      if (this.fullwidth) {
-        if (!this.attrs['aria-label']) {
-          this.attrs['aria-label'] = ko.observable();
-        }
-        this.attrs['aria-label'](label);
-
-        if (!this.attrs['placeholder']) {
-          this.attrs['placeholder'] = ko.observable();
-        }
-        this.attrs['placeholder'](label);
-      }
-
-      if (ko.isWritableObservable(this.label)) {
-        this.label(label);
-      } else {
-        this.label = label;
-      }
-    }
-  }, {
-    key: 'initialize',
-    value: function initialize() {
-      var _this3 = this;
-
-      if ('disabled' in this.attrs) {
-        this.disable = true;
-      }
-
-      this.instance.disabled = ko.unwrap(this.disable);
-      if (ko.isSubscribable(this.disable)) {
-        this.track = this.disable.subscribe(function (value) {
-          _this3.instance.disabled = value;
-        });
-      }
     }
   }, {
     key: 'defaultParams',
@@ -2276,8 +2198,7 @@ var TextfieldViewModel = function (_ComponentViewModel) {
         validation: false,
         invalid: false,
         multiline: false,
-        fullwidth: false,
-        disable: false
+        fullwidth: false
       };
     }
   }, {
@@ -2288,7 +2209,7 @@ var TextfieldViewModel = function (_ComponentViewModel) {
   }]);
 
   return TextfieldViewModel;
-}(_mdcKnockoutBase2.default);
+}(_mdcKnockoutBase.ComponentViewModel);
 
 exports.TextfieldTemplate = _textfield2.default;
 exports.TextfieldViewModel = TextfieldViewModel;
@@ -2423,6 +2344,8 @@ function getAnimationName(windowObj, eventType) {
 // Public functions to access getAnimationName() for JavaScript events or CSS
 // property names.
 
+var transformStyleProperties = exports.transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
+
 /**
  * @param {!Object} windowObj
  * @param {string} eventType
@@ -2476,9 +2399,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @template F
+ */
 var MDCComponent = function () {
   _createClass(MDCComponent, null, [{
     key: 'attachTo',
+
+
+    /**
+     * @param {!Element} root
+     * @return {!MDCComponent}
+     */
     value: function attachTo(root) {
       // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
       // returns an instantiated component with its root set to that element. Also note that in the cases of
@@ -2486,6 +2418,13 @@ var MDCComponent = function () {
       // from getDefaultFoundation().
       return new MDCComponent(root, new _foundation2.default());
     }
+
+    /**
+     * @param {!Element} root
+     * @param {!F} foundation
+     * @param {...?} args
+     */
+
   }]);
 
   function MDCComponent(root) {
@@ -2493,6 +2432,7 @@ var MDCComponent = function () {
 
     _classCallCheck(this, MDCComponent);
 
+    /** @private {!Element} */
     this.root_ = root;
 
     for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
@@ -2502,6 +2442,7 @@ var MDCComponent = function () {
     this.initialize.apply(this, args);
     // Note that we initialize foundation here and not within the constructor's default param so that
     // this.root_ is defined and can be used within the foundation class.
+    /** @private {!F} */
     this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation_.init();
     this.initialSyncWithDOM();
@@ -2509,11 +2450,16 @@ var MDCComponent = function () {
 
   _createClass(MDCComponent, [{
     key: 'initialize',
-    value: function initialize() /* ...args */{
-      // Subclasses can override this to do any additional setup work that would be considered part of a
-      // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
-      // initialized. Any additional arguments besides root and foundation will be passed in here.
-    }
+    value: function initialize() /* ...args */{}
+    // Subclasses can override this to do any additional setup work that would be considered part of a
+    // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
+    // initialized. Any additional arguments besides root and foundation will be passed in here.
+
+
+    /**
+     * @return {!F} foundation
+     */
+
   }, {
     key: 'getDefaultFoundation',
     value: function getDefaultFoundation() {
@@ -2537,8 +2483,12 @@ var MDCComponent = function () {
       this.foundation_.destroy();
     }
 
-    // Wrapper method to add an event listener to the component's root element. This is most useful when
-    // listening for custom events.
+    /**
+     * Wrapper method to add an event listener to the component's root element. This is most useful when
+     * listening for custom events.
+     * @param {string} evtType
+     * @param {!Function} handler
+     */
 
   }, {
     key: 'listen',
@@ -2546,8 +2496,12 @@ var MDCComponent = function () {
       this.root_.addEventListener(evtType, handler);
     }
 
-    // Wrapper method to remove an event listener to the component's root element. This is most useful when
-    // unlistening for custom events.
+    /**
+     * Wrapper method to remove an event listener to the component's root element. This is most useful when
+     * unlistening for custom events.
+     * @param {string} evtType
+     * @param {!Function} handler
+     */
 
   }, {
     key: 'unlisten',
@@ -2555,8 +2509,13 @@ var MDCComponent = function () {
       this.root_.removeEventListener(evtType, handler);
     }
 
-    // Fires a cross-browser-compatible custom event from the component root of the given type,
-    // with the given data.
+    /**
+     * Fires a cross-browser-compatible custom event from the component root of the given type,
+     * with the given data.
+     * @param {string} evtType
+     * @param {!Object} evtData
+     * @param {boolean} shouldBubble
+     */
 
   }, {
     key: 'emit',
@@ -3276,7 +3235,7 @@ var _base = __webpack_require__(0);
 
 var _constants = __webpack_require__(26);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(3);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4090,10 +4049,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _mdcKnockoutAugment2.default.registerBindings(ko);
 
-_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-textfield', (0, _mdcKnockoutTextfield.TextfieldTemplate)(), _mdcKnockoutTextfield.TextfieldViewModel, _textfield.MDCTextfield, _textfield.MDCTextfieldFoundation);
-_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-form-field', (0, _mdcKnockoutFormField.FormFieldTemplate)(), _mdcKnockoutFormField.FormFieldViewModel, _formField.MDCFormField, _formField.MDCFormFieldFoundation);
-_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-checkbox', (0, _mdcKnockoutCheckbox.CheckboxTemplate)(), _mdcKnockoutCheckbox.CheckboxViewModel, _checkbox.MDCCheckbox, _checkbox.MDCCheckboxFoundation);
-_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-radio', (0, _mdcKnockoutRadio.RadioTemplate)(), _mdcKnockoutRadio.RadioViewModel, _radio.MDCRadio, _radio.MDCRadioFoundation);
+_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-textfield', (0, _mdcKnockoutTextfield.TextfieldTemplate)(), _mdcKnockoutTextfield.TextfieldViewModel, _textfield.MDCTextfield);
+_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-form-field', (0, _mdcKnockoutFormField.FormFieldTemplate)(), _mdcKnockoutFormField.FormFieldViewModel, _formField.MDCFormField);
+_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-checkbox', (0, _mdcKnockoutCheckbox.CheckboxTemplate)(), _mdcKnockoutCheckbox.CheckboxViewModel, _checkbox.MDCCheckbox);
+_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-radio', (0, _mdcKnockoutRadio.RadioTemplate)(), _mdcKnockoutRadio.RadioViewModel, _radio.MDCRadio);
 //
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-switch', (0, _mdcKnockoutSwitch.SwitchTemplate)(), _mdcKnockoutSwitch.SwitchViewModel);
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-button', (0, _mdcKnockoutButton.ButtonTemplate)(), _mdcKnockoutButton.ButtonViewModel);
@@ -4229,7 +4188,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth\n  },\n  mdc-css: {\n    INVALID: invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     data-bind=\"\n      text: help,\n      attr: { id: ariaControls },\n      mdc-css: {\n        HELPTEXT_PERSISTENT: persistent,\n        HELPTEXT_VALIDATION_MSG: validation\n      },\n      mdc-attr: { ARIA_HIDDEN: persistent }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth,\n    'mdc-textfield--invalid': invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     aria-hidden=\"true\"\n     data-bind=\"\n      text: help,\n      attr: { id: attrs['aria-controls'] },\n      css: {\n        'mdc-textfield-helptext--persistent': persistent,\n        'mdc-textfield-helptext--validation-msg': validation\n      }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
 };
 
 /***/ }),
