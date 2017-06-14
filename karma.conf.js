@@ -1,6 +1,13 @@
 const webpackConfig = require('./webpack.config');
 
 module.exports = function(config) {
+  const module = (config.module && typeof config.module === 'string') ? config.module : false;
+
+  const fileMask = module ? `test/**/${module}*test.js` : 'test/**/*test.js';
+  const files = [fileMask];
+  const preprocessors = {};
+  preprocessors[fileMask] = ['webpack', 'sourcemap'];
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -19,16 +26,12 @@ module.exports = function(config) {
     },
 
     // list of files / patterns to load in the browser
-    files: [
-      'test/**/*test.js'
-    ],
+    files: files,
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      'test/**/*test.js': ['webpack', 'sourcemap']
-    },
+    preprocessors: preprocessors,
 
 
     webpack: Object.assign({}, webpackConfig(), {

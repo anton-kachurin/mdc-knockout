@@ -12,7 +12,7 @@ augment.registerBindings(ko);
 function expectBindings () {
   return [
     'mdc-bindings', 'mdc-attrs', 'mdc-parent-bindings', 'mdc-parent-attrs',
-    'mdc-child', 'mdc-ripple', 'mdc-instance',
+    'mdc-child', 'mdc-ripple', 'mdc-instance', 'mdc-children-transform'
   ];
 }
 
@@ -442,4 +442,8 @@ test('mdc-ripple binding disposes MDCRipple instance on element removal', (done)
     done();
   });
 
+});
+
+test('mdc-children-transform binding is allowed for virtual elements', () => {
+  allowedVirtual('mdc-children-transform');
 });

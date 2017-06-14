@@ -7,11 +7,11 @@ module.exports = function(config) {
 
   config.set({
     files: [
-      'test/unit/*test.js'
+      'test/unit/**/*test.js'
     ],
 
     preprocessors: {
-      'test/unit/*test.js': ['webpack', 'sourcemap']
+      'test/unit/**/*test.js': ['webpack', 'sourcemap']
     },
 
     webpack: Object.assign({}, webpackConfig, {
