@@ -7,6 +7,7 @@ class ToolbarViewModel extends ComponentViewModel {
     if (this.waterfall) {
       this.fixed = true;
     }
+    
     if (this.lastrow) {
       this.fixed = true;
     }
