@@ -43,6 +43,11 @@ class childrenTransformUtil {
       ko.virtualElements.prepend(element, child);
     });
   }
+
+  static apply (ko, bindingContext, element) {
+    const newBindingContext = bindingContext.$parentContext;
+    ko.applyBindingsToDescendants(newBindingContext, element);
+  }
 }
 
 class childrenTransformBinding {
@@ -76,7 +81,10 @@ class childrenTransformBinding {
 
     if (children.length) {
       this.util.output(this.ko, children, element);
+      this.util.apply(this.ko, bindingContext, element);
     }
+
+    return { controlsDescendantBindings: true }
   }
 }
 
