@@ -1,5 +1,5 @@
 import {MDCRipple} from '@material/ripple';
-import {childrenTransformBinding} from './bindings/children-transform';
+import {childrenTransformBinding, childrenTransformUtil} from './bindings/children-transform';
 const WAS_BIND = 'mdc-bindings-already-added';
 
 function registerBindings (ko) {
@@ -99,7 +99,7 @@ function registerBindings (ko) {
     }
   };
 
-  ko.bindingHandlers['mdc-children-transform'] = new childrenTransformBinding(ko);
+  ko.bindingHandlers['mdc-children-transform'] = new childrenTransformBinding(ko, childrenTransformUtil);
   ko.virtualElements.allowedBindings['mdc-children-transform'] = true;
 
   ko[WAS_BIND] = true;

@@ -23,7 +23,7 @@ function invokeInit (binding, $component, parameters, children) {
 
   const valueAccessor = () => parameters || {};
 
-  binding.init([], valueAccessor, null, null, bindingContext);
+  return binding.init([], valueAccessor, null, null, bindingContext);
 }
 
 suite('children-transform binding');
@@ -145,6 +145,21 @@ test('"output" prepends children in reverse', () => {
   assert.deepEqual(prepended, [3, 2, 1]);
 });
 
+test('"apply" applies $parentContext via "applyBindingsToDescendants"', () => {
+  const apply = td.function();
+  const bindingContext = {
+    $parentContext: 'parentContext'
+  }
+  childrenTransformUtil.apply({applyBindingsToDescendants: apply}, bindingContext, 'element');
+  td.verify(apply('parentContext', 'element'));
+});
+
+test('"init" disables automatic binding on descendant elements', () => {
+  const binding = new childrenTransformBinding(koMock());
+  const result = invokeInit(binding);
+  assert.deepEqual(result, { controlsDescendantBindings: true });
+});
+
 test('"init" calls util.transform when the "childrenTransform" is available', () => {
   const invoked = td.function('invoked transform');
   const binding = new childrenTransformBinding(koMock(), {
@@ -157,7 +172,7 @@ test('"init" calls util.transform when the "childrenTransform" is available', ()
   td.verify(invoked());
 });
 
-test('"init" calls util.makeList', () => {
+test('"init" calls util.makeList when "depth" is set to non-zero', () => {
   const invoked = td.function('invoked makeList');
   const binding = new childrenTransformBinding(koMock(), {
     makeList: () => invoked()
@@ -166,7 +181,7 @@ test('"init" calls util.makeList', () => {
   td.verify(invoked());
 });
 
-test('"init" calls util.addClasses', () => {
+test('"init" calls util.addClasses when "depth" and "node" are set', () => {
   const invoked = td.function('invoked addClasses');
   const binding = new childrenTransformBinding(koMock(), {
     makeList: () => {},
@@ -176,7 +191,7 @@ test('"init" calls util.addClasses', () => {
   td.verify(invoked());
 });
 
-test('"init" calls util.replaceAttrs', () => {
+test('"init" calls util.replaceAttrs when "depth" and "attr" are set', () => {
   const invoked = td.function('invoked replaceAttrs');
   const binding = new childrenTransformBinding(koMock(), {
     makeList: () => {},
@@ -186,10 +201,21 @@ test('"init" calls util.replaceAttrs', () => {
   td.verify(invoked());
 });
 
-test('"init" calls util.output', () => {
+test('"init" calls util.output when there are children to output', () => {
   const invoked = td.function('invoked output');
   const binding = new childrenTransformBinding(koMock(), {
-    output: () => invoked()
+    output: () => invoked(),
+    apply: () => {}
+  });
+  invokeInit(binding, null, null, [1]);
+  td.verify(invoked());
+});
+
+test('"init" calls util.apply when there are children to output', () => {
+  const invoked = td.function('invoked apply');
+  const binding = new childrenTransformBinding(koMock(), {
+    output: () => {},
+    apply: () => invoked()
   });
   invokeInit(binding, null, null, [1]);
   td.verify(invoked());
