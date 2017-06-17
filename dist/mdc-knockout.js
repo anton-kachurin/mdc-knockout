@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -641,7 +641,7 @@ var toJS = function toJS(instance) {
 exports.isSubscribable = isSubscribable;
 exports.unwrap = unwrap;
 exports.toJS = toJS;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
 
 /***/ }),
 /* 5 */
@@ -1437,6 +1437,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _ripple = __webpack_require__(2);
 
+var _childrenTransform = __webpack_require__(31);
+
 var WAS_BIND = 'mdc-bindings-already-added';
 
 function registerBindings(ko) {
@@ -1536,6 +1538,9 @@ function registerBindings(ko) {
     }
   };
 
+  ko.bindingHandlers['mdc-children-transform'] = new _childrenTransform.childrenTransformBinding(ko, _childrenTransform.childrenTransformUtil);
+  ko.virtualElements.allowedBindings['mdc-children-transform'] = true;
+
   ko[WAS_BIND] = true;
 }
 
@@ -1590,7 +1595,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _button = __webpack_require__(31);
+var _button = __webpack_require__(33);
 
 var _button2 = _interopRequireDefault(_button);
 
@@ -1654,7 +1659,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _checkbox = __webpack_require__(32);
+var _checkbox = __webpack_require__(34);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
@@ -1769,7 +1774,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _elevation = __webpack_require__(33);
+var _elevation = __webpack_require__(35);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
@@ -1843,7 +1848,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _formField = __webpack_require__(34);
+var _formField = __webpack_require__(36);
 
 var _formField2 = _interopRequireDefault(_formField);
 
@@ -1924,7 +1929,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _radio = __webpack_require__(35);
+var _radio = __webpack_require__(37);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -2003,7 +2008,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _switch = __webpack_require__(36);
+var _switch = __webpack_require__(38);
 
 var _switch2 = _interopRequireDefault(_switch);
 
@@ -2089,7 +2094,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _textfield = __webpack_require__(37);
+var _textfield = __webpack_require__(39);
 
 var _textfield2 = _interopRequireDefault(_textfield);
 
@@ -2575,6 +2580,7 @@ var cssClasses = exports.cssClasses = {
   UPGRADED: 'mdc-checkbox--upgraded',
   CHECKED: 'mdc-checkbox--checked',
   INDETERMINATE: 'mdc-checkbox--indeterminate',
+  DISABLED: 'mdc-checkbox--disabled',
   ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
   ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
   ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
@@ -2732,6 +2738,11 @@ var MDCCheckboxFoundation = function (_MDCFoundation) {
     key: 'setDisabled',
     value: function setDisabled(disabled) {
       this.getNativeControl_().disabled = disabled;
+      if (disabled) {
+        this.adapter_.addClass(_constants.cssClasses.DISABLED);
+      } else {
+        this.adapter_.removeClass(_constants.cssClasses.DISABLED);
+      }
     }
   }, {
     key: 'getValue',
@@ -4019,6 +4030,171 @@ exports.default = MDCTextfieldFoundation;
 "use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var childrenTransformUtil = function () {
+  function childrenTransformUtil() {
+    _classCallCheck(this, childrenTransformUtil);
+  }
+
+  _createClass(childrenTransformUtil, null, [{
+    key: "transform",
+    value: function transform(children, transformFunction, boundThis) {
+      transformFunction = transformFunction.bind(boundThis);
+      return transformFunction(children);
+    }
+  }, {
+    key: "makeList",
+    value: function makeList(result, nodes, maxDepth) {
+      var _this = this;
+
+      var depth = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+      nodes.forEach(function (node) {
+        result.push(node);
+        if (depth < maxDepth) {
+          if (node.children && node.children.length) {
+            _this.makeList(result, [].concat(_toConsumableArray(node.children)), maxDepth, depth + 1);
+          }
+        }
+      });
+    }
+  }, {
+    key: "addClasses",
+    value: function addClasses(list, parameters) {
+      list.forEach(function (node) {
+        var tagClassName = parameters[node.tagName];
+        if (tagClassName) {
+          node.classList.add(tagClassName);
+        }
+      });
+    }
+  }, {
+    key: "replaceAttrs",
+    value: function replaceAttrs(list, parameters) {
+      list.forEach(function (node) {
+        if (node.attributes && node.attributes.length) {
+          [].concat(_toConsumableArray(node.attributes)).forEach(function (attr) {
+            var attrClassName = parameters[attr.name];
+            if (attrClassName) {
+              node.classList.add(attrClassName);
+              node.removeAttributeNode(attr);
+            }
+          });
+        }
+      });
+    }
+  }, {
+    key: "output",
+    value: function output(ko, children, element) {
+      children.reverse().forEach(function (child) {
+        ko.virtualElements.prepend(element, child);
+      });
+    }
+  }, {
+    key: "apply",
+    value: function apply(ko, bindingContext, element) {
+      var newBindingContext = bindingContext.$parentContext;
+      ko.applyBindingsToDescendants(newBindingContext, element);
+    }
+  }]);
+
+  return childrenTransformUtil;
+}();
+
+var childrenTransformBinding = function () {
+  function childrenTransformBinding(ko, util) {
+    _classCallCheck(this, childrenTransformBinding);
+
+    this.ko = ko;
+    this.util = util;
+    this.init = this.init.bind(this);
+  }
+
+  _createClass(childrenTransformBinding, [{
+    key: "init",
+    value: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var parameters = valueAccessor();
+      var $component = bindingContext.$component;
+      var children = bindingContext.$componentTemplateNodes;
+
+      if ($component.childrenTransform) {
+        children = this.util.transform(children, $component.childrenTransform, $component);
+      }
+
+      if (parameters.depth) {
+        var list = [];
+        this.util.makeList(list, children, parameters.depth);
+
+        if (parameters.node) {
+          this.util.addClasses(list, parameters.node);
+        }
+
+        if (parameters.attr) {
+          this.util.replaceAttrs(list, parameters.attr);
+        }
+      }
+
+      if (children.length) {
+        this.util.output(this.ko, children, element);
+        this.util.apply(this.ko, bindingContext, element);
+      }
+
+      return { controlsDescendantBindings: true };
+    }
+  }]);
+
+  return childrenTransformBinding;
+}();
+
+exports.childrenTransformBinding = childrenTransformBinding;
+exports.childrenTransformUtil = childrenTransformUtil;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _mdcKnockoutAugment = __webpack_require__(10);
 
 var _mdcKnockoutAugment2 = _interopRequireDefault(_mdcKnockoutAugment);
@@ -4045,6 +4221,8 @@ var _checkbox = __webpack_require__(6);
 
 var _radio = __webpack_require__(8);
 
+var _ripple = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _mdcKnockoutAugment2.default.registerBindings(ko);
@@ -4059,7 +4237,7 @@ _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-button', (0, _mdcKnockou
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-elevation', (0, _mdcKnockoutElevation.ElevationTemplate)(), _mdcKnockoutElevation.ElevationViewModel);
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4078,7 +4256,7 @@ function _template() {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4097,7 +4275,7 @@ function _template() {
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4116,7 +4294,7 @@ function _template() {
 };
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4135,7 +4313,7 @@ function _template() {
 };
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4154,7 +4332,7 @@ function _template() {
 };
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4173,7 +4351,7 @@ function _template() {
 };
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4190,33 +4368,6 @@ exports.default = function (ctx) {
 function _template() {
   return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth,\n    'mdc-textfield--invalid': invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     aria-hidden=\"true\"\n     data-bind=\"\n      text: help,\n      attr: { id: attrs['aria-controls'] },\n      css: {\n        'mdc-textfield-helptext--persistent': persistent,\n        'mdc-textfield-helptext--validation-msg': validation\n      }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
 };
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
 
 /***/ })
 /******/ ]);
