@@ -108,27 +108,14 @@ test('text node in inner html is treated as icon text', (done) => {
   });
 });
 
-test('not a text node in inner html is ignored', (done) => {
-  const component = bel`<mdc-fab><span>will be ignored</span></mdc-fab>`;
+test('inner html may contain any type of content', (done) => {
+  const inner = bel`<span>inner span</span>`;
+  const component = bel`<mdc-fab>${inner}</mdc-fab>`;
   ko.applyBindings({}, component);
 
   setTimeout(() => {
     const icon = component.querySelector('span');
-    assert.equal(icon.textContent, '');
-
-    done();
-  });
-});
-
-test('empty text nodes in inner html are ignored', (done) => {
-  const emptyTextNode = document.createTextNode(' ');
-  const component = bel`<mdc-fab></mdc-fab>`;
-  component.appendChild(emptyTextNode);
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const icon = component.querySelector('span');
-    assert.equal(icon.textContent, '');
+    assert.equal(icon.children[0], inner);
 
     done();
   });
