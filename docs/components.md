@@ -4,6 +4,7 @@
 - [mdc-button](./mdc-button.md)
 - [mdc-checkbox](./mdc-checkbox.md)
 - [mdc-elevation](./mdc-elevation.md)
+- [mdc-fab](./mdc-fab.md)
 - [mdc-form-field](./mdc-form-field.md)
 - [mdc-radio](./mdc-radio.md)
 - [mdc-switch](./mdc-switch.md)
