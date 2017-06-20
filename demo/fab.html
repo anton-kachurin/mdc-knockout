@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Floating Action Button Demo - Knockout Material Components</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../dist/mdc-knockout.js"></script>
+  </head>
+  <body>
+
+    <h1>Icons as ligatures:</h1>
+
+    <mdc-fab class="material-icons">favorite</mdc-fab>
+    <mdc-fab class="material-icons" params="mini: true">save</mdc-fab>
+    <mdc-fab class="material-icons" params="plain: true">add</mdc-fab>
+
+    <h1>Icon as SVG:</h1>
+
+    <mdc-fab>
+      <svg width="24" height="24" viewBox="0 0 24 24">
+        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+      </svg>
+    </mdc-fab>
+
+    <h1>Disabled:</h1>
+
+    <mdc-fab class="material-icons" disabled>favorite</mdc-fab>
+    <mdc-fab class="material-icons" params="disable: true, mini: true">favorite</mdc-fab>
+
+    <h1>Switch icons dynamically:</h1>
+
+    <mdc-fab class="material-icons" params="icon: selectedIcon"></mdc-fab>
+    <select data-bind="options: availableIcons,
+                       value: selectedIcon">
+    </select>
+
+    <script>
+      ko.applyBindings({
+        availableIcons: ko.observableArray(['save', 'add', 'edit']),
+        selectedIcon: ko.observable('save')
+      });
+    </script>
+  </body>
+</html>
