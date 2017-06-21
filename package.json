@@ -18,7 +18,7 @@
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95"
   },
   "dependencies": {
-    "material-components-web": "^0.12.1"
+    "material-components-web": "^0.13.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

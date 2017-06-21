@@ -1,0 +1,19 @@
+<button class="mdc-fab" data-bind="
+  mdc-attrs,
+  mdc-bindings,
+  mdc-ripple,
+  css: {
+    'mdc-fab--mini': mini,
+    'mdc-fab--plain': plain
+  },
+  style: {
+    fontFamily: 'inherit',
+    fontSize: 'inherit'
+  }">
+  <!-- ko if: icon -->
+    <span class="mdc-fab__icon" data-bind="text: icon"></span>
+  <!-- /ko -->
+  <!-- ko ifnot: icon -->
+    <span class="mdc-fab__icon"><!-- ko mdc-child --><!-- /ko --></span>
+  <!-- /ko -->
+</button>

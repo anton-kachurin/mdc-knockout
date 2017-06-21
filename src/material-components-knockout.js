@@ -9,6 +9,7 @@ import {ToolbarTemplate, ToolbarViewModel} from './mdc-knockout-toolbar';
 import {SwitchTemplate, SwitchViewModel} from './mdc-knockout-switch';
 import {ButtonTemplate, ButtonViewModel} from './mdc-knockout-button';
 import {ElevationTemplate, ElevationViewModel} from './mdc-knockout-elevation';
+import {FABTemplate, FABViewModel} from './mdc-knockout-fab';
 
 import {MDCTextfield} from '@material/textfield';
 import {MDCFormField} from '@material/form-field';
@@ -27,3 +28,4 @@ augment.registerComponent(ko, 'mdc-toolbar', ToolbarTemplate(), ToolbarViewModel
 augment.registerComponent(ko, 'mdc-switch', SwitchTemplate(), SwitchViewModel);
 augment.registerComponent(ko, 'mdc-button', ButtonTemplate(), ButtonViewModel);
 augment.registerComponent(ko, 'mdc-elevation', ElevationTemplate(), ElevationViewModel);
+augment.registerComponent(ko, 'mdc-fab', FABTemplate(), FABViewModel);

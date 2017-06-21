@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ Object.defineProperty(exports, 'MDCFoundation', {
   }
 });
 
-var _component = __webpack_require__(19);
+var _component = __webpack_require__(20);
 
 Object.defineProperty(exports, 'MDCComponent', {
   enumerable: true,
@@ -366,7 +366,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _foundation = __webpack_require__(27);
+var _foundation = __webpack_require__(28);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -641,7 +641,7 @@ var toJS = function toJS(instance) {
 exports.isSubscribable = isSubscribable;
 exports.unwrap = unwrap;
 exports.toJS = toJS;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
 
 /***/ }),
 /* 5 */
@@ -774,9 +774,9 @@ var _ripple = __webpack_require__(2);
 
 var _util = __webpack_require__(3);
 
-var _animation = __webpack_require__(18);
+var _animation = __webpack_require__(19);
 
-var _foundation = __webpack_require__(21);
+var _foundation = __webpack_require__(22);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -973,7 +973,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _foundation = __webpack_require__(23);
+var _foundation = __webpack_require__(24);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -1077,7 +1077,7 @@ var _base = __webpack_require__(0);
 
 var _ripple = __webpack_require__(2);
 
-var _foundation = __webpack_require__(25);
+var _foundation = __webpack_require__(26);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -1247,7 +1247,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _foundation = __webpack_require__(29);
+var _foundation = __webpack_require__(30);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
@@ -1437,6 +1437,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _ripple = __webpack_require__(2);
 
+var _childrenTransform = __webpack_require__(31);
+
 var WAS_BIND = 'mdc-bindings-already-added';
 
 function registerBindings(ko) {
@@ -1536,6 +1538,9 @@ function registerBindings(ko) {
     }
   };
 
+  ko.bindingHandlers['mdc-children-transform'] = new _childrenTransform.childrenTransformBinding(ko, _childrenTransform.childrenTransformUtil);
+  ko.virtualElements.allowedBindings['mdc-children-transform'] = true;
+
   ko[WAS_BIND] = true;
 }
 
@@ -1590,7 +1595,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _button = __webpack_require__(31);
+var _button = __webpack_require__(33);
 
 var _button2 = _interopRequireDefault(_button);
 
@@ -1654,7 +1659,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _checkbox = __webpack_require__(32);
+var _checkbox = __webpack_require__(34);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
@@ -1769,7 +1774,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _elevation = __webpack_require__(33);
+var _elevation = __webpack_require__(35);
 
 var _elevation2 = _interopRequireDefault(_elevation);
 
@@ -1837,13 +1842,67 @@ exports.ElevationViewModel = ElevationViewModel;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FABViewModel = exports.FABTemplate = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mdcKnockoutBase = __webpack_require__(1);
+
+var _fab = __webpack_require__(36);
+
+var _fab2 = _interopRequireDefault(_fab);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FABViewModel = function (_PlainViewModel) {
+  _inherits(FABViewModel, _PlainViewModel);
+
+  function FABViewModel() {
+    _classCallCheck(this, FABViewModel);
+
+    return _possibleConstructorReturn(this, (FABViewModel.__proto__ || Object.getPrototypeOf(FABViewModel)).apply(this, arguments));
+  }
+
+  _createClass(FABViewModel, [{
+    key: 'defaultParams',
+    get: function get() {
+      return {
+        mini: false,
+        plain: false,
+        icon: ''
+      };
+    }
+  }]);
+
+  return FABViewModel;
+}(_mdcKnockoutBase.PlainViewModel);
+
+exports.FABTemplate = _fab2.default;
+exports.FABViewModel = FABViewModel;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.FormFieldViewModel = exports.FormFieldTemplate = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _formField = __webpack_require__(34);
+var _formField = __webpack_require__(37);
 
 var _formField2 = _interopRequireDefault(_formField);
 
@@ -1909,7 +1968,7 @@ exports.FormFieldTemplate = _formField2.default;
 exports.FormFieldViewModel = FormFieldViewModel;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1924,7 +1983,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _radio = __webpack_require__(35);
+var _radio = __webpack_require__(38);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -1988,7 +2047,7 @@ exports.RadioTemplate = _radio2.default;
 exports.RadioViewModel = RadioViewModel;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2003,7 +2062,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _switch = __webpack_require__(36);
+var _switch = __webpack_require__(39);
 
 var _switch2 = _interopRequireDefault(_switch);
 
@@ -2074,7 +2133,7 @@ exports.SwitchTemplate = _switch2.default;
 exports.SwitchViewModel = SwitchViewModel;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2089,7 +2148,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mdcKnockoutBase = __webpack_require__(1);
 
-var _textfield = __webpack_require__(37);
+var _textfield = __webpack_require__(40);
 
 var _textfield2 = _interopRequireDefault(_textfield);
 
@@ -2215,7 +2274,7 @@ exports.TextfieldTemplate = _textfield2.default;
 exports.TextfieldViewModel = TextfieldViewModel;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2365,7 +2424,7 @@ function getCorrectPropertyName(windowObj, eventType) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2543,7 +2602,7 @@ var MDCComponent = function () {
 exports.default = MDCComponent;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2575,6 +2634,7 @@ var cssClasses = exports.cssClasses = {
   UPGRADED: 'mdc-checkbox--upgraded',
   CHECKED: 'mdc-checkbox--checked',
   INDETERMINATE: 'mdc-checkbox--indeterminate',
+  DISABLED: 'mdc-checkbox--disabled',
   ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
   ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
   ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
@@ -2596,7 +2656,7 @@ var numbers = exports.numbers = {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2610,7 +2670,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(20);
+var _constants = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2732,6 +2792,11 @@ var MDCCheckboxFoundation = function (_MDCFoundation) {
     key: 'setDisabled',
     value: function setDisabled(disabled) {
       this.getNativeControl_().disabled = disabled;
+      if (disabled) {
+        this.adapter_.addClass(_constants.cssClasses.DISABLED);
+      } else {
+        this.adapter_.removeClass(_constants.cssClasses.DISABLED);
+      }
     }
   }, {
     key: 'getValue',
@@ -2878,7 +2943,7 @@ function validDescriptor(inputPropDesc) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2912,7 +2977,7 @@ var strings = exports.strings = {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2926,7 +2991,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3012,7 +3077,7 @@ var MDCFormFieldFoundation = function (_MDCFoundation) {
 exports.default = MDCFormFieldFoundation;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3046,7 +3111,7 @@ var cssClasses = exports.cssClasses = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3060,7 +3125,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(24);
+var _constants = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3164,7 +3229,7 @@ var MDCRadioFoundation = function (_MDCFoundation) {
 exports.default = MDCRadioFoundation;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3219,7 +3284,7 @@ var numbers = exports.numbers = {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3233,7 +3298,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(26);
+var _constants = __webpack_require__(27);
 
 var _util = __webpack_require__(3);
 
@@ -3722,7 +3787,7 @@ var MDCRippleFoundation = function (_MDCFoundation) {
 exports.default = MDCRippleFoundation;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3765,7 +3830,7 @@ var cssClasses = exports.cssClasses = {
 };
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3779,7 +3844,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _base = __webpack_require__(0);
 
-var _constants = __webpack_require__(28);
+var _constants = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4013,7 +4078,142 @@ var MDCTextfieldFoundation = function (_MDCFoundation) {
 exports.default = MDCTextfieldFoundation;
 
 /***/ }),
-/* 30 */
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var childrenTransformUtil = function () {
+  function childrenTransformUtil() {
+    _classCallCheck(this, childrenTransformUtil);
+  }
+
+  _createClass(childrenTransformUtil, null, [{
+    key: "transform",
+    value: function transform(children, transformFunction, boundThis) {
+      transformFunction = transformFunction.bind(boundThis);
+      return transformFunction(children);
+    }
+  }, {
+    key: "makeList",
+    value: function makeList(result, nodes, maxDepth) {
+      var _this = this;
+
+      var depth = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+      nodes.forEach(function (node) {
+        result.push(node);
+        if (depth < maxDepth) {
+          if (node.children && node.children.length) {
+            _this.makeList(result, [].concat(_toConsumableArray(node.children)), maxDepth, depth + 1);
+          }
+        }
+      });
+    }
+  }, {
+    key: "addClasses",
+    value: function addClasses(list, parameters) {
+      list.forEach(function (node) {
+        var tagClassName = parameters[node.tagName];
+        if (tagClassName) {
+          node.classList.add(tagClassName);
+        }
+      });
+    }
+  }, {
+    key: "replaceAttrs",
+    value: function replaceAttrs(list, parameters) {
+      list.forEach(function (node) {
+        if (node.attributes && node.attributes.length) {
+          [].concat(_toConsumableArray(node.attributes)).forEach(function (attr) {
+            var attrClassName = parameters[attr.name];
+            if (attrClassName) {
+              node.classList.add(attrClassName);
+              node.removeAttributeNode(attr);
+            }
+          });
+        }
+      });
+    }
+  }, {
+    key: "output",
+    value: function output(ko, children, element) {
+      children.reverse().forEach(function (child) {
+        ko.virtualElements.prepend(element, child);
+      });
+    }
+  }, {
+    key: "apply",
+    value: function apply(ko, bindingContext, element) {
+      var newBindingContext = bindingContext.$parentContext;
+      ko.applyBindingsToDescendants(newBindingContext, element);
+    }
+  }]);
+
+  return childrenTransformUtil;
+}();
+
+var childrenTransformBinding = function () {
+  function childrenTransformBinding(ko, util) {
+    _classCallCheck(this, childrenTransformBinding);
+
+    this.ko = ko;
+    this.util = util;
+    this.init = this.init.bind(this);
+  }
+
+  _createClass(childrenTransformBinding, [{
+    key: "init",
+    value: function init(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var parameters = valueAccessor();
+      var $component = bindingContext.$component;
+      var children = bindingContext.$componentTemplateNodes;
+
+      if ($component.childrenTransform) {
+        children = this.util.transform(children, $component.childrenTransform, $component);
+      }
+
+      if (parameters.depth) {
+        var list = [];
+        this.util.makeList(list, children, parameters.depth);
+
+        if (parameters.node) {
+          this.util.addClasses(list, parameters.node);
+        }
+
+        if (parameters.attr) {
+          this.util.replaceAttrs(list, parameters.attr);
+        }
+      }
+
+      if (children.length) {
+        this.util.output(this.ko, children, element);
+        this.util.apply(this.ko, bindingContext, element);
+      }
+
+      return { controlsDescendantBindings: true };
+    }
+  }]);
+
+  return childrenTransformBinding;
+}();
+
+exports.childrenTransformBinding = childrenTransformBinding;
+exports.childrenTransformUtil = childrenTransformUtil;
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4023,19 +4223,21 @@ var _mdcKnockoutAugment = __webpack_require__(10);
 
 var _mdcKnockoutAugment2 = _interopRequireDefault(_mdcKnockoutAugment);
 
-var _mdcKnockoutTextfield = __webpack_require__(17);
+var _mdcKnockoutTextfield = __webpack_require__(18);
 
-var _mdcKnockoutFormField = __webpack_require__(14);
+var _mdcKnockoutFormField = __webpack_require__(15);
 
 var _mdcKnockoutCheckbox = __webpack_require__(12);
 
-var _mdcKnockoutRadio = __webpack_require__(15);
+var _mdcKnockoutRadio = __webpack_require__(16);
 
-var _mdcKnockoutSwitch = __webpack_require__(16);
+var _mdcKnockoutSwitch = __webpack_require__(17);
 
 var _mdcKnockoutButton = __webpack_require__(11);
 
 var _mdcKnockoutElevation = __webpack_require__(13);
+
+var _mdcKnockoutFab = __webpack_require__(14);
 
 var _textfield = __webpack_require__(9);
 
@@ -4057,9 +4259,10 @@ _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-radio', (0, _mdcKnockout
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-switch', (0, _mdcKnockoutSwitch.SwitchTemplate)(), _mdcKnockoutSwitch.SwitchViewModel);
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-button', (0, _mdcKnockoutButton.ButtonTemplate)(), _mdcKnockoutButton.ButtonViewModel);
 _mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-elevation', (0, _mdcKnockoutElevation.ElevationTemplate)(), _mdcKnockoutElevation.ElevationViewModel);
+_mdcKnockoutAugment2.default.registerComponent(ko, 'mdc-fab', (0, _mdcKnockoutFab.FABTemplate)(), _mdcKnockoutFab.FABViewModel);
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4078,7 +4281,7 @@ function _template() {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4097,7 +4300,7 @@ function _template() {
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4116,44 +4319,6 @@ function _template() {
 };
 
 /***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (ctx) {
-  return _template.call(ctx, ctx);
-};
-
-function _template() {
-  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"text: label, mdc-attrs\"></label>\n</div>\n";
-};
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (ctx) {
-  return _template.call(ctx, ctx);
-};
-
-function _template() {
-  return "<div class=\"mdc-radio\" data-bind=\"css: {\n  'mdc-radio--disabled': bindings.disable\n}\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
-};
-
-/***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4169,7 +4334,7 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"css: {\n  'mdc-switch--disabled': bindings.disable\n}\">\n  <input type=\"checkbox\"\n         class=\"mdc-switch__native-control\"\n         data-bind=\"mdc-attrs, mdc-bindings\" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+  return "<button class=\"mdc-fab\" data-bind=\"\n  mdc-attrs,\n  mdc-bindings,\n  mdc-ripple,\n  css: {\n    'mdc-fab--mini': mini,\n    'mdc-fab--plain': plain\n  },\n  style: {\n    fontFamily: 'inherit',\n    fontSize: 'inherit'\n  }\">\n  <!-- ko if: icon -->\n    <span class=\"mdc-fab__icon\" data-bind=\"text: icon\"></span>\n  <!-- /ko -->\n  <!-- ko ifnot: icon -->\n    <span class=\"mdc-fab__icon\"><!-- ko mdc-child --><!-- /ko --></span>\n  <!-- /ko -->\n</button>\n";
 };
 
 /***/ }),
@@ -4188,11 +4353,68 @@ exports.default = function (ctx) {
 };
 
 function _template() {
-  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth,\n    'mdc-textfield--invalid': invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     aria-hidden=\"true\"\n     data-bind=\"\n      text: help,\n      attr: { id: attrs['aria-controls'] },\n      css: {\n        'mdc-textfield-helptext--persistent': persistent,\n        'mdc-textfield-helptext--validation-msg': validation\n      }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+  return "<div class=\"mdc-form-field\" data-bind=\"\n  css: { 'mdc-form-field--align-end': alignEnd }\n\">\n  <!-- ko mdc-child: nodeFilter --><!-- /ko -->\n  <label data-bind=\"text: label, mdc-attrs\"></label>\n</div>\n";
 };
 
 /***/ }),
 /* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (ctx) {
+  return _template.call(ctx, ctx);
+};
+
+function _template() {
+  return "<div class=\"mdc-radio\" data-bind=\"css: {\n  'mdc-radio--disabled': bindings.disable\n}\">\n  <input class=\"mdc-radio__native-control\"\n         type=\"radio\"\n         data-bind=\"mdc-attrs, mdc-bindings\">\n  <div class=\"mdc-radio__background\">\n    <div class=\"mdc-radio__outer-circle\"></div>\n    <div class=\"mdc-radio__inner-circle\"></div>\n  </div>\n</div>\n";
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (ctx) {
+  return _template.call(ctx, ctx);
+};
+
+function _template() {
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-switch\" data-bind=\"css: {\n  'mdc-switch--disabled': bindings.disable\n}\">\n  <input type=\"checkbox\"\n         class=\"mdc-switch__native-control\"\n         data-bind=\"mdc-attrs, mdc-bindings\" />\n  <div class=\"mdc-switch__background\">\n    <div class=\"mdc-switch__knob\"></div>\n  </div>\n</div>\n<label class=\"mdc-switch-label\" data-bind=\"\n  attr: {\n    for: attrs.id\n  },\n  text: label\n\"></label>\n";
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (ctx) {
+  return _template.call(ctx, ctx);
+};
+
+function _template() {
+  return "<!-- ko mdc-child: nodeFilter --><!-- /ko -->\n<div class=\"mdc-textfield\" data-bind=\"\n  css: {\n    'mdc-textfield--multiline': multiline,\n    'mdc-textfield--fullwidth': fullwidth,\n    'mdc-textfield--invalid': invalid\n  }\n\">\n  <!-- ko ifnot: multiline -->\n    <input class=\"mdc-textfield__input\" data-bind=\"mdc-bindings, mdc-attrs\" />\n  <!-- /ko -->\n  <!-- ko if: multiline -->\n    <textarea class=\"mdc-textfield__input\"\n              data-bind=\"mdc-bindings, mdc-attrs\"></textarea>\n  <!-- /ko -->\n  <!-- ko ifnot: fullwidth -->\n    <label class=\"mdc-textfield__label\" data-bind=\"\n      text: label,\n      attr: {\n        for: attrs.id\n      }\n    \"></label>\n  <!-- /ko -->\n</div>\n<!-- ko if: help -->\n<!-- ko ifnot: multiline -->\n<!-- ko ifnot: fullwidth -->\n  <p class=\"mdc-textfield-helptext\"\n     aria-hidden=\"true\"\n     data-bind=\"\n      text: help,\n      attr: { id: attrs['aria-controls'] },\n      css: {\n        'mdc-textfield-helptext--persistent': persistent,\n        'mdc-textfield-helptext--validation-msg': validation\n      }\n     \">\n  </p>\n<!-- /ko -->\n<!-- /ko -->\n<!-- /ko -->\n";
+};
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports) {
 
 var g;
