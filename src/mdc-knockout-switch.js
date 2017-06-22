@@ -8,18 +8,6 @@ class SwitchViewModel extends PlainViewModel {
     }
   }
 
-  nodeFilter (child) {
-    if (!this.label && child.nodeType == 3) {
-      let text = child.textContent;
-
-      // ignore empty text nodes
-      if (text.match(/[^\s]/)) {
-        this.label = text;
-      }
-    }
-    return false;
-  }
-
   get defaultParams () {
     return {
       label: ''
