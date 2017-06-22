@@ -146,7 +146,7 @@ test('MDCToolbar:change event listener added when "ratio" present', () => {
   td.verify(listen('MDCToolbar:change', td.matchers.isA(Function)));
 });
 
-test('MDCToolbar:change event updates "ratio"', () => {
+test('"ratio" updates after "listen" method of the instance is called', () => {
   const ratio = ko.observable();
   const vm = setupTestVM(null, {flexible: true, ratio: ratio});
   let handler;
