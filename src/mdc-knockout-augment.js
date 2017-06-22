@@ -1,5 +1,6 @@
 import {MDCRipple} from '@material/ripple';
 import {childrenTransformBinding, childrenTransformUtil} from './bindings/children-transform';
+import {childrenFilterBinding, childrenFilterUtil} from './bindings/children-filter';
 const WAS_BIND = 'mdc-bindings-already-added';
 
 function registerBindings (ko) {
@@ -101,6 +102,9 @@ function registerBindings (ko) {
 
   ko.bindingHandlers['mdc-children-transform'] = new childrenTransformBinding(ko, childrenTransformUtil);
   ko.virtualElements.allowedBindings['mdc-children-transform'] = true;
+
+  ko.bindingHandlers['mdc-children-filter'] = new childrenFilterBinding(ko, childrenFilterUtil);
+  ko.virtualElements.allowedBindings['mdc-children-filter'] = true;
 
   ko[WAS_BIND] = true;
 }

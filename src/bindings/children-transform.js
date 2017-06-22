@@ -1,4 +1,6 @@
-class childrenTransformUtil {
+import {childrenUtil} from './children-util';
+
+class childrenTransformUtil extends childrenUtil {
   static transform (children, transformFunction, boundThis) {
     transformFunction = transformFunction.bind(boundThis);
     return transformFunction(children);
@@ -36,17 +38,6 @@ class childrenTransformUtil {
         });
       }
     });
-  }
-
-  static output (ko, children, element) {
-    children.reverse().forEach(child => {
-      ko.virtualElements.prepend(element, child);
-    });
-  }
-
-  static apply (ko, bindingContext, element) {
-    const newBindingContext = bindingContext.$parentContext;
-    ko.applyBindingsToDescendants(newBindingContext, element);
   }
 }
 
