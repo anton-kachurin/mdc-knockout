@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/anton-kachurin/mdc-knockout.svg?branch=master)](https://travis-ci.org/anton-kachurin/mdc-knockout)
-
+[![codecov](https://codecov.io/gh/anton-kachurin/mdc-knockout/branch/master/graph/badge.svg)](https://codecov.io/gh/anton-kachurin/mdc-knockout)
 
 # Knockout Material Components
 
