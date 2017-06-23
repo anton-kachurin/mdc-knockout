@@ -7,7 +7,8 @@ function koMock () {
     components: {
       register: () => {}
     },
-    applyBindingsToDescendants: () => {}
+    applyBindingsToDescendants: () => {},
+    applyBindingsToNode: () => {}
   }
 }
 
