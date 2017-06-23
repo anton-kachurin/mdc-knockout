@@ -5,7 +5,10 @@ addons:
 language: node_js
 node_js:
   - "7"
-  
+
 branches:
   only:
     - master
+
+after_success:
+  - codecov
