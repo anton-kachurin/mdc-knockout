@@ -131,7 +131,7 @@ test('child elements can set "for" attribute value by using "attrFor" method if 
       parent.attrFor('custom_for');
     }
   }
-  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-instance"></span>', TestViewModel);
+  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-initialize"></span>', TestViewModel);
 
   const component = bel`<mdc-form-field><mdc-inner></mdc-inner></mdc-form-field>`;
   ko.applyBindings({}, component);
@@ -164,7 +164,7 @@ test('child elements cannot set "for" attribute value by using "attrFor" method 
       parent.attrFor('custom_for');
     }
   }
-  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-instance"></span>', TestViewModel);
+  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-initialize"></span>', TestViewModel);
 
   const component = bel`<mdc-form-field for="preset_for"><mdc-inner></mdc-inner></mdc-form-field>`;
   ko.applyBindings({}, component);
