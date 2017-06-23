@@ -8,7 +8,12 @@ function koMock () {
       register: () => {}
     },
     applyBindingsToDescendants: () => {},
-    applyBindingsToNode: () => {}
+    applyBindingsToNode: () => {},
+    utils: {
+      domNodeDisposal: {
+        addDisposeCallback: () => {}
+      }
+    }
   }
 }
 
