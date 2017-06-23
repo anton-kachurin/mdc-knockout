@@ -81,22 +81,8 @@ test('text node in inner html is treated as label text', (done) => {
   });
 });
 
-test('not a text node in inner html is ignored', (done) => {
+test('not a text node in inner html is not treated as label text', (done) => {
   const component = bel`<mdc-form-field><span>will be ignored</span></mdc-form-field>`;
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const label = component.querySelector('label');
-    assert.equal(label.textContent, '');
-
-    done();
-  });
-});
-
-test('empty text nodes in inner html are ignored', (done) => {
-  const emptyTextNode = document.createTextNode(' ');
-  const component = bel`<mdc-form-field></mdc-form-field>`;
-  component.appendChild(emptyTextNode);
   ko.applyBindings({}, component);
 
   setTimeout(() => {
