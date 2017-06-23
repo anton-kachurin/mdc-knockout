@@ -1,4 +1,4 @@
-import {childrenUtil} from './children-util';
+import {childrenUtil} from './children';
 
 class childrenFilterUtil extends childrenUtil {
   static test (element, condition) {

@@ -1,4 +1,4 @@
-import {childrenUtil} from './children-util';
+import {childrenUtil} from './children';
 
 class childrenTransformUtil extends childrenUtil {
   static transform (children, transformFunction, boundThis) {

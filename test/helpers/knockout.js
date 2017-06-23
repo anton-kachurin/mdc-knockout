@@ -5,8 +5,9 @@ function koMock () {
       allowedBindings: []
     },
     components: {
-      register: function () {}
+      register: () => {}
     },
+    applyBindingsToDescendants: () => {}
   }
 }
 
