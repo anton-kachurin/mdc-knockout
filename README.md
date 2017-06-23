@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/anton-kachurin/mdc-knockout.svg?branch=master)](https://travis-ci.org/anton-kachurin/mdc-knockout)
+
+
 # Knockout Material Components
 
 Knockout Material Components (MDC-Knockout) help Knockout developers execute
