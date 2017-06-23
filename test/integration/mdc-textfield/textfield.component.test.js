@@ -160,20 +160,6 @@ test('text node in inner html is treated as label text', (done) => {
   });
 });
 
-test('empty text nodes in inner html are ignored', (done) => {
-  const emptyTextNode = document.createTextNode(' ');
-  const component = bel`<mdc-textfield></mdc-textfield>`;
-  component.appendChild(emptyTextNode);
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const label = component.querySelector('label');
-    assert.equal(label.textContent, '');
-
-    done();
-  });
-});
-
 test('fullwidth component renders label as "placeholder" and "aria-label" attributes', (done) => {
   const component = bel`
     <div>
@@ -203,34 +189,6 @@ test('fullwidth component renders label as "placeholder" and "aria-label" attrib
   });
 });
 
-test('"help" plain param sets the help text', (done) => {
-  const component = bel`<mdc-textfield params="help: 'text'"></mdc-textfield>`;
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const help = component.querySelector('p');
-    assert.equal(help.textContent, 'text');
-
-    done();
-  });
-});
-
-test('"help" observable param sets the help text', (done) => {
-  const component = bel`<mdc-textfield params="help: helpText"></mdc-textfield>`;
-  const helpText = ko.observable('text1')
-  ko.applyBindings({helpText: helpText}, component);
-
-  setTimeout(() => {
-    const help = component.querySelector('p');
-    assert.equal(help.textContent, 'text1');
-
-    helpText('text2');
-    assert.equal(help.textContent, 'text2');
-
-    done();
-  });
-});
-
 test('<p> node in inner html is treated as help text', (done) => {
   const component = bel`<mdc-textfield><p>text</p></mdc-textfield>`;
   ko.applyBindings({}, component);
@@ -238,42 +196,6 @@ test('<p> node in inner html is treated as help text', (done) => {
   setTimeout(() => {
     const help = component.querySelector('p');
     assert.equal(help.textContent, 'text');
-
-    done();
-  });
-});
-
-test('<p persistent> node in inner html is treated as persistent help text', (done) => {
-  const component = bel`
-    <div>
-      <mdc-textfield><p persistent>text</p></mdc-textfield>
-      <mdc-textfield params="help: 'text', persistent: true"></mdc-textfield>
-    </div>
-  `;
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const help1 = component.querySelector('mdc-textfield:nth-child(1) p');
-    const help2 = component.querySelector('mdc-textfield:nth-child(2) p');
-    assert.equal(help1.className, help2.className);
-
-    done();
-  });
-});
-
-test('<p validation> node in inner html is treated as help text with validation', (done) => {
-  const component = bel`
-    <div>
-      <mdc-textfield><p validation>text</p></mdc-textfield>
-      <mdc-textfield params="help: 'text', validation: true"></mdc-textfield>
-    </div>
-  `;
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const help1 = component.querySelector('mdc-textfield:nth-child(1) p');
-    const help2 = component.querySelector('mdc-textfield:nth-child(2) p');
-    assert.equal(help1.className, help2.className);
 
     done();
   });

@@ -9,41 +9,40 @@ class TextfieldViewModel extends ComponentViewModel {
 
     this.attrs['aria-controls'] = this.randomPrefixed('textfield-helptext');
 
-    if (this.fullwidth) {
+    if (this.fullwidth && this.label) {
       this.attrs['aria-label'] = this.label;
       this.attrs['placeholder'] = this.label;
     }
   }
 
-  nodeFilter (child) {
-    if (!this.label && child.nodeType == 3) {
-      let text = child.textContent;
+  get labelElement_ () {
+    return this.root.querySelector('label');
+  }
 
-      // ignore empty text nodes
-      if (text.match(/[^\s]/)) {
-        this.label = text;
-        if (this.fullwidth) {
-          this.attrs['aria-label'] = text;
-          this.attrs['placeholder'] = text;
-        }
-      }
+  get textElement_ () {
+    return this.root.querySelector('input') || this.root.querySelector('textarea');
+  }
+
+  initialize () {
+    if (this.fullwidth && !this.label) {
+      const labelText = this.labelElement_.textContent;
+      this.textElement_.setAttribute('aria-label', labelText);
+      this.textElement_.setAttribute('placeholder', labelText);
     }
+  }
 
-    if (!this.help && child.nodeType == 1 && child.tagName == 'P') {
-      let text = child.textContent;
-      this.help = text;
-      for (let attr of child.attributes) {
-        if (attr.name == 'persistent') {
-          this.persistent = true;
-        }
+  childrenTransform (children) {
+    const result = [];
 
-        if (attr.name == 'validation') {
-          this.validation = true;
-        }
+    children.forEach(child => {
+      if (child.nodeType == 1 && child.tagName == 'P') {
+        child.setAttribute('aria-hidden', true);
+        child.setAttribute('id', this.attrs['aria-controls']);
+        result.push(child);
       }
-    }
+    });
 
-    return false;
+    return result;
   }
 
   get forceBindings () {
@@ -55,9 +54,6 @@ class TextfieldViewModel extends ComponentViewModel {
   get defaultParams () {
     return {
       label: '',
-      help: '',
-      persistent: false,
-      validation: false,
       invalid: false,
       multiline: false,
       fullwidth: false

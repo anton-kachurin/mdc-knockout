@@ -1,77 +1,114 @@
-## Switch
-The MDC Switch component is a spec-aligned switch component adhering to the
-[Material Design switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
+# Textfield
+The MDC Textfield component provides a textual input field adhering to the
+[Material Design Specification](https://material.google.com/components/text-fields.html).
 
-The component resembles the native checkbox element. You can add standard
-attributes to it, such as `name` or `required`, to use in HTML forms.
+By default, the textfield is rendered via `<input>` element, but a multiline
+version is available too, which is rendered via the `<textarea>`.
+You can add standard attributes to it, such as `value`, `type`, `name`,
+`required`, `pattern`, `minlength`, `autofocus`, to use in HTML forms.
 
-#### Parameters
+HTML5 validation is supported by using the `:invalid` and `:required` CSS
+attributes, and input's validity is checked via checkValidity() on blur.
 
-| Name    | Type     | Description                           |
-| --------|--------- | --------------------------------------|
-| label   | ko, str  | The text of the corresponding label.  |
+## Design & Additional Documentation
+
+- [Material Design guidelines: Text Fields](https://material.io/guidelines/components/text-fields.html)
+- [MDC-Web Textfield component](https://github.com/material-components/material-components-web/blob/master/packages/mdc-textfield/README.md)
+- [Demo](https://anton-kachurin.github.io/mdc-knockout/demo/textfield.html)
+
+## Parameters
+
+| Name       | Type     | Description                                                   |
+| -----------|--------- | --------------------------------------------------------------|
+| label      | ko, str  | The text of the floating label.                               |
+| invalid    | bool     | Applies on initialization only, will render the textfield as if it didn't pass validation. |
+| multiline  | bool     | If it needs to be multiline, checked once on initialization.  |
+| fullwidth  | bool     | If it needs to be full-width, checked once on initialization. |
 
 
 ### HTML-only
 
-Checked:
+### Basic single-line text field with a label
+
 ```HTML
-<mdc-switch checked>on/off</mdc-switch>
+<mdc-textfield>
+  Label text (placeholder)
+</mdc-textfield>
 ```
 
-Disabled:
+### Disabled
+
 ```HTML
-<mdc-switch disabled>on/off</mdc-switch>
+<mdc-textfield disabled>
+  Label text (placeholder)
+</mdc-textfield>
 ```
 
-As a form element:
+### With help text
+
 ```HTML
-<mdc-switch name="billing">
-  Enable Billing
-</mdc-switch>
+<mdc-textfield>
+  Label text (placeholder)
+  <p>Hint text, shows up on input focus</p>
+</mdc-textfield>
 ```
 
-#### MDCComponent API
-
-The original MDC-Web component is CSS-only, so there's no MDCComponent instance
-attached to the `<mdc-switch>` element. If you need to access the native element
-directly (e.g to set/unset disabled state), do:
+### Persistent help
 
 ```HTML
-<mdc-switch id="switch" disabled>on/off</mdc-switch>
-<button onclick="enableSwitch()">Enable switch</button>
-
-<script>
-  function enableSwitch () {
-    var switchElem = document.getElementById('switch');
-    switchElem.disabled = false;
-    switchElem.parentNode.classList.remove('mdc-switch--disabled');
-  }
-</script>
+<mdc-textfield>
+  Label text (placeholder)
+  <p persistent>Hint text, will always be here</p>
+</mdc-textfield>
 ```
 
-Please refer to the
-[original component's documentation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch)
-for full details.
+### Validated password input
 
-
-### Fully featured
-
-Any standard or third-party binding that are normally used for checkboxes, such
-as `checked`, `checkedValue`, `disabled`, etc, are applicable to MDC Switch:
 ```HTML
-<mdc-switch value="news" params="checked: options">
-  Get newsletters about service
-</mdc-switch>
-<mdc-switch value="promotions" params="checked: options">
-  Get info about promotions
-</mdc-switch>
+<mdc-textfield type="password" required pattern=".{8,}">
+  Focus-unfocus me
+  <p validation>Must be at least 8 characters long</p>
+</mdc-textfield>
 ```
 
-Use `label` parameter if you want to set label's text dynamically:
+Validation is triggered on input's blur, so that the user won't be distracted
+by false positive validation fails when the page loads. Nevertheless, there are
+cases when the component needs to be rendered in invalid state, for example
+when the textfield on initialization is known to be invalid (has been already
+validated on the back-end). Use `invalid` property for that:
 ```HTML
-<mdc-switch params="
-  checked: switchIsOn,
-  label: 'Switch is now ' + (switchIsOn() ? 'on' : 'off')"
-></mdc-switch>
+<mdc-textfield type="password" required pattern=".{8,}" params="invalid: true">
+  Password
+  <p persistent validation>Must contain letters, digits, and special characters</p>
+</mdc-textfield>
+```
+
+### Multiline textfield
+
+```HTML
+<mdc-textfield params="multiline: true">
+  Comment
+</mdc-textfield>
+```
+
+### Full-width
+
+```HTML
+<mdc-textfield params="fullwidth: true">
+  Subject
+</mdc-textfield>
+<mdc-textfield rows="5" params="fullwidth: true, multiline: true">
+  Message
+</mdc-textfield>
+```
+
+
+## Fully featured
+
+In addition to `label` parameter which accepts observables, help text may be
+dynamic too:
+```HTML
+<mdc-textfield params="label: labelText">
+  <p data-bind="text: hintText"></p>
+</mdc-textfield>
 ```

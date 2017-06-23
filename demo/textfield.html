@@ -10,50 +10,49 @@
   </head>
   <body>
 
-    <mdc-textfield rows=8 cols=40 id="multiline-texfield" params="
-      value: inputValue,
-      multiline: true,
-      label: 'multiline label',
-    "></mdc-textfield>
+    <h1>Single-line</h1>
+    <mdc-textfield value="Hi">Say Hi</mdc-textfield>
 
-    <br>
 
-    <mdc-textfield type="password" required pattern=".{8,}" params="
+    <h1>Validated</h1>
+
+    <mdc-textfield type="password" required pattern=".{9,}" params="
       value: inputValue,
-      label: 'placeholder text',
-      help: 'That will be displayed on your public profile',
+      label: inputLabel,
       disable: inputDisabled,
-      persistent: inputHelpPersistent,
-      validation: inputHelpValidate,
       float: true,
       invalid: true
-    "></mdc-textfield>
+    ">
+      <p persistent validation data-bind="text: helpText"></p>
+    </mdc-textfield>
 
     <div>
       Your input is:
       <span data-bind="text: inputValue"></span>
     </div>
 
-    <label>
-      disable input:
-      <input type="checkbox" data-bind="checked: inputDisabled">
-    </label>
+    <div>
+      <label>
+        Disable:
+        <input type="checkbox" data-bind="checked: inputDisabled">
+      </label>
+    </div>
 
-    <br>
+    <div>
+      Change label: <input data-bind="value: inputLabel" />
+    </div>
 
-    <label>
-      help is persistent:
-      <input type="checkbox" data-bind="checked: inputHelpPersistent">
-    </label>
+    <div>
+      Change help text: <input data-bind="value: helpText" />
+    </div>
 
-    <br>
+    <h1>Multiline</h1>
 
-    <label>
-      use validation:
-      <input type="checkbox" data-bind="checked: inputHelpValidate">
-    </label>
+    <mdc-textfield rows="8" cols="40" params="
+      multiline: true,
+    ">Label</mdc-textfield>
 
-    <br>
+    <h1>Fullwidth</h1>
 
     <mdc-textfield params="
       fullwidth: true
@@ -67,10 +66,10 @@
 
     <script>
       ko.applyBindings({
-        inputValue: ko.observable('asdf'),
+        inputValue: ko.observable('password'),
+        inputLabel: ko.observable('Label'),
+        helpText: ko.observable('Help text'),
         inputDisabled: ko.observable(false),
-        inputHelpPersistent: ko.observable(false),
-        inputHelpValidate: ko.observable(true)
       });
     </script>
   </body>

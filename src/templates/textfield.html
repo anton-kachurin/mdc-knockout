@@ -1,4 +1,3 @@
-<!-- ko mdc-child: nodeFilter --><!-- /ko -->
 <div class="mdc-textfield" data-bind="
   css: {
     'mdc-textfield--multiline': multiline,
@@ -13,29 +12,35 @@
     <textarea class="mdc-textfield__input"
               data-bind="mdc-bindings, mdc-attrs"></textarea>
   <!-- /ko -->
-  <!-- ko ifnot: fullwidth -->
+  <!-- ko if: label -->
     <label class="mdc-textfield__label" data-bind="
       text: label,
       attr: {
         for: attrs.id
-      }
+      },
+      visible: !fullwidth
     "></label>
   <!-- /ko -->
+  <!-- ko ifnot: label -->
+    <label class="mdc-textfield__label" data-bind="
+      attr: {
+        for: attrs.id
+      },
+      visible: !fullwidth
+    "><!-- ko mdc-children-filter: {nodeType: 3} --><!-- /ko --></label>
+  <!-- /ko -->
 </div>
-<!-- ko if: help -->
 <!-- ko ifnot: multiline -->
 <!-- ko ifnot: fullwidth -->
-  <p class="mdc-textfield-helptext"
-     aria-hidden="true"
-     data-bind="
-      text: help,
-      attr: { id: attrs['aria-controls'] },
-      css: {
-        'mdc-textfield-helptext--persistent': persistent,
-        'mdc-textfield-helptext--validation-msg': validation
-      }
-     ">
-  </p>
-<!-- /ko -->
+  <!-- ko mdc-children-transform: {
+    depth: 1,
+    node: {
+      'P': 'mdc-textfield-helptext'
+    },
+    attr: {
+      persistent: 'mdc-textfield-helptext--persistent',
+      validation: 'mdc-textfield-helptext--validation-msg'
+    }
+  } --><!-- /ko -->
 <!-- /ko -->
 <!-- /ko -->

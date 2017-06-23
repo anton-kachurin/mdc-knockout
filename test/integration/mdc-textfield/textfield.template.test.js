@@ -17,12 +17,21 @@ function initPlain (invalid) {
 }
 
 function initPlainHelptext (invalid, persistent, validation) {
-  const component = bel`<mdc-textfield params="
-    help: 'help',
-    invalid: invalid,
-    persistent: persistent,
-    validation: validation
-  "></mdc-textfield>`;
+  const p = bel`<p>help</p>`;
+  const component = bel`
+    <mdc-textfield params="invalid: invalid">
+      ${p}
+    </mdc-textfield>
+  `;
+
+  if (persistent) {
+    p.setAttribute('persistent', true);
+  }
+
+  if (validation) {
+    p.setAttribute('validation', true);
+  }
+
   ko.applyBindings({invalid: invalid, persistent: persistent, validation: validation}, component);
 
   return component;
@@ -99,10 +108,14 @@ componentTest(initFullwidth(), 'fullwidth component has proper structure', (comp
   assert.equal(component.children.length, 1);
   assert.equal(component.children[0].tagName, 'DIV');
 
-  assert.equal(component.children[0].children.length, 1);
+  assert.equal(component.children[0].children.length, 2);
   assert.equal(component.children[0].children[0].tagName, 'INPUT');
+  assert.equal(component.children[0].children[1].tagName, 'LABEL');
+
   assert.isOk(component.children[0].children[0].hasAttribute('placeholder'));
   assert.isOk(component.children[0].children[0].hasAttribute('aria-label'));
+
+  assert.equal(component.children[0].children[1].style.display, 'none');
 });
 
 componentTest(initFullwidth(), 'fullwidth component has proper classes', (component) => {

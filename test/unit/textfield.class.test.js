@@ -20,30 +20,6 @@ test('"label" has a default value of ""', () => {
   assert.equal(vm.label, "");
 });
 
-test('"help" property exists', () => {
-  assert.property(vm, 'help');
-});
-
-test('"help" has a default value of ""', () => {
-  assert.equal(vm.help, "");
-});
-
-test('"persistent" property exists', () => {
-  assert.property(vm, 'persistent');
-});
-
-test('"persistent" has a default value of false', () => {
-  assert.equal(vm.persistent, false);
-});
-
-test('"validation" property exists', () => {
-  assert.property(vm, 'validation');
-});
-
-test('"validation" has a default value of false', () => {
-  assert.equal(vm.validation, false);
-});
-
 test('"invalid" property exists', () => {
   assert.property(vm, 'invalid');
 });
@@ -120,92 +96,53 @@ test('attrs["aria-label"] and attrs["placeholder"] are not set when "fullwidth" 
   assert.notProperty(vm.attrs, 'placeholder');
 });
 
-test('nodeFilter method exists', () => {
-  assert.property(vm, 'nodeFilter');
+test('fullwidth textfields receive attributes on initialization if label is set via inner html', () => {
+  const vm1 = setupTestVM(null, {fullwidth: true});
+  const input = bel`<input />`;
+  const label1 = bel`<label>label text</label>`;
+  vm1.root = bel`<div>${input}${label1}<div>`;
+  vm1.initialize();
+  assert.equal(input.getAttribute('aria-label'), 'label text');
+  assert.equal(input.getAttribute('placeholder'), 'label text');
+
+  const vm2 = setupTestVM(null, {fullwidth: true});
+  const textarea = bel`<textarea></textarea>`;
+  const label2 = bel`<label>label text</label>`;
+  vm2.root = bel`<div>${textarea}${label2}<div>`;
+  vm2.initialize();
+  assert.equal(textarea.getAttribute('aria-label'), 'label text');
+  assert.equal(textarea.getAttribute('placeholder'), 'label text');
 });
 
-test('nodeFilter method return value is false', () => {
-  assert.isNotOk(vm.nodeFilter({}));
+test('regular textfields do not receive attributes on initialization if label is set via inner html', () => {
+  const vm = setupTestVM(null, {});
+  const input = bel`<input />`;
+  const label = bel`<label>label text</label>`;
+  vm.root = bel`<div>${input}${label}<div>`;
+  vm.initialize();
+  assert.isNotOk(input.getAttribute('aria-label'));
+  assert.isNotOk(input.getAttribute('placeholder'));
 });
 
-test('nodeFilter updates "label" property if it is empty', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.label, '');
-
-  vm.nodeFilter({
-    nodeType: 3,
-    textContent: 'label'
-  });
-  assert.equal(vm.label, 'label');
+test('"childrenTransform" method exists', () => {
+  assert.property(vm, 'childrenTransform');
 });
 
-
-test('nodeFilter updates "label", attrs["aria-label"], attrs["placeholder"] properties' +
-     'if "label" is empty and "fullwidth" is true', () => {
-  const vm = setupTestVM(null, {fullwidth: true});
-  assert.equal(vm.label, '');
-  assert.equal(vm.attrs['aria-label'], '');
-  assert.equal(vm.attrs['placeholder'], '');
-
-  vm.nodeFilter({
-    nodeType: 3,
-    textContent: 'label'
-  });
-  assert.equal(vm.label, 'label');
-  assert.equal(vm.attrs['aria-label'], 'label');
-  assert.equal(vm.attrs['placeholder'], 'label');
+test('"childrenTransform" ignores not <p> nodes', () => {
+  const p = bel`<p></p>`;
+  const span = bel`<span></span>`;
+  const result = vm.childrenTransform([p, span]);
+  assert.deepEqual(result, [p]);
 });
 
-test('nodeFilter does not update "label" property if its parameter is not a text node', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.label, '');
-
-  vm.nodeFilter({
-    nodeType: 1,
-    textContent: 'label'
-  });
-  assert.equal(vm.label, '');
+test('"childrenTransform" adds "aria-hidden" attribute to nodes', () => {
+  const p = bel`<p></p>`;
+  vm.childrenTransform([p]);
+  assert.isOk(p.getAttribute('aria-hidden'));
 });
 
-test('nodeFilter does not update "label" property if child node has only whitespaces', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.label, '');
-
-  vm.nodeFilter({
-    nodeType: 3,
-    textContent: ' '
-  });
-  assert.equal(vm.label, '');
-});
-
-test('nodeFilter updates "help" property if it is empty', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.help, '');
-
-  vm.nodeFilter(bel`<p>help</p>`);
-  assert.equal(vm.help, 'help');
-});
-
-test('nodeFilter sets "persistent" property to true if there is corresponding attribute on <p> node', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.persistent, false);
-
-  vm.nodeFilter(bel`<p persistent></p>`);
-  assert.equal(vm.persistent, true);
-});
-
-test('nodeFilter sets "validation" property to true if there is corresponding attribute on <p> node', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.validation, false);
-
-  vm.nodeFilter(bel`<p validation></p>`);
-  assert.equal(vm.validation, true);
-});
-
-test('nodeFilter does not update "help" property if its parameter is not a <p> node', () => {
-  const vm = setupTestVM();
-  assert.equal(vm.help, '');
-
-  vm.nodeFilter(bel`<a>help</a>`);
-  assert.equal(vm.help, '');
+test('"childrenTransform" adds "id" attribute which equals to attrs["aria-controls"] of the vm', () => {
+  const p = bel`<p></p>`;
+  vm.childrenTransform([p]);
+  assert.equal(p.getAttribute('id'), vm.attrs['aria-controls']);
 });
