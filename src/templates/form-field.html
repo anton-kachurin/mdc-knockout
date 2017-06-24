@@ -1,6 +1,11 @@
 <div class="mdc-form-field" data-bind="
   css: { 'mdc-form-field--align-end': alignEnd }
 ">
-  <!-- ko mdc-child: nodeFilter --><!-- /ko -->
-  <label data-bind="text: label, mdc-attrs"></label>
+  <!-- ko mdc-children-filter: {nodeType: 1} --><!-- /ko -->
+  <!-- ko if: label -->
+    <label data-bind="text: label, mdc-attrs"></label>
+  <!-- /ko -->
+  <!-- ko ifnot: label -->
+    <label data-bind="mdc-attrs"><!-- ko mdc-children-filter: {nodeType: 3} --><!-- /ko --></label>
+  <!-- /ko -->
 </div>

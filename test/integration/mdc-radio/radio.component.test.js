@@ -164,7 +164,7 @@ test('"attrFor" method of the parent is used when available', (done) => {
       onAttrFor(value);
     }
   }
-  const template = '<span data-bind="mdc-child"></span><span data-bind="mdc-instance"></span>';
+  const template = '<span data-bind="mdc-children"></span><span data-bind="mdc-instance"></span>';
   augment.registerComponent(ko, 'mdc-outer', template, TestViewModel);
 
   const component = bel`<mdc-outer><mdc-radio id="some_id"></mdc-radio></mdc-outer>`;

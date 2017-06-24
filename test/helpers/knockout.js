@@ -5,8 +5,15 @@ function koMock () {
       allowedBindings: []
     },
     components: {
-      register: function () {}
+      register: () => {}
     },
+    applyBindingsToDescendants: () => {},
+    applyBindingsToNode: () => {},
+    utils: {
+      domNodeDisposal: {
+        addDisposeCallback: () => {}
+      }
+    }
   }
 }
 

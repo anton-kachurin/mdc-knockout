@@ -26,7 +26,7 @@ function invokeInit (binding, $component, parameters, children) {
   return binding.init([], valueAccessor, null, null, bindingContext);
 }
 
-suite('children-transform binding');
+suite('childrenTransform binding factory');
 
 test('"transform" method invokes "transformFunction" with "children" argument', () => {
   const transformFunction = td.function('transformFunction');
@@ -126,32 +126,6 @@ test('"replaceAttrs" ignores text nodes', () => {
   const test = document.createTextNode('text');
   childrenTransformUtil.replaceAttrs([node], parameters);
   expect(virtualize(node)).to.look.exactly.like(virtualize(test));
-});
-
-test('"output" uses ko.virtualElements.prepend to output children', () => {
-  const prepend = td.function('prepend');
-  const element = bel`<span></span>`;
-  const child = bel`<div></div>`;
-  childrenTransformUtil.output({virtualElements: {prepend: prepend}}, [child], element);
-  td.verify(prepend(element, child))
-});
-
-test('"output" prepends children in reverse', () => {
-  const prepended = [];
-  const prepend = (element, child) => {
-    prepended.push(child);
-  };
-  childrenTransformUtil.output({virtualElements: {prepend: prepend}}, [1, 2, 3]);
-  assert.deepEqual(prepended, [3, 2, 1]);
-});
-
-test('"apply" applies $parentContext via "applyBindingsToDescendants"', () => {
-  const apply = td.function();
-  const bindingContext = {
-    $parentContext: 'parentContext'
-  }
-  childrenTransformUtil.apply({applyBindingsToDescendants: apply}, bindingContext, 'element');
-  td.verify(apply('parentContext', 'element'));
 });
 
 test('"init" disables automatic binding on descendant elements', () => {

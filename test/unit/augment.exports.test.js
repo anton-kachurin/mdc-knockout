@@ -19,24 +19,6 @@ test('registerBindings requires knockout as a parameter', () => {
   assert.doesNotThrow(() => augment.registerBindings(ko));
 });
 
-test('registerBindings bounces multiple calls', () => {
-  const ko = koMock();
-  const handlers = ko.bindingHandlers;
-
-  augment.registerBindings(ko);
-  Object.keys(handlers).forEach(binding => handlers[binding] = 1);
-  augment.registerBindings(ko);
-
-  const overwritten = [];
-  Object.keys(handlers).forEach(binding => {
-    if (handlers[binding] !== 1) {
-      overwritten.push(binding);
-    }
-  });
-
-  assert.deepEqual(overwritten, []);
-});
-
 test('registerComponent requires knockout as the first parameter', () => {
   const ko = koMock();
   assert.throws(augment.registerComponent);
@@ -136,11 +118,11 @@ test('registerComponent passes right arguments to the viewmodel constructor', ()
                                 'MDCComponentStub'));
 });
 
-test('registerComponent triggers mdc-instance binding if the fifth argument (MDCComponent) is passed', () => {
+test('registerComponent triggers mdc-initialize binding if the fifth argument (MDCComponent) is passed', () => {
   const ko = koMock();
 
   ko.components.register = (name, obj) => {
-    assert.strictEqual(obj.template, '<!-- ko mdc-instance --><!-- /ko -->');
+    assert.strictEqual(obj.template, '<!-- ko mdc-initialize --><!-- /ko -->');
   }
 
   augment.registerComponent(ko, '', '', {}, 'MDCComponentStub')

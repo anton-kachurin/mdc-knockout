@@ -81,22 +81,8 @@ test('text node in inner html is treated as label text', (done) => {
   });
 });
 
-test('not a text node in inner html is ignored', (done) => {
+test('not a text node in inner html is not treated as label text', (done) => {
   const component = bel`<mdc-form-field><span>will be ignored</span></mdc-form-field>`;
-  ko.applyBindings({}, component);
-
-  setTimeout(() => {
-    const label = component.querySelector('label');
-    assert.equal(label.textContent, '');
-
-    done();
-  });
-});
-
-test('empty text nodes in inner html are ignored', (done) => {
-  const emptyTextNode = document.createTextNode(' ');
-  const component = bel`<mdc-form-field></mdc-form-field>`;
-  component.appendChild(emptyTextNode);
   ko.applyBindings({}, component);
 
   setTimeout(() => {
@@ -145,7 +131,7 @@ test('child elements can set "for" attribute value by using "attrFor" method if 
       parent.attrFor('custom_for');
     }
   }
-  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-instance"></span>', TestViewModel);
+  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-initialize"></span>', TestViewModel);
 
   const component = bel`<mdc-form-field><mdc-inner></mdc-inner></mdc-form-field>`;
   ko.applyBindings({}, component);
@@ -178,7 +164,7 @@ test('child elements cannot set "for" attribute value by using "attrFor" method 
       parent.attrFor('custom_for');
     }
   }
-  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-instance"></span>', TestViewModel);
+  augment.registerComponent(ko, 'mdc-inner', '<span data-bind="mdc-initialize"></span>', TestViewModel);
 
   const component = bel`<mdc-form-field for="preset_for"><mdc-inner></mdc-inner></mdc-form-field>`;
   ko.applyBindings({}, component);

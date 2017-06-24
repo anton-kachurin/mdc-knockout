@@ -27,6 +27,7 @@
     "bel": "^5.0.0",
     "chai": "^4.0.2",
     "chai-virtual-dom": "^1.0.0",
+    "codecov": "^2.2.0",
     "dom-events": "^0.1.1",
     "es6-template-string-loader": "^1.0.1",
     "istanbul": "^0.4.5",
