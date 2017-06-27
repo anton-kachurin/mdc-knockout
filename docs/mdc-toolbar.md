@@ -36,14 +36,14 @@ height added to their first rows.
 
 ## Attributes
 
-| Name   | Description
-|--------|---------
-| start  |
-| end    |
-| shrink |
-| title  |
-| menu   |
-| icon   |
+| Name   | Description                            |
+|--------|----------------------------------------|
+| start  | Section aligns to the start            |
+| end    | Section aligns to the end              |
+| shrink | Section takes the width of its content |
+| title  | Style element text as title            |
+| menu   | Style element as a menu icon           |
+| icon   | Style element as a toolbar icon        |
 
 ## HTML-only
 
@@ -82,10 +82,10 @@ adding `start`, `end`, and `shrink` attributes to `<section>`:
 ```HTML
 <mdc-toolbar>
   <div>
-    <section start><!-- Content is aligned to the left -->></section>
+    <section start><!-- Content is aligned to the left --></section>
   </div>
   <div>
-    <section end><!-- Content is aligned to the right -->></section>
+    <section end><!-- Content is aligned to the right --></section>
   </div>
   <div>
     <section shrink><!-- Content will take as few of horizontal space as possible --></section>
