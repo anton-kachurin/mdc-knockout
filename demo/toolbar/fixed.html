@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Fixed Toolbar Demo - Knockout Material Components</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js"></script>
+    <script src="../../dist/mdc-knockout.js"></script>
+    <style>
+      .mdc-toolbar-demo {
+        margin: 0px;
+      }
+
+      .demo-paragraph {
+        margin: 0px;
+        padding: 20px 28px;
+      }
+
+      @media (max-width: 599px) {
+        .demo-paragraph {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body class="mdc-toolbar-demo">
+
+    <mdc-toolbar id="toolbar" params="fixed: true, adjust: document.querySelector('main')">
+      <section start>
+        <a menu href="#" class="material-icons">menu</a>
+        Title
+      </section>
+      <section end role="toolbar">
+        <a icon href="#" class="material-icons" aria-label="Download" alt="Download">file_download</a>
+        <a icon href="#" class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
+        <a icon href="#" class="material-icons" aria-label="Show more options" alt="Show more options">more_vert</a>
+      </section>
+    </mdc-toolbar>
+
+    <main>
+      <p class="demo-paragraph">
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+      </p>
+      <p class="demo-paragraph">
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+      </p>
+      <p class="demo-paragraph">
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+      </p>
+    </main>
+
+    <script>
+      ko.applyBindings();
+    </script>
+  </body>
+</html>

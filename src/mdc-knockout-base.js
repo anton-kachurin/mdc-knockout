@@ -1,4 +1,4 @@
-import {toJS} from './util.js';
+import {toJS, isSubscribable} from './util.js';
 
 class DisposableViewModel {
   constructor () {
@@ -49,7 +49,9 @@ class PlainViewModel extends DisposableViewModel {
     });
 
     this.unwrapParams.forEach(name => {
-      this[name] = toJS(this[name]);
+      if (isSubscribable(this[name])) {
+        this[name] = toJS(this[name]);
+      }
     });
 
     const forced = this.forceBindings;
