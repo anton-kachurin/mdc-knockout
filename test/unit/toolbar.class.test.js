@@ -290,9 +290,7 @@ test('childrenTransform combines non-div elements under a single div', () => {
 test('childrenTransform transfers section-related attributes while wrapping', () => {
   const row = bel`
     <div>
-      <span title start>text</span>
-      <span title end>text</span>
-      <span title shrink>text</span>
+      <span title start>text</span><span title end>text</span><span title shrink>text</span>
     </div>`;
   const transformed = vm.childrenTransform([row]);
 
