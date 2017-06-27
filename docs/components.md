@@ -9,6 +9,7 @@
 - [mdc-radio](./mdc-radio.md)
 - [mdc-switch](./mdc-switch.md)
 - [mdc-textfield](./mdc-textfield.md)
+- [mdc-toolbar](./mdc-toolbar.md)
 
 ## Overview
 
