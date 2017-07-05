@@ -15,6 +15,8 @@ test('"instantiate" invokes "attachTo" method with the given element', () => {
 test('"init" calls util.instantiate and add its return value as a property to the element', () => {
   const element = {};
   const binding = new rippleBinding(koMock(), {
+    getHookableParameters: () => [],
+    hookParameters: () => {},
     instantiate: () => 'instance'
   });
   binding.init(element);
@@ -31,6 +33,8 @@ test('"init" adds a dispose callback to the element', () => {
       }
     }
   }, {
+    getHookableParameters: () => [],
+    hookParameters: () => {},
     instantiate: () => {}
   });
   const element = {};
@@ -50,6 +54,9 @@ test('dispose callback destroys the instance', () => {
       }
     }
   }, {
+    getHookableParameters: () => [],
+    hookParameters: () => {},
+    disposeHooks: () => {},
     instantiate: () => {
       return {destroy: destroy}
     }
