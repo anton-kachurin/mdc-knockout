@@ -9,17 +9,17 @@ import ko from 'knockout';
 augment.registerBindings(ko);
 augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldViewModel, MDCTextfield);
 
-function initPlain (invalid) {
-  const component = bel`<mdc-textfield params="invalid: invalid"></mdc-textfield>`;
-  ko.applyBindings({invalid: invalid}, component);
+function initPlain (invalid, box) {
+  const component = bel`<mdc-textfield params="invalid: invalid, box: box"></mdc-textfield>`;
+  ko.applyBindings({invalid: invalid, box: box}, component);
 
   return component;
 }
 
-function initPlainHelptext (invalid, persistent, validation) {
+function initPlainHelptext (invalid, persistent, validation, box) {
   const p = bel`<p>help</p>`;
   const component = bel`
-    <mdc-textfield params="invalid: invalid">
+    <mdc-textfield params="invalid: invalid, box: box">
       ${p}
     </mdc-textfield>
   `;
@@ -32,7 +32,7 @@ function initPlainHelptext (invalid, persistent, validation) {
     p.setAttribute('validation', true);
   }
 
-  ko.applyBindings({invalid: invalid, persistent: persistent, validation: validation}, component);
+  ko.applyBindings({invalid: invalid, persistent: persistent, validation: validation, box: box}, component);
 
   return component;
 }
@@ -73,6 +73,11 @@ componentTest(initPlain(true), 'plain component sets "invalid" modifier', (compo
   assert.equal(component.children[0].className, 'mdc-textfield mdc-textfield--invalid mdc-textfield--upgraded');
 });
 
+componentTest(initPlain(false, true), 'plain component sets "box" modifier', (component) => {
+  assert.equal(component.children[0].className,
+               'mdc-textfield mdc-textfield--box mdc-textfield--upgraded mdc-ripple-upgraded');
+});
+
 componentTest(initPlainHelptext(), 'plain with helptext component has proper structure', (component) => {
   assert.equal(component.children.length, 2);
   assert.equal(component.children[0].tagName, 'DIV');
@@ -102,6 +107,11 @@ componentTest(initPlainHelptext(false, false, true), 'plain with helptext sets "
 
 componentTest(initPlainHelptext(true), 'plain with helptext sets "invalid" modifier', (component) => {
   assert.equal(component.children[0].className, 'mdc-textfield mdc-textfield--invalid mdc-textfield--upgraded');
+});
+
+componentTest(initPlainHelptext(false, false, false, true), 'plain with helptext sets "box" modifier', (component) => {
+  assert.equal(component.children[0].className,
+               'mdc-textfield mdc-textfield--box mdc-textfield--upgraded mdc-ripple-upgraded');
 });
 
 componentTest(initFullwidth(), 'fullwidth component has proper structure', (component) => {
