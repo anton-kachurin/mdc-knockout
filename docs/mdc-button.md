@@ -1,4 +1,4 @@
-## Button
+# Button
 The MDC Button component is a spec-aligned button component adhering to the
 [Material Design button requirements](https://material.google.com/components/buttons.html).
 
@@ -11,7 +11,13 @@ and it will act exactly like a normal `<button>` HTML element.
 The `<a>` element will be used when you add the `href` attribute (or the parameter)
 to the component. Note that standard `<a>` HTML elements cannot be disabled.
 
-#### Parameters
+## Design & Additional Documentation
+
+- [Material Design guidelines: Buttons](https://material.io/guidelines/components/buttons.html)
+- [MDC-Web Button component](https://github.com/material-components/material-components-web/blob/master/packages/mdc-button/README.md)
+- [Demo](https://anton-kachurin.github.io/mdc-knockout/demo/button.html)
+
+## Parameters
 
 | Name    | Type     | Description                                               |
 | --------|--------- | --------------------------------------------------------- |
@@ -23,60 +29,44 @@ to the component. Note that standard `<a>` HTML elements cannot be disabled.
 | href    | ko, str  | Changes the value of the "href" attribute if one was set at initialization. |
 
 
-### HTML-only
+## HTML-only
 
-Flat:
+### Flat
+
 ```HTML
 <mdc-button>flat</mdc-button>
 <mdc-button params="dense: true">flat dense</mdc-button>
 <mdc-button params="compact: true">flat compact</mdc-button>
 ```
 
-Colored:
+### Colored
+
 ```HTML
 <mdc-button params="primary: true">flat primary</mdc-button>
 <mdc-button params="accent: true, compact: true">flat accent compact</mdc-button>
 ```
 
-Raised:
+### Raised
+
 ```HTML
 <mdc-button params="raised: true">raised</mdc-button>
 <mdc-button params="raised: true, accent: true">raised accent</mdc-button>
 ```
 
-Disabled:
+### Disabled
+
 ```HTML
 <mdc-button disabled params="raised: true">disabled</mdc-button>
 ```
 
-Links with Button Style:
+### Links with Button Style
+
 ```HTML
 <mdc-button href="#">Link styled as button</mdc-button>
 ```
 
-#### MDCComponent API
 
-The original MDC-Web component is CSS-only, so there's no `MDCComponent`
-instance attached to the `<mdc-button>` element. If you need to access the
-native element directly (e.g to set/unset disabled state or change the caption),
-do:
-```HTML
-<mdc-button id="button"
-            params="accent: true, raised: true"
-            onclick="disableButton()">
-  click me
-</mdc-button>
-
-<script>
-  function disableButton() {
-    document.getElementById('button').disabled = true;
-    document.getElementById('button').textContent = 'do not try to click me';
-  }
-</script>
-```
-
-
-### Fully featured
+## Fully featured
 
 All parameters accept observable values, and it may be used to make the
 appearance of the buttons more interactive:
@@ -95,9 +85,7 @@ appearance of the buttons more interactive:
 </mdc-button>
 ```
 
-Although it's currently not advisable to affect the button's width (because
-of the glitchy ink ripple effect implementation), the caption can be set via
-the `text` binding:
+The caption can be set via the `text` binding:
 ```HTML
 <mdc-button params="text: buttonCaption() || 'submit'"></mdc-button>
 ```
