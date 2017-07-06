@@ -18,7 +18,7 @@
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95"
   },
   "dependencies": {
-    "material-components-web": "^0.13.0"
+    "material-components-web": "^0.14.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -44,7 +44,7 @@
     "testdouble": "^3.0.0",
     "vdom-virtualize": "^2.0.0",
     "virtual-dom": "^2.1.1",
-    "webpack": "^2.6.1",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.5"
   },
   "repository": {

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {MDCRipple} from '@material/ripple';
 import {excludeExpectedProperties} from '../../helpers/api.js';
 
-const expected = ['activate', 'deactivate', 'unbounded'];
+const expected = ['activate', 'deactivate', 'unbounded', 'layout'];
 
 suite('ripple api');
 
