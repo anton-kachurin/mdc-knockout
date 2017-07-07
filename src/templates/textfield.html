@@ -2,7 +2,8 @@
   css: {
     'mdc-textfield--multiline': multiline,
     'mdc-textfield--fullwidth': fullwidth,
-    'mdc-textfield--invalid': invalid
+    'mdc-textfield--invalid': invalid,
+    'mdc-textfield--box': box
   }
 ">
   <!-- ko ifnot: multiline -->
@@ -28,6 +29,9 @@
       },
       visible: !fullwidth
     "><!-- ko mdc-children-filter: {nodeType: 3} --><!-- /ko --></label>
+  <!-- /ko -->
+  <!-- ko if: box -->
+    <div class="mdc-textfield__bottom-line"></div>
   <!-- /ko -->
 </div>
 <!-- ko ifnot: multiline -->

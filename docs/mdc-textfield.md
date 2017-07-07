@@ -24,9 +24,10 @@ attributes, and input's validity is checked via checkValidity() on blur.
 | invalid    | bool     | Applies on initialization only, will render the textfield as if it didn't pass validation. |
 | multiline  | bool     | If it needs to be multiline, checked once on initialization.  |
 | fullwidth  | bool     | If it needs to be full-width, checked once on initialization. |
+| box        | bool     | If it needs to be styled as a box, checked once on initialization. |
 
 
-### HTML-only
+## HTML-only
 
 ### Basic single-line text field with a label
 
@@ -80,6 +81,15 @@ validated on the back-end). Use `invalid` property for that:
 <mdc-textfield type="password" required pattern=".{8,}" params="invalid: true">
   Password
   <p persistent validation>Must contain letters, digits, and special characters</p>
+</mdc-textfield>
+```
+
+### Textfield box
+
+```HTML
+<mdc-textfield params="box: true">
+  Label text (placeholder)
+  <p>Help text</p>
 </mdc-textfield>
 ```
 
