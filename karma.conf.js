@@ -1,9 +1,17 @@
 const webpackConfig = require('./webpack.config');
 
 module.exports = function(config) {
-  const module = (config.module && typeof config.module === 'string') ? config.module : false;
+  const suite = (config.suite && typeof config.suite === 'string') ? config.suite : false;
 
-  const fileMask = module ? `test/**/${module}*test.js` : 'test/**/*test.js';
+  if (suite) {
+    config.set({
+      client: {
+        args: ['--grep', suite]
+      }
+    });
+  }
+
+  const fileMask = 'test/**/*test.js';
   const files = [fileMask];
   const preprocessors = {};
   preprocessors[fileMask] = ['webpack', 'sourcemap'];

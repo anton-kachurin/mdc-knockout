@@ -117,6 +117,9 @@ npm run test:integration
 
 # Test debugging, watch-mode
 npm run test:watch
+
+# Run a certain test suite, watch-mode
+npm run test:watch -- --suite "button class"
 ```
 
 Karma will run tests using a headless Chrome. In the watch mode, a webserver
