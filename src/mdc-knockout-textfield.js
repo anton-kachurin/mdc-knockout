@@ -56,12 +56,13 @@ class TextfieldViewModel extends ComponentViewModel {
       label: '',
       invalid: false,
       multiline: false,
-      fullwidth: false
+      fullwidth: false,
+      box: false
     }
   }
 
   get unwrapParams () {
-    return ['multiline', 'fullwidth', 'invalid']
+    return ['multiline', 'fullwidth', 'invalid', 'box']
   }
 }
 

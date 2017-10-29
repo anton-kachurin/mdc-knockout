@@ -11,17 +11,19 @@ augment.registerComponent(ko, 'mdc-textfield', TextfieldTemplate(), TextfieldVie
 
 suite('textfield component');
 
-test('multiline, fullwidth, and invaid are unwrapped', (done) => {
+test('multiline, fullwidth, box, and invaid are unwrapped', (done) => {
   const component = bel`
     <mdc-textfield params="
       multiline: multiline,
       fullwidth: fullwidth,
-      invalid: invalid
+      invalid: invalid,
+      box: box
     "></mdc-textfield>`;
   const multiline = ko.observable(true);
   const fullwidth = ko.observable(true);
   const invalid = ko.observable(true);
-  ko.applyBindings({multiline: multiline, fullwidth: fullwidth, invalid: invalid}, component);
+  const box = ko.observable(true);
+  ko.applyBindings({multiline: multiline, fullwidth: fullwidth, invalid: invalid, box: box}, component);
 
   setTimeout(() => {
     const wrapper = component.querySelector('.mdc-textfield');
@@ -30,6 +32,7 @@ test('multiline, fullwidth, and invaid are unwrapped', (done) => {
     multiline(false);
     fullwidth(false);
     invalid(false);
+    box(false);
 
     assert.equal(initialClasses, wrapper.className);
 

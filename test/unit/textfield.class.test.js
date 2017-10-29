@@ -62,6 +62,20 @@ test('"fullwidth" is unwrapped', () => {
   assert.equal(vm.fullwidth, 'fullwidthStub');
 });
 
+test('"box" property exists', () => {
+  assert.property(vm, 'box');
+});
+
+test('"box" has a default value of false', () => {
+  assert.equal(vm.box, false);
+});
+
+test('"box" is unwrapped', () => {
+  const box = ko.observable('boxStub');
+  const vm = setupTestVM(null, {box: box});
+  assert.equal(vm.box, 'boxStub');
+});
+
 test('"disable" binding is set automatically when not provided', () => {
   assert.property(vm.bindings, 'disable');
 });
